@@ -1,5 +1,6 @@
 <?php
 require('./navbar.php');
+
 ?>
 <main id="content" role="main" class="main">
       <!-- Content -->
@@ -12,11 +13,11 @@ require('./navbar.php');
                 <ol class="breadcrumb breadcrumb-no-gutter">
                   <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Pages</a></li>
                   <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Company</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">JobList</li>
+                  <li class="breadcrumb-item active" aria-current="page">Company</li>
                 </ol>
               </nav>
 
-              <h1 class="page-header-title">Company Request List</h1>
+              <h1 class="page-header-title">Company List</h1>
             </div>
 
             <!-- <div class="col-sm-auto">
@@ -31,6 +32,10 @@ require('./navbar.php');
 
         <!-- Card -->
         <div class="card">
+          <?php 
+          $company_qry = "SELECT user.*,company_detail.* FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.permission = 'company' AND status !='blacklist'";
+          $company_sql = mysqli_query($conn,$company_qry);
+          ?>
           <!-- Header -->
           <div class="card-header">
             <div class="row justify-content-between align-items-center flex-grow-1">
@@ -66,44 +71,6 @@ require('./navbar.php');
                   <!-- End Datatable Info -->
 
                   <!-- Unfold -->
-                  <div class="hs-unfold mr-2">
-                    <a class="js-hs-unfold-invoker btn btn-sm btn-white dropdown-toggle" href="javascript:;"
-                       data-hs-unfold-options='{
-                         "target": "#usersExportDropdown",
-                         "type": "css-animation"
-                       }'>
-                      <i class="tio-download-to mr-1"></i> Export
-                    </a>
-
-                    <div id="usersExportDropdown" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-sm-right">
-                      <span class="dropdown-header">Options</span>
-                      <a id="export-copy" class="dropdown-item" href="javascript:;">
-                        <img class="avatar avatar-xss avatar-4by3 mr-2" src="<?= $assets; ?>/assets/svg/illustrations/copy.svg" alt="Image Description">
-                        Copy
-                      </a>
-                      <a id="export-print" class="dropdown-item" href="javascript:;">
-                        <img class="avatar avatar-xss avatar-4by3 mr-2" src="<?= $assets; ?>/assets/svg/illustrations/print.svg" alt="Image Description">
-                        Print
-                      </a>
-                      <div class="dropdown-divider"></div>
-                      <span class="dropdown-header">Download options</span>
-                      <a id="export-excel" class="dropdown-item" href="javascript:;">
-                        <img class="avatar avatar-xss avatar-4by3 mr-2" src="<?= $assets; ?>/assets/svg/brands/excel.svg" alt="Image Description">
-                        Excel
-                      </a>
-                      <a id="export-csv" class="dropdown-item" href="javascript:;">
-                        <img class="avatar avatar-xss avatar-4by3 mr-2" src="<?= $assets; ?>/assets/svg/components/placeholder-csv-format.svg" alt="Image Description">
-                        .CSV
-                      </a>
-                      <a id="export-pdf" class="dropdown-item" href="javascript:;">
-                        <img class="avatar avatar-xss avatar-4by3 mr-2" src="<?= $assets; ?>/assets/svg/brands/pdf.svg" alt="Image Description">
-                        PDF
-                      </a>
-                    </div>
-                  </div>
-                  <!-- End Unfold -->
-
-                  <!-- Unfold -->
                   <div class="hs-unfold">
                     <a class="js-hs-unfold-invoker btn btn-sm btn-white" href="javascript:;"
                        data-hs-unfold-options='{
@@ -134,47 +101,22 @@ require('./navbar.php');
 
                         <div class="card-body">
                           <form>
-                            <div class="form-group">
-                              <small class="text-cap mb-2">Role</small>
-
-                              <div class="form-row">
-                                <div class="col">
-                                  <!-- Checkbox -->
-                                  <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="usersFilerCheck1" checked>
-                                    <label class="custom-control-label" for="usersFilerCheck1">All</label>
-                                  </div>
-                                  <!-- End Checkbox -->
-                                </div>
-
-                                <div class="col">
-                                  <!-- Checkbox -->
-                                  <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="usersFilerCheck2">
-                                    <label class="custom-control-label" for="usersFilerCheck2">Employee</label>
-                                  </div>
-                                  <!-- End Checkbox -->
-                                </div>
-                              </div>
-                              <!-- End Row -->
-                            </div>
-
                             <div class="form-row">
                               <div class="col-sm form-group">
-                                <small class="text-cap mb-2">Position</small>
+                                <small class="text-cap mb-2">Country</small>
 
                                 <!-- Select -->
                                 <select class="js-select2-custom js-datatable-filter custom-select" size="1" style="opacity: 0;"
-                                        data-target-column-index="2"
+                                        data-target-column-index="3"
                                         data-hs-select2-options='{
                                           "minimumResultsForSearch": "Infinity"
                                         }'>
                                   <option value="">Any</option>
-                                  <option value="Accountant">Accountant</option>
-                                  <option value="Co-founder">Co-founder</option>
-                                  <option value="Designer">Designer</option>
-                                  <option value="Developer">Developer</option>
-                                  <option value="Director">Director</option>
+                                  <option value="Malaysia">Malaysia</option>
+                                  <option value="Singapore">Singapore</option>
+                                  <option value="India">India</option>
+                                  <option value="China">China</option>
+                                  <option value="Thai">Thai</option>
                                 </select>
                                 <!-- End Select -->
                               </div>
@@ -246,16 +188,17 @@ require('./navbar.php');
                     </div>
                   </th>
                   <th class="table-column-pl-0">Name</th>
-                  <th>Position</th>
+                  <th>Contact</th>
                   <th>Country</th>
                   <th>Status</th>
-                  <th>Portfolio</th>
+                  <th>Create Date</th>
                   <th>Role</th>
                   <th></th>
                 </tr>
               </thead>
 
               <tbody>
+                <?php while($company_array = mysqli_fetch_array($company_sql)){ ?>
                 <tr>
                   <td class="table-column-pr-0">
                     <div class="custom-control custom-checkbox">
@@ -266,247 +209,68 @@ require('./navbar.php');
                   <td class="table-column-pl-0">
                     <a class="d-flex align-items-center" href="./user-profile.html">
                       <div class="avatar avatar-circle">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img10.jpg" alt="Image Description">
+                        <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['profile_image'])?'/image/'.$company_array['profile_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
                       </div>
                       <div class="ml-3">
-                        <span class="d-block h5 text-hover-primary mb-0">Amanda Harvey <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                        <span class="d-block font-size-sm text-body">amanda@example.com</span>
+                        <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['firstname']; ?> <?= $company_array['lastname']; ?><i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                        <span class="d-block font-size-sm text-body"><?= $company_array['email']; ?></span>
                       </div>
                     </a>
                   </td>
                   <td>
-                    <span class="d-block h5 mb-0">Director</span>
-                    <span class="d-block font-size-sm">Human resources</span>
+                    <span class="d-block h5 mb-0"><?= $company_array['contact']; ?></span>
                   </td>
-                  <td>United Kingdom <span class="text-hide">Code: GB</span></td>
+                  <td><?= $company_array['country']; ?> <span class="text-hide">Code: <?= $company_array['country']; ?></span></td>
                   <td>
-                    <span class="legend-indicator bg-success"></span>Active
+                    <?php if($company_array['status']=="active"){ ?>
+                      <span class="legend-indicator bg-success"></span>Active
+                    <?php }elseif($company_array['status']=="pending"){ ?>
+                      <span class="legend-indicator bg-warning"></span>Pending
+                    <?php }elseif($company_array['status']=="drop"){ ?>
+                      <span class="legend-indicator bg-danger"></span>Suspended
+                    <?php }else{ ?>
+                      <span class="legend-indicator bg-second"></span>BlackList
+                    <?php } ?>
                   </td>
+                  <td><?= $company_array['created_at']; ?></td>
+                  <td><?= $company_array['permission']; ?></td>
                   <td>
-                    <div class="d-flex align-items-center">
-                      <span class="font-size-sm mr-2">72%</span>
-                      <div class="progress table-progress">
-                        <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Employee</td>
-                  <td>
-                    <a class="btn btn-sm btn-white" href="javascript:;" data-toggle="modal" data-target="#editUserModal">
-                      <i class="tio-edit"></i> Edit
-                    </a>
-                  </td>
-                </tr>
+                      <div class="btn-group" role="group">
+                      <?php if($company_array['status']=="pending" || $company_array['status']=="drop"){ ?>
+                        <a class="btn btn-sm btn-white" href="./company-approve.php?company=<?= $company_array['company_id']; ?>">
+                          <i class="tio-done"></i> Approve
+                        </a>
+                        <?php }elseif($company_array['status']=="active"){ ?>
+                          <a class="btn btn-sm btn-white" href="./company-reject.php?company=<?= $company_array['company_id']; ?>">
+                          <i class="tio-clear"></i> Reject
+                        </a>
+                          <?php } ?>
+                        <!-- Unfold -->
+                        <div class="hs-unfold btn-group">
+                          <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-white dropdown-toggle dropdown-toggle-empty" href="javascript:;"
+                            data-hs-unfold-options='{
+                              "target": "#productsEditDropdown<?= $company_array['id']; ?>",
+                              "type": "css-animation",
+                              "smartPositionOffEl": "#datatable"
+                            }'></a>
 
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck2">
-                      <label class="custom-control-label" for="usersDataCheck2"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="d-flex align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-soft-primary avatar-circle">
-                        <span class="avatar-initials">A</span>
+                          <div id="productsEditDropdown<?= $company_array['id']; ?>" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
+                            <a class="dropdown-item" href="company-blacklist.php?company=<?= $company_array['company_id']; ?>">
+                              <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
+                            </a>
+                            <?php if($company_array['status'] != 'drop'){ ?>
+                            <a class="dropdown-item" href="company-drop.php?company=<?= $company_array['company_id']; ?>">
+                              <i class="tio-archive dropdown-item-icon"></i> Drop
+                            </a>
+                            <?php } ?>
+                          </div>
+                        </div>
+                        <!-- End Unfold -->
                       </div>
-                      <div class="ml-3">
-                        <span class="d-block h5 text-hover-primary mb-0">Anne Richard</span>
-                        <span class="d-block font-size-sm text-body">anne@example.com</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="d-block h5 mb-0">Seller</span>
-                    <span class="d-block font-size-sm">Branding products</span>
-                  </td>
-                  <td>United States <span class="text-hide">Code: US</span></td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <span class="font-size-sm mr-2">24%</span>
-                      <div class="progress table-progress">
-                        <div class="progress-bar" role="progressbar" style="width: 24%" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Employee</td>
-                  <td>
-                    <a class="btn btn-sm btn-white" href="javascript:;" data-toggle="modal" data-target="#editUserModal">
-                      <i class="tio-edit"></i> Edit
-                    </a>
+                    </td>
                   </td>
                 </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck3">
-                      <label class="custom-control-label" for="usersDataCheck3"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="d-flex align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-circle">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img3.jpg" alt="Image Description">
-                      </div>
-                      <div class="ml-3">
-                        <span class="d-block h5 text-hover-primary mb-0">David Harrison</span>
-                        <span class="d-block font-size-sm text-body">david@example.com</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="d-block h5 mb-0">Unknown</span>
-                    <span class="d-block font-size-sm">Unknown</span>
-                  </td>
-                  <td>United States <span class="text-hide">Code: US</span></td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Active
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <span class="font-size-sm mr-2">100%</span>
-                      <div class="progress table-progress">
-                        <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Employee</td>
-                  <td>
-                    <a class="btn btn-sm btn-white" href="javascript:;" data-toggle="modal" data-target="#editUserModal">
-                      <i class="tio-edit"></i> Edit
-                    </a>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck4">
-                      <label class="custom-control-label" for="usersDataCheck4"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="d-flex align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-circle">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img5.jpg" alt="Image Description">
-                      </div>
-                      <div class="ml-3">
-                        <span class="d-block h5 text-hover-primary mb-0">Finch Hoot</span>
-                        <span class="d-block font-size-sm text-body">finch@example.com</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="d-block h5 mb-0">Designer</span>
-                    <span class="d-block font-size-sm">IT department</span>
-                  </td>
-                  <td>Argentina <span class="text-hide">Code: AR</span></td>
-                  <td>
-                    <span class="legend-indicator bg-danger"></span>Suspended
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <span class="font-size-sm mr-2">50%</span>
-                      <div class="progress table-progress">
-                        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Employee</td>
-                  <td>
-                    <a class="btn btn-sm btn-white" href="javascript:;" data-toggle="modal" data-target="#editUserModal">
-                      <i class="tio-edit"></i> Edit
-                    </a>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck5">
-                      <label class="custom-control-label" for="usersDataCheck5"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="d-flex align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-soft-dark avatar-circle">
-                        <span class="avatar-initials">B</span>
-                      </div>
-                      <div class="ml-3">
-                        <span class="d-block h5 text-hover-primary mb-0">Bob Dean</span>
-                        <span class="d-block font-size-sm text-body">bob@example.com</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="d-block h5 mb-0">Executive director</span>
-                    <span class="d-block font-size-sm">Marketing</span>
-                  </td>
-                  <td>Austria <span class="text-hide">Code: AT</span></td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Active
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <span class="font-size-sm mr-2">5%</span>
-                      <div class="progress table-progress">
-                        <div class="progress-bar" role="progressbar" style="width: 5%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Employee</td>
-                  <td>
-                    <a class="btn btn-sm btn-white" href="javascript:;" data-toggle="modal" data-target="#editUserModal">
-                      <i class="tio-edit"></i> Edit
-                    </a>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck6">
-                      <label class="custom-control-label" for="usersDataCheck6"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="d-flex align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-circle">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img9.jpg" alt="Image Description">
-                      </div>
-                      <div class="ml-3">
-                        <span class="d-block h5 text-hover-primary mb-0">Ella Lauda <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                        <span class="d-block font-size-sm text-body">ella@example.com</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="d-block h5 mb-0">Co-founder</span>
-                    <span class="d-block font-size-sm">All departments</span>
-                  </td>
-                  <td>United Kingdom <span class="text-hide">Code: GB</span></td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Active
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <span class="font-size-sm mr-2">100%</span>
-                      <div class="progress table-progress">
-                        <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Owner</td>
-                  <td>
-                    <a class="btn btn-sm btn-white" href="javascript:;" data-toggle="modal" data-target="#editUserModal">
-                      <i class="tio-edit"></i> Edit
-                    </a>
-                  </td>
-                </tr>
+                <?php } ?>
               </tbody>
             </table>
           </div>
@@ -598,552 +362,12 @@ require('./navbar.php');
             </div>
           </div>
         </div>
-      
 
-      
       <!-- End Footer -->
     </main>
     <!-- ========== END MAIN CONTENT ========== -->
 
     <!-- ========== SECONDARY CONTENTS ========== -->
-    <!-- Keyboard Shortcuts -->
-    <div id="keyboardShortcutsSidebar" class="hs-unfold-content sidebar sidebar-bordered sidebar-box-shadow">
-      <div class="card card-lg sidebar-card">
-        <div class="card-header">
-          <h4 class="card-header-title">Keyboard shortcuts</h4>
-
-          <!-- Toggle Button -->
-          <a class="js-hs-unfold-invoker btn btn-icon btn-xs btn-ghost-dark ml-2" href="javascript:;"
-             data-hs-unfold-options='{
-                "target": "#keyboardShortcutsSidebar",
-                "type": "css-animation",
-                "animationIn": "fadeInRight",
-                "animationOut": "fadeOutRight",
-                "hasOverlay": true,
-                "smartPositionOff": true
-               }'>
-            <i class="tio-clear tio-lg"></i>
-          </a>
-          <!-- End Toggle Button -->
-        </div>
-
-        <!-- Body -->
-        <div class="card-body sidebar-body sidebar-scrollbar">
-          <div class="list-group list-group-sm list-group-flush list-group-no-gutters mb-5">
-            <div class="list-group-item">
-              <h5 class="mb-1">Formatting</h5>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span class="font-weight-bold">Bold</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">b</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <em>italic</em>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">i</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <u>Underline</u>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">u</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <s>Strikethrough</s>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Alt</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">s</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span class="small">Small text</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">s</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <mark>Highlight</mark>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">e</kbd>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="list-group list-group-sm list-group-flush list-group-no-gutters mb-5">
-            <div class="list-group-item">
-              <h5 class="mb-1">Insert</h5>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Mention person <a href="#">(@Brian)</a></span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">@</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Link to doc <a href="#">(+Meeting notes)</a></span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">+</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <a href="#">#hashtag</a>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">#hashtag</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Date</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">/date</kbd>
-                  <kbd class="d-inline-block mb-1">Space</kbd>
-                  <kbd class="d-inline-block mb-1">/datetime</kbd>
-                  <kbd class="d-inline-block mb-1">/datetime</kbd>
-                  <kbd class="d-inline-block mb-1">Space</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Time</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">/time</kbd>
-                  <kbd class="d-inline-block mb-1">Space</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Note box</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">/note</kbd>
-                  <kbd class="d-inline-block mb-1">Enter</kbd>
-                  <kbd class="d-inline-block mb-1">/note red</kbd>
-                  <kbd class="d-inline-block mb-1">/note red</kbd>
-                  <kbd class="d-inline-block mb-1">Enter</kbd>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="list-group list-group-sm list-group-flush list-group-no-gutters mb-5">
-            <div class="list-group-item">
-              <h5 class="mb-1">Editing</h5>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Find and replace</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">r</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Find next</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">n</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Find previous</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">p</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Indent</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Tab</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Un-indent</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Tab</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Move line up</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1"><i class="tio-arrow-large-upward-outlined"></i></kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Move line down</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1"><i class="tio-arrow-large-downward-outlined font-size-sm"></i></kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Add a comment</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Alt</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">m</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Undo</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">z</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Redo</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">y</kbd>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="list-group list-group-sm list-group-flush list-group-no-gutters">
-            <div class="list-group-item">
-              <h5 class="mb-1">Application</h5>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Create new doc</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Alt</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">n</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Present</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">p</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Share</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">s</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Search docs</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">o</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Keyboard shortcuts</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">/</kbd>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End Body -->
-      </div>
-    </div>
-    <!-- End Keyboard Shortcuts -->
-
-    <!-- Activity -->
-    <div id="activitySidebar" class="hs-unfold-content sidebar sidebar-bordered sidebar-box-shadow">
-      <div class="card card-lg sidebar-card">
-        <div class="card-header">
-          <h4 class="card-header-title">Activity stream</h4>
-
-          <!-- Toggle Button -->
-          <a class="js-hs-unfold-invoker btn btn-icon btn-xs btn-ghost-dark ml-2" href="javascript:;"
-             data-hs-unfold-options='{
-              "target": "#activitySidebar",
-              "type": "css-animation",
-              "animationIn": "fadeInRight",
-              "animationOut": "fadeOutRight",
-              "hasOverlay": true,
-              "smartPositionOff": true
-             }'>
-            <i class="tio-clear tio-lg"></i>
-          </a>
-          <!-- End Toggle Button -->
-        </div>
-
-        <!-- Body -->
-        <div class="card-body sidebar-body sidebar-scrollbar">
-          <!-- Step -->
-          <ul class="step step-icon-sm step-avatar-sm">
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <div class="step-avatar">
-                  <img class="step-avatar-img" src="<?= $assets; ?>/assets/img/160x160/img9.jpg" alt="Image Description">
-                </div>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Iana Robinson</h5>
-
-                  <p class="font-size-sm mb-1">Added 2 files to task <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fd-7</a></p>
-
-                  <ul class="list-group list-group-sm">
-                    <!-- List Item -->
-                    <li class="list-group-item list-group-item-light">
-                      <div class="row gx-1">
-                        <div class="col-6">
-                          <div class="media">
-                              <span class="mt-1 mr-2">
-                                <img class="avatar avatar-xs" src="<?= $assets; ?>/assets/svg/brands/excel.svg" alt="Image Description">
-                              </span>
-                            <div class="media-body text-truncate">
-                              <span class="d-block font-size-sm text-dark text-truncate" title="weekly-reports.xls">weekly-reports.xls</span>
-                              <small class="d-block text-muted">12kb</small>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="media">
-                              <span class="mt-1 mr-2">
-                                <img class="avatar avatar-xs" src="<?= $assets; ?>/assets/svg/brands/word.svg" alt="Image Description">
-                              </span>
-                            <div class="media-body text-truncate">
-                              <span class="d-block font-size-sm text-dark text-truncate" title="weekly-reports.xls">weekly-reports.xls</span>
-                              <small class="d-block text-muted">4kb</small>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <!-- End List Item -->
-                  </ul>
-
-                  <small class="text-muted text-uppercase">Now</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <span class="step-icon step-icon-soft-dark">B</span>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Bob Dean</h5>
-
-                  <p class="font-size-sm mb-1">Marked <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fr-6</a> as <span class="badge badge-soft-success badge-pill"><span class="legend-indicator bg-success"></span>"Completed"</span></p>
-
-                  <small class="text-muted text-uppercase">Today</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <div class="step-avatar">
-                  <img class="step-avatar-img" src="<?= $assets; ?>/assets/img/160x160/img3.jpg" alt="Image Description">
-                </div>
-
-                <div class="step-content">
-                  <h5 class="h5 mb-1">Crane</h5>
-
-                  <p class="font-size-sm mb-1">Added 5 card to <a href="#">Payments</a></p>
-
-                  <ul class="list-group list-group-sm">
-                    <li class="list-group-item list-group-item-light">
-                      <div class="row gx-1">
-                        <div class="col">
-                          <img class="img-fluid rounded ie-sidebar-activity-img" src="<?= $assets; ?>/assets/svg/illustrations/card-1.svg" alt="Image Description">
-                        </div>
-                        <div class="col">
-                          <img class="img-fluid rounded ie-sidebar-activity-img" src="<?= $assets; ?>/assets/svg/illustrations/card-2.svg" alt="Image Description">
-                        </div>
-                        <div class="col">
-                          <img class="img-fluid rounded ie-sidebar-activity-img" src="<?= $assets; ?>/assets/svg/illustrations/card-3.svg" alt="Image Description">
-                        </div>
-                        <div class="col-auto align-self-center">
-                          <div class="text-center">
-                            <a href="#">+2</a>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-
-                  <small class="text-muted text-uppercase">May 12</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <span class="step-icon step-icon-soft-info">D</span>
-
-                <div class="step-content">
-                  <h5 class="mb-1">David Lidell</h5>
-
-                  <p class="font-size-sm mb-1">Added a new member to Front Dashboard</p>
-
-                  <small class="text-muted text-uppercase">May 15</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <div class="step-avatar">
-                  <img class="step-avatar-img" src="<?= $assets; ?>/assets/img/160x160/img7.jpg" alt="Image Description">
-                </div>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Rachel King</h5>
-
-                  <p class="font-size-sm mb-1">Marked <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fr-3</a> as <span class="badge badge-soft-success badge-pill"><span class="legend-indicator bg-success"></span>"Completed"</span></p>
-
-                  <small class="text-muted text-uppercase">Apr 29</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <div class="step-avatar">
-                  <img class="step-avatar-img" src="<?= $assets; ?>/assets/img/160x160/img5.jpg" alt="Image Description">
-                </div>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Finch Hoot</h5>
-
-                  <p class="font-size-sm mb-1">Earned a "Top endorsed" <i class="tio-verified text-primary"></i> badge</p>
-
-                  <small class="text-muted text-uppercase">Apr 06</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                  <span class="step-icon step-icon-soft-primary">
-                    <i class="tio-user"></i>
-                  </span>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Project status updated</h5>
-
-                  <p class="font-size-sm mb-1">Marked <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fr-3</a> as <span class="badge badge-soft-primary badge-pill"><span class="legend-indicator bg-primary"></span>"In progress"</span></p>
-
-                  <small class="text-muted text-uppercase">Feb 10</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-          </ul>
-          <!-- End Step -->
-
-          <a class="btn btn-block btn-white" href="javascript:;">View all <i class="tio-chevron-right"></i></a>
-        </div>
-        <!-- End Body -->
-      </div>
-    </div>
-    <!-- End Activity -->
 
     <!-- Welcome Message Modal -->
     <div class="modal fade" id="welcomeMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -1198,61 +422,6 @@ require('./navbar.php');
     </div>
     <!-- End Welcome Message Modal -->
 
-    <!-- Edit user Modal -->
-    <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-          <!-- Header -->
-          <div class="modal-header">
-            <h4 id="editUserModalTitle" class="modal-title">Edit user</h4>
-
-            <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary" data-dismiss="modal" aria-label="Close">
-              <i class="tio-clear tio-lg"></i>
-            </button>
-          </div>
-          <!-- End Header -->
-
-          <!-- Body -->
-          <div class="modal-body">
-            <!-- Nav -->
-            <ul class="js-tabs-to-dropdown nav nav-segment nav-fill nav-lg-down-break mb-5" id="editUserModalTab" role="tablist"
-                data-hs-transform-tabs-to-btn-options='{
-                  "transformResolution": "lg",
-                  "btnClassNames": "btn btn-block btn-white dropdown-toggle justify-content-center mb-3"
-                }'>
-              <li class="nav-item">
-                <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab">
-                  <i class="tio-user-outlined mr-1"></i> Profile
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="billing-address-tab" data-toggle="tab" href="#billing-address" role="tab">
-                  <i class="tio-city mr-1"></i> Billing address
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="change-password-tab" data-toggle="tab" href="#change-password" role="tab">
-                  <i class="tio-lock-outlined mr-1"></i> Change password
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="notifications-tab" data-toggle="tab" href="#notifications" role="tab">
-                  <i class="tio-notifications-on-outlined mr-1"></i> Notifications
-                </a>
-              </li>
-            </ul>
-            <!-- End Nav -->
-            
-            <?php
-                include('./edit-model.php');
-            ?>
-
-          </div>
-          <!-- End Body -->
-        </div>
-      </div>
-    </div>
-    <!-- End Edit user Modal -->
     <!-- ========== END SECONDARY CONTENTS ========== -->
 
     <!-- JS Global Compulsory  -->

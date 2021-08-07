@@ -13,7 +13,7 @@ require('./navbar.php');
                 <ol class="breadcrumb breadcrumb-no-gutter">
                   <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Pages</a></li>
                   <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Company</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Overview</li>
+                  <li class="breadcrumb-item active" aria-current="page">Company</li>
                 </ol>
               </nav>
 
@@ -33,7 +33,7 @@ require('./navbar.php');
         <!-- Card -->
         <div class="card">
           <?php 
-          $company_qry = "SELECT user.*,company_detail.* FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.permission = 'company'";
+          $company_qry = "SELECT user.*,company_detail.* FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.permission = 'company' AND status !='blacklist'";
           $company_sql = mysqli_query($conn,$company_qry);
           ?>
           <!-- Header -->
@@ -198,7 +198,7 @@ require('./navbar.php');
               </thead>
 
               <tbody>
-                <?php while($array = mysqli_fetch_array($company_sql)){ ?>
+                <?php while($company_array = mysqli_fetch_array($company_sql)){ ?>
                 <tr>
                   <td class="table-column-pr-0">
                     <div class="custom-control custom-checkbox">
@@ -209,51 +209,57 @@ require('./navbar.php');
                   <td class="table-column-pl-0">
                     <a class="d-flex align-items-center" href="./user-profile.html">
                       <div class="avatar avatar-circle">
-                        <img class="avatar-img" src="<?= $assets; ?><?= ($array['profile_image'])?'/image/'.$array['profile_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
+                        <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['profile_image'])?'/image/'.$company_array['profile_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
                       </div>
                       <div class="ml-3">
-                        <span class="d-block h5 text-hover-primary mb-0"><?= $array['firstname']; ?> <?= $array['lastname']; ?><i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                        <span class="d-block font-size-sm text-body"><?= $array['email']; ?></span>
+                        <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['firstname']; ?> <?= $company_array['lastname']; ?><i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                        <span class="d-block font-size-sm text-body"><?= $company_array['email']; ?></span>
                       </div>
                     </a>
                   </td>
                   <td>
-                    <span class="d-block h5 mb-0"><?= $array['contact']; ?></span>
+                    <span class="d-block h5 mb-0"><?= $company_array['contact']; ?></span>
                   </td>
-                  <td><?= $array['country']; ?> <span class="text-hide">Code: <?= $array['country']; ?></span></td>
+                  <td><?= $company_array['country']; ?> <span class="text-hide">Code: <?= $company_array['country']; ?></span></td>
                   <td>
-                    <?php if($array['status']=="active"){ ?>
+                    <?php if($company_array['status']=="active"){ ?>
                       <span class="legend-indicator bg-success"></span>Active
-                    <?php }elseif($array['status']=="pending"){ ?>
+                    <?php }elseif($company_array['status']=="pending"){ ?>
                       <span class="legend-indicator bg-warning"></span>Pending
-                    <?php }elseif($array['status']=="drop"){ ?>
+                    <?php }elseif($company_array['status']=="drop"){ ?>
                       <span class="legend-indicator bg-danger"></span>Suspended
                     <?php }else{ ?>
-                      <span class="legend-indicator bg-second"></span>Unknown
+                      <span class="legend-indicator bg-second"></span>BlackList
                     <?php } ?>
                   </td>
-                  <td><?= $array['created_at']; ?></td>
-                  <td><?= $array['permission']; ?></td>
+                  <td><?= $company_array['created_at']; ?></td>
+                  <td><?= $company_array['permission']; ?></td>
                   <td>
                       <div class="btn-group" role="group">
-                        <a class="btn btn-sm btn-white" href="./company-approve.php?company=<?= $array['id']; ?>">
-                          <i class="tio-checkmark-circle-outlined"></i> Approve
+                      <?php if($company_array['status']=="pending" || $company_array['status']=="drop"){ ?>
+                        <a class="btn btn-sm btn-white" href="./company-approve.php?company=<?= $company_array['company_id']; ?>">
+                          <i class="tio-done"></i> Approve
                         </a>
+                        <?php }elseif($company_array['status']=="active"){ ?>
+                          <a class="btn btn-sm btn-white" href="./company-reject.php?company=<?= $company_array['company_id']; ?>">
+                          <i class="tio-clear"></i> Reject
+                        </a>
+                          <?php } ?>
                         <!-- Unfold -->
                         <div class="hs-unfold btn-group">
                           <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-white dropdown-toggle dropdown-toggle-empty" href="javascript:;"
                             data-hs-unfold-options='{
-                              "target": "#productsEditDropdown<?= $array['id']; ?>",
+                              "target": "#productsEditDropdown<?= $company_array['id']; ?>",
                               "type": "css-animation",
                               "smartPositionOffEl": "#datatable"
                             }'></a>
 
-                          <div id="productsEditDropdown<?= $array['id']; ?>" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
-                            <a class="dropdown-item" href="job-delete.php?id=<?= $array['id']; ?>">
+                          <div id="productsEditDropdown<?= $company_array['id']; ?>" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
+                            <a class="dropdown-item" href="company-blacklist.php?company=<?= $company_array['company_id']; ?>">
                               <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
                             </a>
-                            <?php if($array['status'] != 'drop'){ ?>
-                            <a class="dropdown-item" href="job-drop.php?id=<?= $array['id']; ?>">
+                            <?php if($company_array['status'] != 'drop'){ ?>
+                            <a class="dropdown-item" href="company-drop.php?company=<?= $company_array['company_id']; ?>">
                               <i class="tio-archive dropdown-item-icon"></i> Drop
                             </a>
                             <?php } ?>

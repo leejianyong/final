@@ -1,7 +1,7 @@
 <?php
 include_once("../auth/db.php");
 if(isset($_SESSION['userid'])){
-    $qry = "SELECT user.*,company_detail.company_id,company_detail.status FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.id = '$_SESSION[userid]'";
+    $qry = "SELECT user.*,company_detail.company_id FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.id = '$_SESSION[userid]'";
     $sql = mysqli_query($conn,$qry);
     if (mysqli_num_rows($sql) !== 1){
         echo "<script>alert('no account')</script>";
