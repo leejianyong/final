@@ -9,6 +9,8 @@ if(isset($_GET['company']) & !empty($_GET['company'])){
         echo "<script>alert('Aprrove Error')</script>";
         echo "<script>window.location.href = 'company_job_list.php';</script>";
     }
+}else{
+    echo "<script>window.location.href = 'company_job_list.php';</script>";
 }
 
 ?>

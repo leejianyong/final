@@ -9,6 +9,8 @@ if(isset($_GET['company']) & !empty($_GET['company'])){
         echo "<script>alert('Drop Error')</script>";
         echo "<script>window.location.href = 'company_list.php';</script>";
     }
+}else{
+    echo "<script>window.location.href = 'company_list.php';</script>";
 }
 
 ?>

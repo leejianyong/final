@@ -5,8 +5,7 @@ if(isset($_SESSION['userid'])){
     $sql = mysqli_query($conn,$qry);
     if (mysqli_num_rows($sql) !== 1){
         echo "<script>alert('Account No Exist')</script>";
-        echo "<script>window.location.href='../index.php'</script>";
-
+        echo "<script>window.location.href='../sign-out.php'</script>";
     }else{
         $request = mysqli_fetch_assoc($sql);
         if($request['permission']!=="admin"){
