@@ -42,7 +42,7 @@ if(isset($_POST['submit'])){
           break;
         case "company":   
           $_SESSION['userid']=$request['id'];
-          echo "<script>window.location.href='./company/security.php'</script>";
+          echo "<script>window.location.href='./company/index.php'</script>";
           break;
         case "user":
           $_SESSION['userid']=$request['id'];

@@ -12,12 +12,12 @@ require('./navbar.php');
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-no-gutter">
                   <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Pages</a></li>
-                  <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Company</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Job</li>
+                  <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">User</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Applied Job</li>
                 </ol>
               </nav>
 
-              <h1 class="page-header-title">Job List</h1>
+              <h1 class="page-header-title">User Applied List</h1>
             </div>
 
             <!-- <div class="col-sm-auto">
@@ -33,7 +33,7 @@ require('./navbar.php');
         <!-- Card -->
         <div class="card">
           <?php 
-          $company_qry = "SELECT user.*,user.status as user_status,compony_job_request.*,compony_job_request.status as job_status,compony_job_request.id as job_id FROM user LEFT JOIN compony_job_request ON user.id = compony_job_request.company_id WHERE user.permission = 'company' AND user.status !='blacklist' AND compony_job_request.status !='blacklist'";
+          $company_qry = "SELECT job.*,request.*,user.*,request.job_image as job_image FROM `applied_job` as job LEFT JOIN compony_job_request as request ON job.job_id = request.id LEFT JOIN user ON job.user_id = user.id";
           $company_sql = mysqli_query($conn,$company_qry);
           ?>
           <!-- Header -->
@@ -181,18 +181,14 @@ require('./navbar.php');
               <thead class="thead-light">
                 <tr>
                   <th class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input id="datatableCheckAll" type="checkbox" class="custom-control-input">
-                      <label class="custom-control-label" for="datatableCheckAll"></label>
-                    </div>
                   </th>
-                  <th class="table-column-pl-0">Name</th>
-                  <th>Salary</th>
+                  <th class="table-column-pl-0">Job</th>
+                  <th>User</th>
                   <th>Subject</th>
                   <th>Status</th>
                   <th>Create Date</th>
                   <th>Required</th>
-                  <th></th>
+                  <th>Salary</th>
                 </tr>
               </thead>
 
@@ -200,10 +196,6 @@ require('./navbar.php');
                 <?php while($company_array = mysqli_fetch_array($company_sql)){ ?>
                 <tr>
                   <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck1">
-                      <label class="custom-control-label" for="usersDataCheck1"></label>
-                    </div>
                   </td>
                   <td class="table-column-pl-0">
                     <a class="d-flex align-items-center" href="./user-profile.html">
@@ -217,7 +209,12 @@ require('./navbar.php');
                     </a>
                   </td>
                   <td>
-                    <span class="d-block h5 mb-0"><?= $company_array['salary']; ?></span>
+                    <a class="d-flex align-items-center" href="./user-profile.html">
+                      <div>
+                        <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['username']; ?></span>
+                        <span class="d-block font-size-sm text-body"><?= $company_array['email']; ?></span>
+                      </div>
+                    </a>
                   </td>
                   <td><?= $company_array['subject']; ?> <span class="text-hide">Code: <?= $company_array['subject']; ?></span></td>
                   <td>
@@ -233,41 +230,7 @@ require('./navbar.php');
                   </td>
                   <td><?= $company_array['created_at']; ?></td>
                   <td><?= $company_array['type']; ?></td>
-                  <td>
-                      <div class="btn-group" role="group">
-                      <?php if($company_array['status']=="pending" || $company_array['status']=="drop"){ ?>
-                        <a class="btn btn-sm btn-white" href="./company-job-approve.php?company=<?= $company_array['job_id']; ?>">
-                          <i class="tio-done"></i> Approve
-                        </a>
-                        <?php }elseif($company_array['status']=="active"){ ?>
-                          <a class="btn btn-sm btn-white" href="./company-job-reject.php?company=<?= $company_array['job_id']; ?>">
-                          <i class="tio-clear"></i> Reject
-                        </a>
-                          <?php } ?>
-                        <!-- Unfold -->
-                        <div class="hs-unfold btn-group">
-                          <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-white dropdown-toggle dropdown-toggle-empty" href="javascript:;"
-                            data-hs-unfold-options='{
-                              "target": "#productsEditDropdown<?= $company_array['job_id']; ?>",
-                              "type": "css-animation",
-                              "smartPositionOffEl": "#datatable"
-                            }'></a>
-
-                          <div id="productsEditDropdown<?= $company_array['job_id']; ?>" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
-                            <a class="dropdown-item" href="company-job-blacklist.php?company=<?= $company_array['job_id']; ?>">
-                              <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
-                            </a>
-                            <?php if($company_array['status'] != 'drop'){ ?>
-                            <a class="dropdown-item" href="company-job-drop.php?company=<?= $company_array['job_id']; ?>">
-                              <i class="tio-archive dropdown-item-icon"></i> Drop
-                            </a>
-                            <?php } ?>
-                          </div>
-                        </div>
-                        <!-- End Unfold -->
-                      </div>
-                    </td>
-                  </td>
+                  <td><span class="d-block h5 mb-0"><?= $company_array['salary']; ?></span></td>
                 </tr>
                 <?php } ?>
               </tbody>

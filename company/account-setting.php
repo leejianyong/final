@@ -1,5 +1,16 @@
 <?php
 include_once('security.php');
+if($request['status']=="active"){
+  echo "<script>window.location.href='index.php'</script>";
+}elseif($request['status']=="pending"){
+  // echo "<script>window.location.href='index.php'</script>";
+}elseif($request['status']=="drop"){
+  // echo "<script>window.location.href='index.php'</script>";
+}elseif($request['status']=="blacklist"){
+  // echo "<script>window.location.href='index.php'</script>";
+}else{
+  
+}
 ?>
 
 <!DOCTYPE html>

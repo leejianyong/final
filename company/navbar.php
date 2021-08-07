@@ -120,7 +120,7 @@
 
                     <div class="dropdown-divider"></div>
 
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="sign-out.php">
                       <span class="text-truncate pr-2" title="Sign out">Sign out</span>
                     </a>
                   </div>

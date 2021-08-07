@@ -71,7 +71,7 @@
         <div class="navbar-nav-wrap">
           <div class="navbar-brand-wrapper">
             <!-- Logo -->
-            <a class="navbar-brand" href="../index.php" aria-label="Front">
+            <a class="navbar-brand" href="index.php" aria-label="Front">
               <img class="navbar-brand-logo" src="<?= $assets; ?>/assets/img/logo_png/logo_ysl_lg2.png" alt="Logo">
               <img class="navbar-brand-logo-mini" src="<?= $assets; ?>/assets/img/logo_png/logo_y2.png" alt="Logo">
             </a>
@@ -172,8 +172,7 @@
             <div class="navbar-brand-wrapper justify-content-between">
               <!-- Logo -->
               
-              
-                <a class="navbar-brand" href="../index.php" aria-label="Front">
+                <a class="navbar-brand" href="index.php" aria-label="Front">
                   <img class="navbar-brand-logo" src="<?= $assets; ?>/assets/img/logo_png/logo_ysl_lg2.png" alt="Logo">
                   <img class="navbar-brand-logo-mini" src="<?= $assets; ?>/assets/img/logo_png/logo_y2.png" alt="Logo">
                 </a>
@@ -218,16 +217,23 @@
                 </li>
 
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/company_job_list.php") ? "active" : ""; ?>" href="./company_job_list.php" title="Welcome page" data-placement="left">
-                  <i class="tio-pages-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Company JobList</span>
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/company_black_list.php") ? "active" : ""; ?>" href="./company_black_list.php" title="Welcome page" data-placement="left">
+                  <i class="tio-lock-outlined nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Company BlackList</span>
                   </a>
                 </li>
 
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/company_black_list.php") ? "active" : ""; ?>" href="./company_black_list.php" title="Welcome page" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/company_job_list.php") ? "active" : ""; ?>" href="./company_job_list.php" title="Welcome page" data-placement="left">
+                  <i class="tio-pages-outlined nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Job Page</span>
+                  </a>
+                </li>
+
+                <li class="nav-item ">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/company_job_black_list.php") ? "active" : ""; ?>" href="./company_job_black_list.php" title="Welcome page" data-placement="left">
                   <i class="tio-lock-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Company BlackList</span>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Job BlackList</span>
                   </a>
                 </li>
                 <!-- End Company -->
@@ -243,32 +249,25 @@
                 </li>
 
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/user_list.php") ? "active" : ""; ?>" href="./user_list.php" title="Welcome page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User Page</span>
                   </a>
                 </li>
 
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/user_applied_job_list.php") ? "active" : ""; ?>" href="./user_applied_job_list.php" title="Welcome page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User JobList</span>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User Approve JobList</span>
                   </a>
                 </li>
 
-                <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
-                  <i class="tio-lock-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User BlackList</span>
-                  </a>
-                </li>
                 <!-- End user -->
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                   <div class="nav-divider"></div>
                 </li>
 
-                <!-- Start Group -->
                 <li class="nav-item">
                   <small class="nav-subtitle" title="Pages">Group</small>
                   <small class="tio-more-horizontal nav-subtitle-replacer"></small>
@@ -285,6 +284,23 @@
                   <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Hr</span>
+                  </a>
+                </li> -->
+
+                <li class="nav-item">
+                  <div class="nav-divider"></div>
+                </li>
+
+                <!-- Start Group -->
+                <li class="nav-item">
+                  <small class="nav-subtitle" title="Pages">About Me</small>
+                  <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                </li>
+
+                <li class="nav-item ">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."../index.php") ? "active" : ""; ?>" href="../index.php" title="Welcome page" data-placement="left">
+                  <i class="tio-pages-outlined nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">About Me</span>
                   </a>
                 </li>
                 <!-- End Group -->

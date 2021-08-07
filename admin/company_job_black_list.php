@@ -13,11 +13,11 @@ require('./navbar.php');
                 <ol class="breadcrumb breadcrumb-no-gutter">
                   <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Pages</a></li>
                   <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Company</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Job</li>
+                  <li class="breadcrumb-item active" aria-current="page">Job BlackList</li>
                 </ol>
               </nav>
 
-              <h1 class="page-header-title">Job List</h1>
+              <h1 class="page-header-title">Job BlackList</h1>
             </div>
 
             <!-- <div class="col-sm-auto">
@@ -33,7 +33,7 @@ require('./navbar.php');
         <!-- Card -->
         <div class="card">
           <?php 
-          $company_qry = "SELECT user.*,user.status as user_status,compony_job_request.*,compony_job_request.status as job_status,compony_job_request.id as job_id FROM user LEFT JOIN compony_job_request ON user.id = compony_job_request.company_id WHERE user.permission = 'company' AND user.status !='blacklist' AND compony_job_request.status !='blacklist'";
+          $company_qry = "SELECT user.*,user.status as user_status,compony_job_request.*,compony_job_request.status as job_status,compony_job_request.id as job_id FROM user LEFT JOIN compony_job_request ON user.id = compony_job_request.company_id WHERE user.permission = 'company' AND user.status !='blacklist' AND compony_job_request.status ='blacklist'";
           $company_sql = mysqli_query($conn,$company_qry);
           ?>
           <!-- Header -->
@@ -130,9 +130,7 @@ require('./navbar.php');
                                           "minimumResultsForSearch": "Infinity"
                                         }'>
                                   <option value="">Any status</option>
-                                  <option value="Active" data-option-template='<span class="legend-indicator bg-success"></span>Active'>Active</option>
-                                  <option value="Pending" data-option-template='<span class="legend-indicator bg-warning"></span>Pending'>Pending</option>
-                                  <option value="Suspended" data-option-template='<span class="legend-indicator bg-danger"></span>Suspended'>Suspended</option>
+                                  <option value="BlackList" data-option-template='<span class="legend-indicator bg-second"></span>BlackList'>BlackList</option>
                                 </select>
                                 <!-- End Select -->
                               </div>
@@ -235,36 +233,11 @@ require('./navbar.php');
                   <td><?= $company_array['type']; ?></td>
                   <td>
                       <div class="btn-group" role="group">
-                      <?php if($company_array['status']=="pending" || $company_array['status']=="drop"){ ?>
-                        <a class="btn btn-sm btn-white" href="./company-job-approve.php?company=<?= $company_array['job_id']; ?>">
-                          <i class="tio-done"></i> Approve
+                      <?php if($company_array['status']=="blacklist"){ ?>
+                        <a class="btn btn-sm btn-white" href="./company-job-whitelist.php?company=<?= $company_array['job_id']; ?>">
+                          <i class="tio-done"></i> Whitelist
                         </a>
-                        <?php }elseif($company_array['status']=="active"){ ?>
-                          <a class="btn btn-sm btn-white" href="./company-job-reject.php?company=<?= $company_array['job_id']; ?>">
-                          <i class="tio-clear"></i> Reject
-                        </a>
-                          <?php } ?>
-                        <!-- Unfold -->
-                        <div class="hs-unfold btn-group">
-                          <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-white dropdown-toggle dropdown-toggle-empty" href="javascript:;"
-                            data-hs-unfold-options='{
-                              "target": "#productsEditDropdown<?= $company_array['job_id']; ?>",
-                              "type": "css-animation",
-                              "smartPositionOffEl": "#datatable"
-                            }'></a>
-
-                          <div id="productsEditDropdown<?= $company_array['job_id']; ?>" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
-                            <a class="dropdown-item" href="company-job-blacklist.php?company=<?= $company_array['job_id']; ?>">
-                              <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
-                            </a>
-                            <?php if($company_array['status'] != 'drop'){ ?>
-                            <a class="dropdown-item" href="company-job-drop.php?company=<?= $company_array['job_id']; ?>">
-                              <i class="tio-archive dropdown-item-icon"></i> Drop
-                            </a>
-                            <?php } ?>
-                          </div>
-                        </div>
-                        <!-- End Unfold -->
+                      <?php } ?>
                       </div>
                     </td>
                   </td>
