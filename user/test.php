@@ -1,6 +1,5 @@
 <?php
-include_once('security.php');
-include('navbar.php');
+include_once('navbar.php');
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +11,7 @@ include('navbar.php');
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Title -->
-  <title>Company Approve Details</title>
+  <title>Company Account Details</title>
 
   <!-- Favicon -->
   <link rel="shortcut icon" href="./favicon.ico">
@@ -25,7 +24,9 @@ include('navbar.php');
   <link rel="stylesheet" href="../assets/vendor/select2/dist/css/select2.min.css">
   <!-- CSS Front Template -->
   <link rel="stylesheet" href="../assets/css/theme.min.css">
+  <!-- <script src="../assets/js/theme.sweetalert2.all.min.js"></script> -->
   <link rel="stylesheet" href="../assets/js/sweetalert2.all.min.js">
+
 
 </head>
 <?php
@@ -57,12 +58,12 @@ include('navbar.php');
   }
 
   if (isset($_POST['password-submit'])) {
-    if (!empty($_POST['currentPassword']) && !empty($_POST['confirmNewPassword']) && !empty($_POST['newPassword'])) {
+    if (!empty($_POST['currentPassword']) & !empty($_POST['confirmNewPassword']) & !empty($_POST['newPassword'])) {
       $qry = "SELECT * FROM user WHERE id='$_SESSION[userid]'";
       $result = mysqli_fetch_assoc(mysqli_query($conn, $qry));
       if ($result['password'] == $_POST['currentPassword']) {
         if ($_POST['confirmNewPassword'] == $_POST['newPassword']) {
-          $update_qry = "UPDATE user SET `password`='$_POST[newPassword]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
+          $update_qry = "UPDATE user SET password='$_POST[newPassword]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
           if (mysqli_query($conn, $update_qry)) {
             echo "<script>Swal.fire('Update Password Success!','Your information already update...','success');window.location.href = '#passwordSection';</script>";
           } else { echo "<script>Swal.fire('Update Password Error!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
@@ -73,7 +74,7 @@ include('navbar.php');
 
   if(isset($_POST['basic-submit'])){
     $datetime = date("YmdHis");
-    
+
     $targetDir = "../image/";
     $fileName = basename($_FILES["profile_image"]["name"]);
     $Extension=explode(".", $fileName);
@@ -81,7 +82,7 @@ include('navbar.php');
     $NewFileName=$prod .".".end($Extension);
     $targetFilePath = $targetDir . $NewFileName;
     $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-    
+
     if(!empty($_FILES["profile_image"]["name"])){
         // Allow certain file formats
         $allowTypes = array('jpg','png','jpeg','gif','pdf');
@@ -120,12 +121,21 @@ include('navbar.php');
         }
     }
 
-    $update_qry = "UPDATE jobseeker_detail SET 
+    if(!isset($_POST['account'])){ $account = 0; }else{ $account = 1; }
+    if(!isset($_POST['it_enginner'])){ $it_enginner = 0; }else{ $it_enginner = 1; }
+    if(!isset($_POST['multimedia'])){ $multimedia = 0; }else{ $multimedia = 1; }
+    if(!isset($_POST['electronic_enginner'])){ $electronic_enginner = 0; }else{ $electronic_enginner = 1; }
+
+    $update_qry = "UPDATE company_detail SET 
     firstname='$_POST[firstName]',
     lastname='$_POST[lastName]',
     contact='$_POST[contact]',
-    coursetype='$_POST[coursetype]',
-    -- country='$_POST[country]',
+    organization='$_POST[organization]',
+    account_business='$account',
+    it_engineer='$it_enginner',
+    multimedia='$multimedia',
+    eletronic='$electronic_enginner',
+    country='$_POST[country]',
     city='$_POST[city]',
     state='$_POST[state]',
     addressline1='$_POST[addressLine1]',
@@ -142,8 +152,9 @@ include('navbar.php');
       echo "<script>Swal.fire('Update Basic Information Success!','Your information already update...','success');window.location.href = '#content';</script>";
     } else { echo "<script>Swal.fire('Update Basic Information Error!','Your information update failed...','error');window.location.href = '#content';</script>"; }
   }
-
-  include('profile-detail.php');
+  $qry = "SELECT user.*,company_detail.* FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.id = '$_SESSION[userid]'";
+  $sql = mysqli_query($conn,$qry);
+  $result = mysqli_fetch_assoc($sql);
   ?>
 
   <!-- ========== MAIN CONTENT ========== -->
@@ -158,13 +169,13 @@ include('navbar.php');
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb breadcrumb-no-gutter">
                 <li class="breadcrumb-item"><a class="breadcrumb-link" href="../index.php">Pages</a></li>
-                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Account</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Approve</li>
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Company</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Account</li>
               </ol>
             </nav>
 
-            <h1 class="page-header-title">Waiting For The Approved ...</h1>
-            <h5 class="page-header-title text-muted">Fill in your company information ...</h1>
+            <h1 class="page-header-title">Company Account Detail</h1>
+            <h5 class="page-header-title text-muted">Fill in your Company Accoount information ...</h1>
           </div>
 
           <!-- <div class="col-sm-auto">
@@ -209,11 +220,6 @@ include('navbar.php');
                 <li class="nav-item">
                   <a class="nav-link active" href="#content">
                     <i class="tio-user-outlined nav-icon"></i> Basic information
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#resumeSection">
-                    <i class="tio-online nav-icon"></i> Resume
                   </a>
                 </li>
                 <li class="nav-item">
@@ -310,23 +316,97 @@ include('navbar.php');
               <!-- End Form Group -->
 
               <!-- Form Group -->
+              <!-- <div class="row form-group">
+                    <label for="emailLabel" class="col-sm-3 col-form-label input-label">Email</label>
+
+                    <div class="col-sm-9">
+                      <input type="email" class="form-control" name="email" id="emailLabel" placeholder="Email" aria-label="Email" value="mark@example.com">
+                    </div>
+                  </div> -->
+              <!-- End Form Group -->
+
+              <!-- Form Group -->
               <div class="row form-group">
                 <label for="phoneLabel" class="col-sm-3 col-form-label input-label">Phone <span class="input-label-secondary">(Optional)</span></label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="+xxx-xxxx-xxx" aria-label="+xxx-xxxx-xxx" value="<?= $result['contact']; ?>" data-hs-mask-options='{
-                               "template": "+000-0000-000"
+                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="+x(xxx)xxx-xx-xx" aria-label="+x(xxx)xxx-xx-xx" value="<?= $result['contact']; ?>" data-hs-mask-options='{
+                               "template": "+0(000)000-00-00"
                              }'>
                 </div>
               </div>
               <!-- End Form Group -->
 
               <!-- Form Group -->
-               <div class="row form-group">
-                <label for="coursetype" class="col-sm-3 col-form-label input-label">Course Type</label>
+              <div class="row form-group">
+                <label for="organizationLabel" class="col-sm-3 col-form-label input-label">Organization</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" name="coursetype" id="coursetype" placeholder="Your Course Type" aria-label="Your coursetype" value="<?= $result['organization']; ?>">
+                  <input type="text" class="form-control" name="organization" id="organizationLabel" placeholder="Your organization" aria-label="Your organization" value="<?= $result['organization']; ?>">
+                </div>
+              </div>
+              <!-- End Form Group -->
+
+              <!-- Form Group -->
+              <!-- <div class="row form-group">
+                    <label for="departmentLabel" class="col-sm-3 col-form-label input-label">Department</label>
+
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" name="department" id="departmentLabel" placeholder="Your department" aria-label="Your department">
+                    </div>
+                  </div> -->
+              <!-- End Form Group -->
+
+              <!-- Form Group -->
+              <div id="accountType" class="row form-group">
+                <label class="col-sm-3 col-form-label input-label">Company type</label>
+
+                <div class="col-sm-9">
+                  <div class="input-group input-group-sm-down-break">
+                    <!-- Custom Radio -->
+                    <div class="form-control">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="account" id="customInlineCheck1" class="custom-control-input indeterminate-checkbox" <?php if ($result['account_business'] == 1) {
+                                                                                                                                            echo "checked";
+                                                                                                                                          }; ?>>
+                        <label class="custom-control-label" for="customInlineCheck1">Account Business</label>
+                      </div>
+                    </div>
+                    <!-- End Custom Radio -->
+
+                    <!-- Custom Radio -->
+                    <div class="form-control">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="it_enginner" id="customInlineCheck2" class="custom-control-input indeterminate-checkbox" <?php if ($result['it_engineer'] == 1) {
+                                                                                                                                                echo "checked";
+                                                                                                                                              }; ?>>
+                        <label class="custom-control-label" for="customInlineCheck2">IT Engineering</label>
+                      </div>
+                    </div>
+                    <!-- End Custom Radio -->
+
+                    <!-- Custom Radio -->
+                    <div class="form-control">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="multimedia" id="customInlineCheck3" class="custom-control-input indeterminate-checkbox" <?php if ($result['multimedia'] == 1) {
+                                                                                                                                                echo "checked";
+                                                                                                                                              }; ?>>
+                        <label class="custom-control-label" for="customInlineCheck3">Multimedia Design</label>
+                      </div>
+                    </div>
+                    <!-- End Custom Radio -->
+
+                    <!-- Custom Radio -->
+                    <div class="form-control">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="electronic_enginner" id="customInlineCheck4" class="custom-control-input indeterminate-checkbox" <?php if ($result['eletronic'] == 1) {
+                                                                                                                                                          echo "checked";
+                                                                                                                                                        }; ?>>
+                        <label class="custom-control-label" for="customInlineCheck4">Electronic Engineering</label>
+                      </div>
+                    </div>
+                    <!-- End Custom Radio -->
+                  </div>
                 </div>
               </div>
               <!-- End Form Group -->
@@ -345,7 +425,7 @@ include('navbar.php');
                     </select>
                   </div>
                   <!-- End Select -->
-                  
+
                   <div class="mb-3">
                     <input type="text" class="form-control" name="city" id="cityLabel" placeholder="City" aria-label="City" value="<?= $result['city']; ?>">
                   </div>
@@ -385,8 +465,8 @@ include('navbar.php');
           </div>
           <!-- End Card -->
 
-           <!-- Card -->
-           <div id="resumeSection" class="card mb-3 mb-lg-5">
+              <!-- Card -->
+              <div id="resumeSection" class="card mb-3 mb-lg-5">
             <div class="card-header">
               <h3 class="card-title h4">Resume</h3>
             </div>
@@ -702,9 +782,9 @@ include('navbar.php');
     </div>
   </div>
   <!-- End Welcome Message Modal -->
-  
-  <!-- Upload files Modal -->
-  <div class="modal fade" id="uploadFilesModal" tabindex="-1" role="dialog" aria-labelledby="uploadFilesModalTitle" aria-hidden="true">
+
+   <!-- Upload files Modal -->
+   <div class="modal fade" id="uploadFilesModal" tabindex="-1" role="dialog" aria-labelledby="uploadFilesModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <!-- Header -->
@@ -745,6 +825,7 @@ include('navbar.php');
     </div>
   </div>
   <!-- End Upload files Modal -->
+
   <!-- ========== END SECONDARY CONTENTS ========== -->
 
   <!-- JS Global Compulsory  -->
@@ -823,6 +904,7 @@ include('navbar.php');
       $('.js-file-attach').each(function() {
         var customFile = new HSFileAttach($(this)).init();
       });
+
 
       // INITIALIZATION OF MASKED INPUT
       // =======================================================
