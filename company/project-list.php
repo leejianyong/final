@@ -257,7 +257,7 @@ $job_row = mysqli_num_rows($job_sql);
                       </div>
                     </td>
                     <td class="table-column-pl-0">
-                      <a class="media align-items-center" href="./ecommerce-product-details.html">
+                      <a class="media align-items-center" href="./project-detail.php?detail=<?= $job_result['id']; ?>">
                         <img class="avatar avatar-lg mr-3" src="<?php if(!empty($job_result['job_image'])){ echo "../image/".$job_result['job_image'];}else{ echo "../assets/img/400x400/img2.jpg"; } ?>" alt="Image Description">
                         <div class="media-body">
                           <h5 class="text-hover-primary mb-0"><?= $job_result['title']; ?></h5>

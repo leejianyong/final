@@ -79,7 +79,7 @@ if (isset($_SESSION['userid'])) {
                     </a>
                     <!-- End Logo -->
                   <?php }
-                } else { ?>
+                  } else { ?>
                   <a class="navbar-brand" href="#" aria-label="Company Job Request">
                     <img class="navbar-brand-logo" src="assets/img/logo_png/logo_ysl_lg2.png" alt="Logo">
                   </a>
@@ -103,7 +103,21 @@ if (isset($_SESSION['userid'])) {
                       <?php } else { ?>
                         <img class="avatar-img" src="assets/img/160x160/img1.jpg" alt="Image Description">
                       <?php } ?>
-                      <span class="avatar-status avatar-sm-status avatar-status-success"></span>
+                      
+                      <?php 
+                      if(isset($result['status'])){
+                            if($result['status']=='active'){ ?>
+                        <span class="avatar-status avatar-sm-status avatar-status-success"></span>
+                      <?php }elseif($result['status']=='pending'){ ?>
+                        <span class="avatar-status avatar-sm-status avatar-status-warning"></span>
+                      <?php }elseif($result['status']=='drop'){ ?>
+                        <span class="avatar-status avatar-sm-status avatar-status-danger"></span>
+                      <?php }elseif($result['status']=='blacklist'){ ?>
+                        <span class="avatar-status avatar-sm-status avatar-status-secondary"></span>
+                      <?php } 
+                      }else{ ?>
+                        <span class="avatar-status avatar-sm-status avatar-status-success"></span>
+                      <?php } ?>
                     </div>
                   </a>
 

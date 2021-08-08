@@ -12,7 +12,7 @@ if(isset($_SESSION['userid'])){
             echo "<script>alert('not user')</script>";
         }else{
             if($request['status']!=="active"){
-                if($_SERVER['REQUEST_URI']!=="/company_job/company/account-setting.php"){
+                if($_SERVER['REQUEST_URI']!=="/company_job/user/account-setting.php"){
                     echo "<script>window.location.href='account-setting.php'</script>";
                 }else{
                 }

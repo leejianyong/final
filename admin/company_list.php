@@ -33,7 +33,7 @@ require('./navbar.php');
         <!-- Card -->
         <div class="card">
           <?php 
-          $company_qry = "SELECT user.*,company_detail.* FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.permission = 'company' AND status !='blacklist'";
+          $company_qry = "SELECT user.*,company_detail.*,user.id as userid FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.permission = 'company' AND status !='blacklist'";
           $company_sql = mysqli_query($conn,$company_qry);
           ?>
           <!-- Header -->
@@ -207,7 +207,7 @@ require('./navbar.php');
                     </div>
                   </td>
                   <td class="table-column-pl-0">
-                    <a class="d-flex align-items-center" href="./user-profile.html">
+                    <a class="d-flex align-items-center" href="./profile-company.php?detail=<?= $company_array['userid']; ?>">
                       <div class="avatar avatar-circle">
                         <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['profile_image'])?'/image/'.$company_array['profile_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
                       </div>
@@ -237,11 +237,11 @@ require('./navbar.php');
                   <td>
                       <div class="btn-group" role="group">
                       <?php if($company_array['status']=="pending" || $company_array['status']=="drop"){ ?>
-                        <a class="btn btn-sm btn-white" href="./company-approve.php?company=<?= $company_array['company_id']; ?>">
+                        <a class="btn btn-sm btn-white" href="./company-approve.php?company=<?= $company_array['userid']; ?>">
                           <i class="tio-done"></i> Approve
                         </a>
                         <?php }elseif($company_array['status']=="active"){ ?>
-                          <a class="btn btn-sm btn-white" href="./company-reject.php?company=<?= $company_array['company_id']; ?>">
+                          <a class="btn btn-sm btn-white" href="./company-reject.php?company=<?= $company_array['userid']; ?>">
                           <i class="tio-clear"></i> Reject
                         </a>
                           <?php } ?>
@@ -255,11 +255,11 @@ require('./navbar.php');
                             }'></a>
 
                           <div id="productsEditDropdown<?= $company_array['id']; ?>" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
-                            <a class="dropdown-item" href="company-blacklist.php?company=<?= $company_array['company_id']; ?>">
+                            <a class="dropdown-item" href="company-blacklist.php?company=<?= $company_array['userid']; ?>">
                               <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
                             </a>
                             <?php if($company_array['status'] != 'drop'){ ?>
-                            <a class="dropdown-item" href="company-drop.php?company=<?= $company_array['company_id']; ?>">
+                            <a class="dropdown-item" href="company-drop.php?company=<?= $company_array['userid']; ?>">
                               <i class="tio-archive dropdown-item-icon"></i> Drop
                             </a>
                             <?php } ?>

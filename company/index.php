@@ -1,2410 +1,853 @@
-<?php include('navbar.php'); ?>
+<?php
+include_once('navbar.php');
+?>
 
-    <main id="content" role="main" class="main pointer-event">
-      <!-- Content -->
-      <div class="content container-fluid">
-        <!-- Page Header -->
-        <div class="page-header">
-          <div class="row align-items-center">
-            <div class="col-sm mb-2 mb-sm-0">
-              <h1 class="page-header-title">Dashboard</h1>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
 
-            <!-- <div class="col-sm-auto">
-              <a class="btn btn-primary" href="javascript:;" data-toggle="modal" data-target="#inviteUserModal">
-                <i class="tio-user-add mr-1"></i> Invite users
+<head>
+  <!-- Required Meta Tags Always Come First -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Title -->
+  <title>Company Account Details</title>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="./favicon.ico">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- CSS Implementing Plugins -->
+  <link rel="stylesheet" href="../assets/vendor/icon-set/style.css">
+  <link rel="stylesheet" href="../assets/vendor/select2/dist/css/select2.min.css">
+  <!-- CSS Front Template -->
+  <link rel="stylesheet" href="../assets/css/theme.min.css">
+  <!-- <script src="../assets/js/theme.sweetalert2.all.min.js"></script> -->
+  <link rel="stylesheet" href="../assets/js/sweetalert2.all.min.js">
+
+
+</head>
+<?php
+
+?>
+
+<body class="footer-offset" data-offset="80" data-hs-scrollspy-options='{
+          "target": "#navbarSettings"
+        }'>
+
+  <script src="../assets/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside-mini-cache.js"></script>
+  <script src="../assets/js/sweetalert2.all.min.js"></script>
+  <?php
+  $Date = date("Y-m-d H:i:s");
+
+  if (isset($_POST['email_submit'])) {
+    if (!empty($_POST['email'])) {
+      $qry = "SELECT * FROM user WHERE email ='$_POST[email]'";
+      $row = mysqli_num_rows(mysqli_query($conn, $qry));
+      if ($row >= 1) {
+        echo "<script>Swal.fire('Email already Exist!','Choose another email...','error');window.location.href = '#emailSection';</script>";
+      } else {
+        $update_qry = "UPDATE user SET email='$_POST[email]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
+        if (mysqli_query($conn, $update_qry)) {
+          echo "<script>Swal.fire('Update Email Success!','Your information already update...','success');window.location.href = '#emailSection';</script>";
+        } else {  echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');window.location.href = '#emailSection';</script>"; }
+      }
+    } else { echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');window.location.href = '#emailSection';</script>"; }
+  }
+
+  if (isset($_POST['password-submit'])) {
+    if (!empty($_POST['currentPassword']) & !empty($_POST['confirmNewPassword']) & !empty($_POST['newPassword'])) {
+      $qry = "SELECT * FROM user WHERE id='$_SESSION[userid]'";
+      $result = mysqli_fetch_assoc(mysqli_query($conn, $qry));
+      if ($result['password'] == $_POST['currentPassword']) {
+        if ($_POST['confirmNewPassword'] == $_POST['newPassword']) {
+          $update_qry = "UPDATE user SET password='$_POST[newPassword]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
+          if (mysqli_query($conn, $update_qry)) {
+            echo "<script>Swal.fire('Update Password Success!','Your information already update...','success');window.location.href = '#passwordSection';</script>";
+          } else { echo "<script>Swal.fire('Update Password Error!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
+        } else { echo "<script>Swal.fire('Dual New Password Unmatch!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
+      } else { echo "<script>Swal.fire('Wrong Current Password!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
+    }
+  }
+
+  if(isset($_POST['basic-submit'])){
+    $datetime = date("YmdHis");
+
+    $targetDir = "../image/";
+    $fileName = basename($_FILES["profile_image"]["name"]);
+    $Extension=explode(".", $fileName);
+    $prod = $_SESSION['userid']."profile_image".$datetime;
+    $NewFileName=$prod .".".end($Extension);
+    $targetFilePath = $targetDir . $NewFileName;
+    $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+
+    if(!empty($_FILES["profile_image"]["name"])){
+        // Allow certain file formats
+        $allowTypes = array('jpg','png','jpeg','gif','pdf');
+        if(in_array($fileType, $allowTypes)){
+            // Upload file to server
+            if(move_uploaded_file($_FILES["profile_image"]["tmp_name"], $targetFilePath)){
+              $profile_image = $NewFileName;
+            }else{
+              echo "<script>Swal.fire('Error Upload Profile Image!','Your profile image update failed...','error');window.location.href = '#passwordSection';</script>";
+            }
+        }else{
+          echo "<script>Swal.fire('Error Upload Profile Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');window.location.href = '#passwordSection';</script>";
+        }
+    }
+
+    $targetDir = "../image/";
+    $fileName = basename($_FILES["background_image"]["name"]);
+    $Extension=explode(".", $fileName);
+    $prod = $_SESSION['userid']."background_image".$datetime;
+    $NewFileName=$prod .".".end($Extension);
+    $targetFilePath = $targetDir . $NewFileName;
+    $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+
+    if(!empty($_FILES["background_image"]["name"])){
+        // Allow certain file formats
+        $allowTypes = array('jpg','png','jpeg','gif','pdf');
+        if(in_array($fileType, $allowTypes)){
+            // Upload file to server
+            if(move_uploaded_file($_FILES["background_image"]["tmp_name"], $targetFilePath)){
+              $background_image = $NewFileName;
+            }else{
+              echo "<script>Swal.fire('Error Upload Background Image!','Your background image update failed...','error');window.location.href = '#passwordSection';</script>";
+            }
+        }else{
+          echo "<script>Swal.fire('Error Upload Background Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');window.location.href = '#passwordSection';</script>";
+        }
+    }
+
+    if(!isset($_POST['account'])){ $account = 0; }else{ $account = 1; }
+    if(!isset($_POST['it_enginner'])){ $it_enginner = 0; }else{ $it_enginner = 1; }
+    if(!isset($_POST['multimedia'])){ $multimedia = 0; }else{ $multimedia = 1; }
+    if(!isset($_POST['electronic_enginner'])){ $electronic_enginner = 0; }else{ $electronic_enginner = 1; }
+
+    $update_qry = "UPDATE company_detail SET 
+    firstname='$_POST[firstName]',
+    lastname='$_POST[lastName]',
+    contact='$_POST[contact]',
+    organization='$_POST[organization]',
+    account_business='$account',
+    it_engineer='$it_enginner',
+    multimedia='$multimedia',
+    eletronic='$electronic_enginner',
+    country='$_POST[country]',
+    city='$_POST[city]',
+    state='$_POST[state]',
+    addressline1='$_POST[addressLine1]',
+    addressline2='$_POST[addressLine2]',";
+    if(isset($background_image)){
+      $update_qry .= "background_image='$background_image',";
+    }
+    if(isset($profile_image)){
+      $update_qry .= "profile_image='$profile_image',";
+    }
+    $update_qry .= "updated_at='$Date' 
+    WHERE company_id='$_SESSION[userid]'";
+    if (mysqli_query($conn, $update_qry)) {
+      echo "<script>Swal.fire('Update Basic Information Success!','Your information already update...','success');window.location.href = '#content';</script>";
+    } else { echo "<script>Swal.fire('Update Basic Information Error!','Your information update failed...','error');window.location.href = '#content';</script>"; }
+  }
+  $qry = "SELECT user.*,company_detail.* FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.id = '$_SESSION[userid]'";
+  $sql = mysqli_query($conn,$qry);
+  $result = mysqli_fetch_assoc($sql);
+  ?>
+
+  <!-- ========== MAIN CONTENT ========== -->
+
+  <main id="content" role="main" class="main">
+    <!-- Content -->
+    <div class="content container-fluid">
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="row align-items-end">
+          <div class="col-sm mb-2 mb-sm-0">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb breadcrumb-no-gutter">
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="../index.php">Pages</a></li>
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Company</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Account</li>
+              </ol>
+            </nav>
+
+            <h1 class="page-header-title">Company Account Detail</h1>
+            <h5 class="page-header-title text-muted">Fill in your Company Accoount information ...</h1>
+          </div>
+
+          <!-- <div class="col-sm-auto">
+              <a class="btn btn-primary" href="user-profile-my-profile.html">
+                <i class="tio-user mr-1"></i> My profile
               </a>
             </div> -->
-          </div>
-        </div>
-        <!-- End Page Header -->
-
-        <!-- Stats -->
-        <div class="row gx-2 gx-lg-3">
-          <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-            <!-- Card -->
-            <a class="card card-hover-shadow h-100" href="#">
-              <div class="card-body">
-                <h6 class="card-subtitle">Total Users</h6>
-
-                <div class="row align-items-center gx-2 mb-1">
-                  <div class="col-6">
-                    <span class="card-title h2">72,540</span>
-                  </div>
-
-                  <div class="col-6">
-                    <!-- Chart -->
-                    <div class="chartjs-custom" style="height: 3rem;">
-                      <canvas class="js-chart"
-                              data-hs-chartjs-options='{
-                                "type": "line",
-                                "data": {
-                                   "labels": ["1 May","2 May","3 May","4 May","5 May","6 May","7 May","8 May","9 May","10 May","11 May","12 May","13 May","14 May","15 May","16 May","17 May","18 May","19 May","20 May","21 May","22 May","23 May","24 May","25 May","26 May","27 May","28 May","29 May","30 May","31 May"],
-                                   "datasets": [{
-                                    "data": [21,20,24,20,18,17,15,17,18,30,31,30,30,35,25,35,35,40,60,90,90,90,85,70,75,70,30,30,30,50,72],
-                                    "backgroundColor": ["rgba(55, 125, 255, 0)", "rgba(255, 255, 255, 0)"],
-                                    "borderColor": "#377dff",
-                                    "borderWidth": 2,
-                                    "pointRadius": 0,
-                                    "pointHoverRadius": 0
-                                  }]
-                                },
-                                "options": {
-                                   "scales": {
-                                     "yAxes": [{
-                                       "display": false
-                                     }],
-                                     "xAxes": [{
-                                       "display": false
-                                     }]
-                                   },
-                                  "hover": {
-                                    "mode": "nearest",
-                                    "intersect": false
-                                  },
-                                  "tooltips": {
-                                    "postfix": "k",
-                                    "hasIndicator": true,
-                                    "intersect": false
-                                  }
-                                }
-                              }'>
-                      </canvas>
-                    </div>
-                    <!-- End Chart -->
-                  </div>
-                </div>
-                <!-- End Row -->
-
-                <span class="badge badge-soft-success">
-                  <i class="tio-trending-up"></i> 12.5%
-                </span>
-                <span class="text-body font-size-sm ml-1">from 70,104</span>
-              </div>
-            </a>
-            <!-- End Card -->
-          </div>
-
-          <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-            <!-- Card -->
-            <a class="card card-hover-shadow h-100" href="#">
-              <div class="card-body">
-                <h6 class="card-subtitle">Sessions</h6>
-
-                <div class="row align-items-center gx-2 mb-1">
-                  <div class="col-6">
-                    <span class="card-title h2">29.4%</span>
-                  </div>
-
-                  <div class="col-6">
-                    <!-- Chart -->
-                    <div class="chartjs-custom" style="height: 3rem;">
-                      <canvas class="js-chart"
-                              data-hs-chartjs-options='{
-                                "type": "line",
-                                "data": {
-                                   "labels": ["1 May","2 May","3 May","4 May","5 May","6 May","7 May","8 May","9 May","10 May","11 May","12 May","13 May","14 May","15 May","16 May","17 May","18 May","19 May","20 May","21 May","22 May","23 May","24 May","25 May","26 May","27 May","28 May","29 May","30 May","31 May"],
-                                   "datasets": [{
-                                    "data": [21,20,24,20,18,17,15,17,30,30,35,25,18,30,31,35,35,90,90,90,85,100,120,120,120,100,90,75,75,75,90],
-                                    "backgroundColor": ["rgba(55, 125, 255, 0)", "rgba(255, 255, 255, 0)"],
-                                    "borderColor": "#377dff",
-                                    "borderWidth": 2,
-                                    "pointRadius": 0,
-                                    "pointHoverRadius": 0
-                                  }]
-                                },
-                                "options": {
-                                   "scales": {
-                                     "yAxes": [{
-                                       "display": false
-                                     }],
-                                     "xAxes": [{
-                                       "display": false
-                                     }]
-                                   },
-                                  "hover": {
-                                    "mode": "nearest",
-                                    "intersect": false
-                                  },
-                                  "tooltips": {
-                                    "postfix": "%",
-                                    "hasIndicator": true,
-                                    "intersect": false
-                                  }
-                                }
-                              }'>
-                      </canvas>
-                    </div>
-                    <!-- End Chart -->
-                  </div>
-                </div>
-                <!-- End Row -->
-
-                <span class="badge badge-soft-success">
-                  <i class="tio-trending-up"></i> 1.7%
-                </span>
-                <span class="text-body font-size-sm ml-1">from 29.1%</span>
-              </div>
-            </a>
-            <!-- End Card -->
-          </div>
-
-          <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-            <!-- Card -->
-            <a class="card card-hover-shadow h-100" href="#">
-              <div class="card-body">
-                <h6 class="card-subtitle">Avg. Click Rate</h6>
-
-                <div class="row align-items-center gx-2 mb-1">
-                  <div class="col-6">
-                    <span class="card-title h2">56.8%</span>
-                  </div>
-
-                  <div class="col-6">
-                    <!-- Chart -->
-                    <div class="chartjs-custom" style="height: 3rem;">
-                      <canvas class="js-chart"
-                              data-hs-chartjs-options='{
-                                "type": "line",
-                                "data": {
-                                   "labels": ["1 May","2 May","3 May","4 May","5 May","6 May","7 May","8 May","9 May","10 May","11 May","12 May","13 May","14 May","15 May","16 May","17 May","18 May","19 May","20 May","21 May","22 May","23 May","24 May","25 May","26 May","27 May","28 May","29 May","30 May","31 May"],
-                                   "datasets": [{
-                                    "data": [25,18,30,31,35,35,60,60,60,75,21,20,24,20,18,17,15,17,30,120,120,120,100,90,75,90,90,90,75,70,60],
-                                    "backgroundColor": ["rgba(55, 125, 255, 0)", "rgba(255, 255, 255, 0)"],
-                                    "borderColor": "#377dff",
-                                    "borderWidth": 2,
-                                    "pointRadius": 0,
-                                    "pointHoverRadius": 0
-                                  }]
-                                },
-                                "options": {
-                                   "scales": {
-                                     "yAxes": [{
-                                       "display": false
-                                     }],
-                                     "xAxes": [{
-                                       "display": false
-                                     }]
-                                   },
-                                  "hover": {
-                                    "mode": "nearest",
-                                    "intersect": false
-                                  },
-                                  "tooltips": {
-                                    "postfix": "%",
-                                    "hasIndicator": true,
-                                    "intersect": false
-                                  }
-                                }
-                              }'>
-                      </canvas>
-                    </div>
-                    <!-- End Chart -->
-                  </div>
-                </div>
-                <!-- End Row -->
-
-                <span class="badge badge-soft-danger">
-                  <i class="tio-trending-down"></i> 4.4%
-                </span>
-                <span class="text-body font-size-sm ml-1">from 61.2%</span>
-              </div>
-            </a>
-            <!-- End Card -->
-          </div>
-
-          <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-            <!-- Card -->
-            <a class="card card-hover-shadow h-100" href="#">
-              <div class="card-body">
-                <h6 class="card-subtitle">Pageviews</h6>
-
-                <div class="row align-items-center gx-2 mb-1">
-                  <div class="col-6">
-                    <span class="card-title h2">92,913</span>
-                  </div>
-
-                  <div class="col-6">
-                    <!-- Chart -->
-                    <div class="chartjs-custom" style="height: 3rem;">
-                      <canvas class="js-chart"
-                              data-hs-chartjs-options='{
-                                "type": "line",
-                                "data": {
-                                   "labels": ["1 May","2 May","3 May","4 May","5 May","6 May","7 May","8 May","9 May","10 May","11 May","12 May","13 May","14 May","15 May","16 May","17 May","18 May","19 May","20 May","21 May","22 May","23 May","24 May","25 May","26 May","27 May","28 May","29 May","30 May","31 May"],
-                                   "datasets": [{
-                                    "data": [21,20,24,15,17,30,30,35,35,35,40,60,12,90,90,85,70,75,43,75,90,22,120,120,90,85,100,92,92,92,92],
-                                    "backgroundColor": ["rgba(55, 125, 255, 0)", "rgba(255, 255, 255, 0)"],
-                                    "borderColor": "#377dff",
-                                    "borderWidth": 2,
-                                    "pointRadius": 0,
-                                    "pointHoverRadius": 0
-                                  }]
-                                },
-                                "options": {
-                                   "scales": {
-                                     "yAxes": [{
-                                       "display": false
-                                     }],
-                                     "xAxes": [{
-                                       "display": false
-                                     }]
-                                   },
-                                  "hover": {
-                                    "mode": "nearest",
-                                    "intersect": false
-                                  },
-                                  "tooltips": {
-                                    "postfix": "k",
-                                    "hasIndicator": true,
-                                    "intersect": false
-                                  }
-                                }
-                              }'>
-                      </canvas>
-                    </div>
-                    <!-- End Chart -->
-                  </div>
-                </div>
-                <!-- End Row -->
-
-                <span class="badge badge-soft-secondary">0.0%</span>
-                <span class="text-body font-size-sm ml-1">from 2,913</span>
-              </div>
-            </a>
-            <!-- End Card -->
-          </div>
-        </div>
-        <!-- End Stats -->
-
-        <div class="row gx-2 gx-lg-3">
-          
-
-          <div class="col-lg-12 mb-6 mb-lg-10">
-            <!-- Card -->
-            <div class="card h-100">
-              <!-- Header -->
-              <div class="card-header">
-                <h5 class="card-header-title">Monthly expenses</h5>
-
-                <!-- Nav -->
-                <ul class="nav nav-segment" id="expensesTab" role="tablist">
-                  <li class="nav-item" data-toggle="chart-bar" data-datasets="thisWeek" data-trigger="click" data-action="toggle">
-                    <a class="nav-link active" href="javascript:;" data-toggle="tab">This week</a>
-                  </li>
-                  <li class="nav-item" data-toggle="chart-bar" data-datasets="lastWeek" data-trigger="click" data-action="toggle">
-                    <a class="nav-link" href="javascript:;" data-toggle="tab">Last week</a>
-                  </li>
-                </ul>
-                <!-- End Nav -->
-              </div>
-              <!-- End Header -->
-
-              <!-- Body -->
-              <div class="card-body">
-                <div class="row mb-4">
-                  <div class="col-sm mb-2 mb-sm-0">
-                    <div class="d-flex align-items-center">
-                      <span class="h1 mb-0">35%</span>
-                      <span class="text-success ml-2">
-                        <i class="tio-trending-up"></i> 25.3%
-                      </span>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-auto align-self-sm-end">
-                    <!-- Legend Indicators -->
-                    <div class="row font-size-sm">
-                      <div class="col-auto">
-                        <span class="legend-indicator bg-primary"></span> New
-                      </div>
-                      <div class="col-auto">
-                        <span class="legend-indicator"></span> Overdue
-                      </div>
-                    </div>
-                    <!-- End Legend Indicators -->
-                  </div>
-                </div>
-                <!-- End Row -->
-
-                <!-- Bar Chart -->
-                <div class="chartjs-custom">
-                  <canvas id="updatingData" style="height: 20rem;"
-                          data-hs-chartjs-options='{
-                            "type": "bar",
-                            "data": {
-                              "labels": ["May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7", "May 8", "May 9", "May 10"],
-                              "datasets": [{
-                                "data": [200, 300, 290, 350, 150, 350, 300, 100, 125, 220],
-                                "backgroundColor": "#377dff",
-                                "hoverBackgroundColor": "#377dff",
-                                "borderColor": "#377dff"
-                              },
-                              {
-                                "data": [150, 230, 382, 204, 169, 290, 300, 100, 300, 225, 120],
-                                "backgroundColor": "#e7eaf3",
-                                "borderColor": "#e7eaf3"
-                              }]
-                            },
-                            "options": {
-                              "scales": {
-                                "yAxes": [{
-                                  "gridLines": {
-                                    "color": "#e7eaf3",
-                                    "drawBorder": false,
-                                    "zeroLineColor": "#e7eaf3"
-                                  },
-                                  "ticks": {
-                                    "beginAtZero": true,
-                                    "stepSize": 100,
-                                    "fontSize": 12,
-                                    "fontColor": "#97a4af",
-                                    "fontFamily": "Open Sans, sans-serif",
-                                    "padding": 10,
-                                    "postfix": "$"
-                                  }
-                                }],
-                                "xAxes": [{
-                                  "gridLines": {
-                                    "display": false,
-                                    "drawBorder": false
-                                  },
-                                  "ticks": {
-                                    "fontSize": 12,
-                                    "fontColor": "#97a4af",
-                                    "fontFamily": "Open Sans, sans-serif",
-                                    "padding": 5
-                                  },
-                                  "categoryPercentage": 0.5,
-                                  "maxBarThickness": "10"
-                                }]
-                              },
-                              "cornerRadius": 2,
-                              "tooltips": {
-                                "prefix": "$",
-                                "hasIndicator": true,
-                                "mode": "index",
-                                "intersect": false
-                              },
-                              "hover": {
-                                "mode": "nearest",
-                                "intersect": true
-                              }
-                            }
-                          }'></canvas>
-                </div>
-                <!-- End Bar Chart -->
-              </div>
-              <!-- End Body -->
-            </div>
-            <!-- End Card -->
-          </div>
         </div>
         <!-- End Row -->
+      </div>
+      <!-- End Page Header -->
 
-        <!-- Card -->
-        <div class="card mb-3 mb-lg-5">
-          <!-- Header -->
-          <div class="card-header">
-            <div class="row justify-content-between align-items-center flex-grow-1">
-              <div class="col-12 col-md">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="card-header-title">Users</h5>
+      <div class="row">
+        <div class="col-lg-3">
+          <!-- Navbar -->
+          <div class="navbar-vertical navbar-expand-lg mb-3 mb-lg-5">
+            <!-- Navbar Toggle -->
+            <button type="button" class="navbar-toggler btn btn-block btn-white mb-3" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navbarVerticalNavMenu" data-toggle="collapse" data-target="#navbarVerticalNavMenu">
+              <span class="d-flex justify-content-between align-items-center">
+                <span class="h5 mb-0">Nav menu</span>
 
-                  <!-- Datatable Info -->
-                  <div id="datatableCounterInfo" style="display: none;">
-                    <div class="d-flex align-items-center">
-                      <span class="font-size-sm mr-3">
-                        <span id="datatableCounter">0</span>
-                        Selected
-                      </span>
-                      <a class="btn btn-sm btn-outline-danger" href="javascript:;">
-                        <i class="tio-delete-outlined"></i> Delete
-                      </a>
-                    </div>
-                  </div>
-                  <!-- End Datatable Info -->
-                </div>
-              </div>
+                <span class="navbar-toggle-default">
+                  <i class="tio-menu-hamburger"></i>
+                </span>
 
-              <div class="col-auto">
-                <!-- Filter -->
-                <div class="row align-items-sm-center">
-                  <div class="col-sm-auto">
-                    <div class="d-flex align-items-center mr-2">
-                      <span class="text-secondary mr-2">Status:</span>
+                <span class="navbar-toggle-toggled">
+                  <i class="tio-clear"></i>
+                </span>
+              </span>
+            </button>
+            <!-- End Navbar Toggle -->
 
-                      <!-- Select -->
-                      <select class="js-select2-custom js-datatable-filter custom-select-sm" size="1" style="opacity: 0;"
-                              data-target-column-index="2"
-                              data-hs-select2-options='{
-                                "minimumResultsForSearch": "Infinity",
-                                "customClass": "custom-select custom-select-sm custom-select-borderless",
-                                "dropdownAutoWidth": true,
-                                "width": true
-                              }'>
-                        <option value="">All</option>
-                        <option value="successful">Successful</option>
-                        <option value="overdue">Overdue</option>
-                        <option value="pending">Pending</option>
-                      </select>
-                      <!-- End Select -->
-                    </div>
-                  </div>
-
-                  <div class="col-sm-auto">
-                    <div class="d-flex align-items-center mr-2">
-                      <span class="text-secondary mr-2">Signed up:</span>
-
-                      <!-- Select -->
-                      <select class="js-select2-custom js-datatable-filter custom-select-sm" size="1" style="opacity: 0;"
-                              data-target-column-index="5"
-                              data-hs-select2-options='{
-                                "minimumResultsForSearch": "Infinity",
-                                "customClass": "custom-select custom-select-sm custom-select-borderless",
-                                "dropdownAutoWidth": true,
-                                "width": true
-                              }'>
-                        <option value="">All</option>
-                        <option value="1 year ago">1 year ago</option>
-                        <option value="6 months ago">6 months ago</option>
-                      </select>
-                      <!-- End Select -->
-                    </div>
-                  </div>
-
-                  <div class="col-md">
-                    <form>
-                      <!-- Search -->
-                      <div class="input-group input-group-merge input-group-flush">
-                        <div class="input-group-prepend">
-                          <div class="input-group-text">
-                            <i class="tio-search"></i>
-                          </div>
-                        </div>
-                        <input id="datatableSearch" type="search" class="form-control" placeholder="Search users" aria-label="Search users">
-                      </div>
-                      <!-- End Search -->
-                    </form>
-                  </div>
-                </div>
-                <!-- End Filter -->
-              </div>
-            </div>
-          </div>
-          <!-- End Header -->
-
-          <!-- Table -->
-          <div class="table-responsive datatable-custom">
-            <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
-                   data-hs-datatables-options='{
-                     "columnDefs": [{
-                        "targets": [0, 1, 4],
-                        "orderable": false
-                      }],
-                     "order": [],
-                     "info": {
-                       "totalQty": "#datatableWithPaginationInfoTotalQty"
-                     },
-                     "search": "#datatableSearch",
-                     "entries": "#datatableEntries",
-                     "pageLength": 8,
-                     "isResponsive": false,
-                     "isShowPaging": false,
-                     "pagination": "datatablePagination"
-                   }'>
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col" class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input id="datatableCheckAll" type="checkbox" class="custom-control-input">
-                      <label class="custom-control-label" for="datatableCheckAll"></label>
-                    </div>
-                  </th>
-                  <th class="table-column-pl-0">Full name</th>
-                  <th>Status</th>
-                  <th>Type</th>
-                  <th>Email</th>
-                  <th>Signed up</th>
-                  <th>User ID</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck2">
-                      <label class="custom-control-label" for="usersDataCheck2"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img10.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Amanda Harvey <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Unassigned</td>
-                  <td>amanda@example.com</td>
-                  <td>1 year ago</td>
-                  <td>67989</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck3">
-                      <label class="custom-control-label" for="usersDataCheck3"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-primary avatar-circle mr-2">
-                        <span class="avatar-initials">A</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Anne Richard</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Subscription</td>
-                  <td>anne@example.com</td>
-                  <td>6 months ago</td>
-                  <td>67326</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck4">
-                      <label class="custom-control-label" for="usersDataCheck4"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img3.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">David Harrison</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-danger"></span>Overdue
-                  </td>
-                  <td>Non-subscription</td>
-                  <td>david@example.com</td>
-                  <td>6 months ago</td>
-                  <td>55821</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck5">
-                      <label class="custom-control-label" for="usersDataCheck5"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img5.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Finch Hoot</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Subscription</td>
-                  <td>finch@example.com</td>
-                  <td>1 year ago</td>
-                  <td>85214</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck6">
-                      <label class="custom-control-label" for="usersDataCheck6"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-dark avatar-circle mr-2">
-                        <span class="avatar-initials">B</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Bob Dean</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Subscription</td>
-                  <td>bob@example.com</td>
-                  <td>6 months ago</td>
-                  <td>75470</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck7">
-                      <label class="custom-control-label" for="usersDataCheck7"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img9.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Ella Lauda <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Subscription</td>
-                  <td>Ella@example.com</td>
-                  <td>1 year ago</td>
-                  <td>37534</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck8">
-                      <label class="custom-control-label" for="usersDataCheck8"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img4.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Sam Kart</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Non-subscription</td>
-                  <td>sam@example.com</td>
-                  <td>1 year ago</td>
-                  <td>57300</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck9">
-                      <label class="custom-control-label" for="usersDataCheck9"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img6.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Costa Quinn</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-danger"></span>Overdue
-                  </td>
-                  <td>Unassigned</td>
-                  <td>costa@example.com</td>
-                  <td>1 year ago</td>
-                  <td>71288</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck10">
-                      <label class="custom-control-label" for="usersDataCheck10"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-primary avatar-circle mr-2">
-                        <span class="avatar-initials">R</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Rachel Doe</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Unassigned</td>
-                  <td>rachel@example.com</td>
-                  <td>6 months ago</td>
-                  <td>95211</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck11">
-                      <label class="custom-control-label" for="usersDataCheck11"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-dark avatar-circle mr-2">
-                        <span class="avatar-initials">B</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Brian Halligan</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Subscription</td>
-                  <td>brian@example.com</td>
-                  <td>1 year ago</td>
-                  <td>58643</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck12">
-                      <label class="custom-control-label" for="usersDataCheck12"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img8.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Linda Bates</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Subscription</td>
-                  <td>linda@example.com</td>
-                  <td>1 year ago</td>
-                  <td>44414</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck13">
-                      <label class="custom-control-label" for="usersDataCheck13"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-info avatar-circle mr-2">
-                        <span class="avatar-initials">C</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Chris Mathew <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Non-subscription</td>
-                  <td>chris@example.com</td>
-                  <td>1 year ago</td>
-                  <td>12569</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck14">
-                      <label class="custom-control-label" for="usersDataCheck14"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-dark avatar-circle mr-2">
-                        <span class="avatar-initials">L</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Lewis Clarke</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-danger"></span>Overdue
-                  </td>
-                  <td>Non-subscription</td>
-                  <td>lewis@example.com</td>
-                  <td>1 year ago</td>
-                  <td>54621</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck15">
-                      <label class="custom-control-label" for="usersDataCheck15"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img7.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Clarice Boone <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Non-subscription</td>
-                  <td>clarice@example.com</td>
-                  <td>6 months ago</td>
-                  <td>23485</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck16">
-                      <label class="custom-control-label" for="usersDataCheck16"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-danger avatar-circle mr-2">
-                        <span class="avatar-initials">M</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Mark Colbert</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Subscription</td>
-                  <td>mark@example.com</td>
-                  <td>6 months ago</td>
-                  <td>78463</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck17">
-                      <label class="custom-control-label" for="usersDataCheck17"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-info avatar-circle mr-2">
-                        <span class="avatar-initials">J</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Johnny Appleseed</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Subscription</td>
-                  <td>johnny@example.com</td>
-                  <td>1 year ago</td>
-                  <td>23564</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck18">
-                      <label class="custom-control-label" for="usersDataCheck18"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-primary avatar-circle mr-2">
-                        <span class="avatar-initials">P</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Phileas Fogg</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Subscription</td>
-                  <td>phileas@example.com</td>
-                  <td>6 months ago</td>
-                  <td>39199</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- End Table -->
-
-          <!-- Footer -->
-          <div class="card-footer">
-            <!-- Pagination -->
-            <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
-              <div class="col-sm mb-2 mb-sm-0">
-                <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
-                  <span class="mr-2">Showing:</span>
-
-                  <!-- Select -->
-                  <select id="datatableEntries" class="js-select2-custom"
-                          data-hs-select2-options='{
-                            "minimumResultsForSearch": "Infinity",
-                            "customClass": "custom-select custom-select-sm custom-select-borderless",
-                            "dropdownAutoWidth": true,
-                            "width": true
-                          }'>
-                    <option value="4">4</option>
-                    <option value="6">6</option>
-                    <option value="8" selected>8</option>
-                    <option value="12">12</option>
-                  </select>
-                  <!-- End Select -->
-
-                  <span class="text-secondary mr-2">of</span>
-
-                  <!-- Pagination Quantity -->
-                  <span id="datatableWithPaginationInfoTotalQty"></span>
-                </div>
-              </div>
-
-              <div class="col-sm-auto">
-                <div class="d-flex justify-content-center justify-content-sm-end">
-                  <!-- Pagination -->
-                  <nav id="datatablePagination" aria-label="Activity pagination"></nav>
-                </div>
-              </div>
-            </div>
-            <!-- End Pagination -->
-          </div>
-          <!-- End Footer -->
-        </div>
-        <!-- End Card -->
-
-        <div class="row gx-2 gx-lg-3">
-          <div class="col-lg-6 mb-3 mb-lg-0">
-            <!-- Card -->
-            <div class="card h-100">
-              <!-- Header -->
-              <div class="card-header">
-                <h5 class="card-header-title">Transactions</h5>
-
-                <!-- Daterangepicker -->
-                <button id="js-daterangepicker-predefined" class="btn btn-sm btn-ghost-secondary dropdown-toggle">
-                  <i class="tio-date-range"></i>
-                  <span class="js-daterangepicker-predefined-preview ml-1"></span>
-                </button>
-                <!-- End Daterangepicker -->
-              </div>
-              <!-- End Header -->
-
-              <!-- Body -->
-              <div class="card-body">
-                <!-- Chart -->
-                <div class="chartjs-custom mx-auto" style="height: 20rem;">
-                  <canvas class="js-chart-datalabels"
-                          data-hs-chartjs-options='{
-                            "type": "bubble",
-                            "data": {
-                              "datasets": [
-                                {
-                                  "label": "Label 1",
-                                  "data": [
-                                    {"x": 55, "y": 65, "r": 99}
-                                  ],
-                                  "color": "#fff",
-                                  "backgroundColor": "gulpRGBA[#377dff,.9]",
-                                  "borderColor": "transparent"
-                                },
-                                {
-                                  "label": "Label 2",
-                                  "data": [
-                                    {"x": 33, "y": 42, "r": 65}
-                                  ],
-                                  "color": "#fff",
-                                  "backgroundColor": "rgba(100, 0, 214, 0.8)",
-                                  "borderColor": "transparent"
-                                },
-                                {
-                                  "label": "Label 3",
-                                  "data": [
-                                    {"x": 46, "y": 26, "r": 38}
-                                  ],
-                                  "color": "#fff",
-                                  "backgroundColor": "#00c9db",
-                                  "borderColor": "transparent"
-                                }
-                              ]
-                            },
-                            "options": {
-                              "scales": {
-                                "yAxes": [{
-                                  "gridLines": {
-                                    "display": false
-                                  },
-                                  "ticks": {
-                                    "display": false,
-                                    "max": 100,
-                                    "beginAtZero": true
-                                  }
-                                }],
-                                "xAxes": [{
-                                "gridLines": {
-                                    "display": false
-                                  },
-                                  "ticks": {
-                                    "display": false,
-                                    "max": 100,
-                                    "beginAtZero": true
-                                  }
-                                }]
-                              },
-                              "tooltips": false
-                            }
-                          }'></canvas>
-                </div>
-                <!-- End Chart -->
-
-                <!-- Legend Indicators -->
-                <div class="row justify-content-center">
-                  <div class="col-auto">
-                    <span class="legend-indicator bg-primary"></span> New
-                  </div>
-
-                  <div class="col-auto">
-                    <span class="legend-indicator" style="background-color: #7000f2;"></span> Pending
-                  </div>
-
-                  <div class="col-auto">
-                    <span class="legend-indicator bg-info"></span> Failed
-                  </div>
-                </div>
-                <!-- End Legend Indicators -->
-              </div>
-              <!-- End Body -->
-            </div>
-            <!-- End Card -->
-          </div>
-
-          <div class="col-lg-6">
-            <!-- Card -->
-            <div class="card h-100">
-              <!-- Header -->
-              <div class="card-header">
-                <h5 class="card-header-title">Reports overview</h5>
-
-                <!-- Unfold -->
-                <div class="hs-unfold">
-                  <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-ghost-secondary rounded-circle" href="javascript:;"
-                     data-hs-unfold-options='{
-                       "target": "#reportsOverviewDropdown1",
-                       "type": "css-animation"
+            <div id="navbarVerticalNavMenu" class="collapse navbar-collapse">
+              <!-- Navbar Nav -->
+              <ul id="navbarSettings" class="js-sticky-block js-scrollspy navbar-nav navbar-nav-lg nav-tabs card card-navbar-nav" data-hs-sticky-block-options='{
+                       "parentSelector": "#navbarVerticalNavMenu",
+                       "breakpoint": "lg",
+                       "startPoint": "#navbarVerticalNavMenu",
+                       "endPoint": "#stickyBlockEndPoint",
+                       "stickyOffsetTop": 20
                      }'>
-                    <i class="tio-more-vertical"></i>
+                <li class="nav-item">
+                  <a class="nav-link active" href="#content">
+                    <i class="tio-user-outlined nav-icon"></i> Basic information
                   </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#emailSection">
+                    <i class="tio-online nav-icon"></i> Email
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#passwordSection">
+                    <i class="tio-lock-outlined nav-icon"></i> Password
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#deleteAccountSection">
+                    <i class="tio-delete-outlined nav-icon"></i> Delete account
+                  </a>
+                </li>
+              </ul>
+              <!-- End Navbar Nav -->
+            </div>
+          </div>
+          <!-- End Navbar -->
+        </div>
 
-                  <div id="reportsOverviewDropdown1" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
-                    <span class="dropdown-header">Settings</span>
+        <div class="col-lg-9">
+          <!-- Card -->
+          <div class="card mb-3 mb-lg-5">
+            <!-- Profile Cover -->
+            <form id="Basic_information" method="POST" action="" enctype="multipart/form-data">
+              <div class="profile-cover">
+                <div class="profile-cover-img-wrapper">
+                  <img id="profileCoverImg" class="profile-cover-img" src="<?php if(!empty($result['background_image'])){ echo "../image/".$result['background_image'];}else{ echo "../assets/img/1920x400/img2.jpg"; } ?>" alt="Image Description">
 
-                    <a class="dropdown-item" href="#">
-                      <i class="tio-share dropdown-item-icon"></i> Share reports
-                    </a>
-                    <a class="dropdown-item" href="#">
-                      <i class="tio-download-to dropdown-item-icon"></i> Download
-                    </a>
-                    <a class="dropdown-item" href="#">
-                      <i class="tio-alt dropdown-item-icon"></i> Connect other apps
-                    </a>
+                  <!-- Custom File Cover -->
+                  <div class="profile-cover-content profile-cover-btn">
+                    <div class="custom-file-btn">
+                      <input type="file" name="background_image" class="js-file-attach custom-file-btn-input" id="profileCoverUplaoder" data-hs-file-attach-options='{
+                                "textTarget": "#profileCoverImg",
+                                "mode": "image",
+                                "targetAttr": "src",
+                                "allowTypes": [".png", ".jpeg", ".jpg"]
+                             }'>
+                      <label class="custom-file-btn-label btn btn-sm btn-white" for="profileCoverUplaoder">
+                        <i class="tio-add-photo mr-sm-1"></i>
+                        <span class="d-none d-sm-inline-block">Update your header</span>
+                      </label>
+                    </div>
+                  </div>
+                  <!-- End Custom File Cover -->
+                </div>
+              </div>
+              <!-- End Profile Cover -->
 
-                    <div class="dropdown-divider"></div>
+              <!-- Avatar -->
+              <label class="avatar avatar-xxl avatar-circle avatar-border-lg avatar-uploader profile-cover-avatar" for="avatarUploader">
+                <img id="avatarImg" class="avatar-img" src="<?php if(!empty($result['profile_image'])){ echo "../image/".$result['profile_image'];}else{ echo "../assets/img/160x160/img6.jpg"; } ?>" alt="Image Description">
 
-                    <span class="dropdown-header">Feedback</span>
+                <input type="file" name="profile_image" class="js-file-attach avatar-uploader-input" id="avatarUploader" data-hs-file-attach-options='{
+                          "textTarget": "#avatarImg",
+                          "mode": "image",
+                          "targetAttr": "src",
+                          "allowTypes": [".png", ".jpeg", ".jpg"]
+                       }'>
 
-                    <a class="dropdown-item" href="#">
-                      <i class="tio-chat-outlined dropdown-item-icon"></i> Report
-                    </a>
+                <span class="avatar-uploader-trigger">
+                  <i class="tio-edit avatar-uploader-icon shadow-soft"></i>
+                </span>
+              </label>
+              <!-- End Avatar -->
+          </div>
+          <!-- End Card -->
+
+          <!-- Card -->
+          <div class="card mb-3 mb-lg-5">
+            <div class="card-header">
+              <h2 class="card-title h4">Basic information</h2>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body">
+              <!-- Form -->
+
+              <!-- Form Group -->
+              <div class="row form-group">
+                <label for="firstNameLabel" class="col-sm-3 col-form-label input-label">Full name <i class="tio-help-outlined text-body ml-1" data-toggle="tooltip" data-placement="top" title="Displayed on public forums, such as Front."></i></label>
+
+                <div class="col-sm-9">
+                  <div class="input-group input-group-sm-down-break">
+                    <input type="text" class="form-control" name="firstName" id="firstNameLabel" placeholder="Your first name" aria-label="Your first name" value="<?= $result['firstname']; ?>">
+                    <input type="text" class="form-control" name="lastName" id="lastNameLabel" placeholder="Your last name" aria-label="Your last name" value="<?= $result['lastname']; ?>">
                   </div>
                 </div>
-                <!-- End Unfold -->
               </div>
-              <!-- End Header -->
+              <!-- End Form Group -->
 
-              <!-- Body -->
-              <div class="card-body">
-                <span class="h1 d-block mb-4">$7,431.14 USD</span>
+              <!-- Form Group -->
+              <!-- <div class="row form-group">
+                    <label for="emailLabel" class="col-sm-3 col-form-label input-label">Email</label>
 
-                <!-- Progress -->
-                <div class="progress rounded-pill mb-2">
-                  <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="Gross value"></div>
-                  <div class="progress-bar opacity" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="Net volume from sales"></div>
-                  <div class="progress-bar opacity-xs" role="progressbar" style="width: 9%" aria-valuenow="9" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="New volume from sales"></div>
-                </div>
-
-                <div class="d-flex justify-content-between mb-4">
-                  <span>0%</span>
-                  <span>100%</span>
-                </div>
-                <!-- End Progress -->
-
-                <!-- Table -->
-                <div class="table-responsive">
-                  <table class="table table-lg table-nowrap card-table mb-0">
-                    <tr>
-                      <th scope="row">
-                        <span class="legend-indicator bg-primary"></span>Gross value
-                      </th>
-                      <td>$3,500.71</td>
-                      <td>
-                        <span class="badge badge-soft-success">+12.1%</span>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <th scope="row">
-                        <span class="legend-indicator bg-primary opacity"></span>Net volume from sales
-                      </th>
-                      <td>$2,980.45</td>
-                      <td>
-                        <span class="badge badge-soft-warning">+6.9%</span>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <th scope="row">
-                        <span class="legend-indicator bg-primary opacity-xs"></span>New volume from sales
-                      </th>
-                      <td>$950.00</td>
-                      <td>
-                        <span class="badge badge-soft-danger">-1.5%</span>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <th scope="row">
-                        <span class="legend-indicator"></span>Other
-                      </th>
-                      <td>32</td>
-                      <td>
-                        <span class="badge badge-soft-success">1.9%</span>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <!-- End Table -->
-              </div>
-              <!-- End Body -->
-            </div>
-            <!-- End Card -->
-          </div>
-        </div>
-      </div>
-      <!-- End Content -->
-
-      <!-- Footer -->
-        <div class="footer">
-          <div class="row justify-content-between align-items-center">
-            <div class="col">
-              <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
-            </div>
-            <div class="col-auto">
-              <div class="d-flex justify-content-end">
-                <!-- List Dot -->
-                <ul class="list-inline list-separator">
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">FAQ</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">License</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <!-- Keyboard Shortcuts Toggle -->
-                    <div class="hs-unfold">
-                      <a class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle" href="javascript:;"
-                         data-hs-unfold-options='{
-                              "target": "#keyboardShortcutsSidebar",
-                              "type": "css-animation",
-                              "animationIn": "fadeInRight",
-                              "animationOut": "fadeOutRight",
-                              "hasOverlay": true,
-                              "smartPositionOff": true
-                             }'>
-                        <i class="tio-command-key"></i>
-                      </a>
+                    <div class="col-sm-9">
+                      <input type="email" class="form-control" name="email" id="emailLabel" placeholder="Email" aria-label="Email" value="mark@example.com">
                     </div>
-                    <!-- End Keyboard Shortcuts Toggle -->
-                  </li>
-                </ul>
-                <!-- End List Dot -->
-              </div>
-            </div>
-          </div>
-        </div>
-      <!-- End Footer -->
-    </main>
-    <!-- ========== END MAIN CONTENT ========== -->
+                  </div> -->
+              <!-- End Form Group -->
 
-    <!-- ========== SECONDARY CONTENTS ========== -->
-    <!-- Keyboard Shortcuts -->
-    <div id="keyboardShortcutsSidebar" class="hs-unfold-content sidebar sidebar-bordered sidebar-box-shadow">
-      <div class="card card-lg sidebar-card">
-        <div class="card-header">
-          <h4 class="card-header-title">Keyboard shortcuts</h4>
+              <!-- Form Group -->
+              <div class="row form-group">
+                <label for="phoneLabel" class="col-sm-3 col-form-label input-label">Phone <span class="input-label-secondary">(Optional)</span></label>
 
-          <!-- Toggle Button -->
-          <a class="js-hs-unfold-invoker btn btn-icon btn-xs btn-ghost-dark ml-2" href="javascript:;"
-             data-hs-unfold-options='{
-                "target": "#keyboardShortcutsSidebar",
-                "type": "css-animation",
-                "animationIn": "fadeInRight",
-                "animationOut": "fadeOutRight",
-                "hasOverlay": true,
-                "smartPositionOff": true
-               }'>
-            <i class="tio-clear tio-lg"></i>
-          </a>
-          <!-- End Toggle Button -->
-        </div>
+                <div class="col-sm-9">
+                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="+x(xxx)xxx-xx-xx" aria-label="+x(xxx)xxx-xx-xx" value="<?= $result['contact']; ?>" data-hs-mask-options='{
+                               "template": "+0(000)000-00-00"
+                             }'>
+                </div>
+              </div>
+              <!-- End Form Group -->
 
-        <!-- Body -->
-        <div class="card-body sidebar-body sidebar-scrollbar">
-          <div class="list-group list-group-sm list-group-flush list-group-no-gutters mb-5">
-            <div class="list-group-item">
-              <h5 class="mb-1">Formatting</h5>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span class="font-weight-bold">Bold</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">b</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <em>italic</em>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">i</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <u>Underline</u>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">u</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <s>Strikethrough</s>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Alt</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">s</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span class="small">Small text</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">s</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <mark>Highlight</mark>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">e</kbd>
-                </div>
-              </div>
-            </div>
-          </div>
+              <!-- Form Group -->
+              <div class="row form-group">
+                <label for="organizationLabel" class="col-sm-3 col-form-label input-label">Organization</label>
 
-          <div class="list-group list-group-sm list-group-flush list-group-no-gutters mb-5">
-            <div class="list-group-item">
-              <h5 class="mb-1">Insert</h5>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Mention person <a href="#">(@Brian)</a></span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">@</kbd>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name="organization" id="organizationLabel" placeholder="Your organization" aria-label="Your organization" value="<?= $result['organization']; ?>">
                 </div>
               </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Link to doc <a href="#">(+Meeting notes)</a></span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">+</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <a href="#">#hashtag</a>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">#hashtag</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Date</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">/date</kbd>
-                  <kbd class="d-inline-block mb-1">Space</kbd>
-                  <kbd class="d-inline-block mb-1">/datetime</kbd>
-                  <kbd class="d-inline-block mb-1">/datetime</kbd>
-                  <kbd class="d-inline-block mb-1">Space</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Time</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">/time</kbd>
-                  <kbd class="d-inline-block mb-1">Space</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Note box</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">/note</kbd>
-                  <kbd class="d-inline-block mb-1">Enter</kbd>
-                  <kbd class="d-inline-block mb-1">/note red</kbd>
-                  <kbd class="d-inline-block mb-1">/note red</kbd>
-                  <kbd class="d-inline-block mb-1">Enter</kbd>
-                </div>
-              </div>
-            </div>
-          </div>
+              <!-- End Form Group -->
 
-          <div class="list-group list-group-sm list-group-flush list-group-no-gutters mb-5">
-            <div class="list-group-item">
-              <h5 class="mb-1">Editing</h5>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Find and replace</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">r</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Find next</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">n</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Find previous</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">p</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Indent</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Tab</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Un-indent</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Tab</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Move line up</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1"><i class="tio-arrow-large-upward-outlined"></i></kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Move line down</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1"><i class="tio-arrow-large-downward-outlined font-size-sm"></i></kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Add a comment</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Alt</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">m</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Undo</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">z</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Redo</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">y</kbd>
-                </div>
-              </div>
-            </div>
-          </div>
+              <!-- Form Group -->
+              <!-- <div class="row form-group">
+                    <label for="departmentLabel" class="col-sm-3 col-form-label input-label">Department</label>
 
-          <div class="list-group list-group-sm list-group-flush list-group-no-gutters">
-            <div class="list-group-item">
-              <h5 class="mb-1">Application</h5>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Create new doc</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Alt</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">n</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Present</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">p</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Share</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">s</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Search docs</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">o</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Keyboard shortcuts</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">/</kbd>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End Body -->
-      </div>
-    </div>
-    <!-- End Keyboard Shortcuts -->
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" name="department" id="departmentLabel" placeholder="Your department" aria-label="Your department">
+                    </div>
+                  </div> -->
+              <!-- End Form Group -->
 
-    <!-- Activity -->
-    <div id="activitySidebar" class="hs-unfold-content sidebar sidebar-bordered sidebar-box-shadow">
-      <div class="card card-lg sidebar-card">
-        <div class="card-header">
-          <h4 class="card-header-title">Activity stream</h4>
+              <!-- Form Group -->
+              <div id="accountType" class="row form-group">
+                <label class="col-sm-3 col-form-label input-label">Company type</label>
 
-          <!-- Toggle Button -->
-          <a class="js-hs-unfold-invoker btn btn-icon btn-xs btn-ghost-dark ml-2" href="javascript:;"
-             data-hs-unfold-options='{
-              "target": "#activitySidebar",
-              "type": "css-animation",
-              "animationIn": "fadeInRight",
-              "animationOut": "fadeOutRight",
-              "hasOverlay": true,
-              "smartPositionOff": true
-             }'>
-            <i class="tio-clear tio-lg"></i>
-          </a>
-          <!-- End Toggle Button -->
-        </div>
-
-        <!-- Body -->
-        <div class="card-body sidebar-body sidebar-scrollbar">
-          <!-- Step -->
-          <ul class="step step-icon-sm step-avatar-sm">
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <div class="step-avatar">
-                  <img class="step-avatar-img" src="<?= $assets; ?>/assets/img/160x160/img9.jpg" alt="Image Description">
-                </div>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Iana Robinson</h5>
-
-                  <p class="font-size-sm mb-1">Added 2 files to task <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fd-7</a></p>
-
-                  <ul class="list-group list-group-sm">
-                    <!-- List Item -->
-                    <li class="list-group-item list-group-item-light">
-                      <div class="row gx-1">
-                        <div class="col-6">
-                          <div class="media">
-                              <span class="mt-1 mr-2">
-                                <img class="avatar avatar-xs" src="<?= $assets; ?>/assets/svg/brands/excel.svg" alt="Image Description">
-                              </span>
-                            <div class="media-body text-truncate">
-                              <span class="d-block font-size-sm text-dark text-truncate" title="weekly-reports.xls">weekly-reports.xls</span>
-                              <small class="d-block text-muted">12kb</small>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="media">
-                              <span class="mt-1 mr-2">
-                                <img class="avatar avatar-xs" src="<?= $assets; ?>/assets/svg/brands/word.svg" alt="Image Description">
-                              </span>
-                            <div class="media-body text-truncate">
-                              <span class="d-block font-size-sm text-dark text-truncate" title="weekly-reports.xls">weekly-reports.xls</span>
-                              <small class="d-block text-muted">4kb</small>
-                            </div>
-                          </div>
-                        </div>
+                <div class="col-sm-9">
+                  <div class="input-group input-group-sm-down-break">
+                    <!-- Custom Radio -->
+                    <div class="form-control">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="account" id="customInlineCheck1" class="custom-control-input indeterminate-checkbox" <?php if ($result['account_business'] == 1) {
+                                                                                                                                            echo "checked";
+                                                                                                                                          }; ?>>
+                        <label class="custom-control-label" for="customInlineCheck1">Account Business</label>
                       </div>
-                    </li>
-                    <!-- End List Item -->
-                  </ul>
+                    </div>
+                    <!-- End Custom Radio -->
 
-                  <small class="text-muted text-uppercase">Now</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <span class="step-icon step-icon-soft-dark">B</span>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Bob Dean</h5>
-
-                  <p class="font-size-sm mb-1">Marked <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fr-6</a> as <span class="badge badge-soft-success badge-pill"><span class="legend-indicator bg-success"></span>"Completed"</span></p>
-
-                  <small class="text-muted text-uppercase">Today</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <div class="step-avatar">
-                  <img class="step-avatar-img" src="<?= $assets; ?>/assets/img/160x160/img3.jpg" alt="Image Description">
-                </div>
-
-                <div class="step-content">
-                  <h5 class="h5 mb-1">Crane</h5>
-
-                  <p class="font-size-sm mb-1">Added 5 card to <a href="#">Payments</a></p>
-
-                  <ul class="list-group list-group-sm">
-                    <li class="list-group-item list-group-item-light">
-                      <div class="row gx-1">
-                        <div class="col">
-                          <img class="img-fluid rounded ie-sidebar-activity-img" src="<?= $assets; ?>/assets/svg/illustrations/card-1.svg" alt="Image Description">
-                        </div>
-                        <div class="col">
-                          <img class="img-fluid rounded ie-sidebar-activity-img" src="<?= $assets; ?>/assets/svg/illustrations/card-2.svg" alt="Image Description">
-                        </div>
-                        <div class="col">
-                          <img class="img-fluid rounded ie-sidebar-activity-img" src="<?= $assets; ?>/assets/svg/illustrations/card-3.svg" alt="Image Description">
-                        </div>
-                        <div class="col-auto align-self-center">
-                          <div class="text-center">
-                            <a href="#">+2</a>
-                          </div>
-                        </div>
+                    <!-- Custom Radio -->
+                    <div class="form-control">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="it_enginner" id="customInlineCheck2" class="custom-control-input indeterminate-checkbox" <?php if ($result['it_engineer'] == 1) {
+                                                                                                                                                echo "checked";
+                                                                                                                                              }; ?>>
+                        <label class="custom-control-label" for="customInlineCheck2">IT Engineering</label>
                       </div>
-                    </li>
-                  </ul>
+                    </div>
+                    <!-- End Custom Radio -->
 
-                  <small class="text-muted text-uppercase">May 12</small>
+                    <!-- Custom Radio -->
+                    <div class="form-control">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="multimedia" id="customInlineCheck3" class="custom-control-input indeterminate-checkbox" <?php if ($result['multimedia'] == 1) {
+                                                                                                                                                echo "checked";
+                                                                                                                                              }; ?>>
+                        <label class="custom-control-label" for="customInlineCheck3">Multimedia Design</label>
+                      </div>
+                    </div>
+                    <!-- End Custom Radio -->
+
+                    <!-- Custom Radio -->
+                    <div class="form-control">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="electronic_enginner" id="customInlineCheck4" class="custom-control-input indeterminate-checkbox" <?php if ($result['eletronic'] == 1) {
+                                                                                                                                                          echo "checked";
+                                                                                                                                                        }; ?>>
+                        <label class="custom-control-label" for="customInlineCheck4">Electronic Engineering</label>
+                      </div>
+                    </div>
+                    <!-- End Custom Radio -->
+                  </div>
                 </div>
               </div>
-            </li>
-            <!-- End Step Item -->
+              <!-- End Form Group -->
 
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <span class="step-icon step-icon-soft-info">D</span>
+              <!-- Form Group -->
+              <div class="row form-group">
+                <label for="locationLabel" class="col-sm-3 col-form-label input-label">Location</label>
 
-                <div class="step-content">
-                  <h5 class="mb-1">David Lidell</h5>
-
-                  <p class="font-size-sm mb-1">Added a new member to Front Dashboard</p>
-
-                  <small class="text-muted text-uppercase">May 15</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <div class="step-avatar">
-                  <img class="step-avatar-img" src="<?= $assets; ?>/assets/img/160x160/img7.jpg" alt="Image Description">
-                </div>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Rachel King</h5>
-
-                  <p class="font-size-sm mb-1">Marked <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fr-3</a> as <span class="badge badge-soft-success badge-pill"><span class="legend-indicator bg-success"></span>"Completed"</span></p>
-
-                  <small class="text-muted text-uppercase">Apr 29</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <div class="step-avatar">
-                  <img class="step-avatar-img" src="<?= $assets; ?>/assets/img/160x160/img5.jpg" alt="Image Description">
-                </div>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Finch Hoot</h5>
-
-                  <p class="font-size-sm mb-1">Earned a "Top endorsed" <i class="tio-verified text-primary"></i> badge</p>
-
-                  <small class="text-muted text-uppercase">Apr 06</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                  <span class="step-icon step-icon-soft-primary">
-                    <i class="tio-user"></i>
-                  </span>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Project status updated</h5>
-
-                  <p class="font-size-sm mb-1">Marked <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fr-3</a> as <span class="badge badge-soft-primary badge-pill"><span class="legend-indicator bg-primary"></span>"In progress"</span></p>
-
-                  <small class="text-muted text-uppercase">Feb 10</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-          </ul>
-          <!-- End Step -->
-
-          <a class="btn btn-block btn-white" href="javascript:;">View all <i class="tio-chevron-right"></i></a>
-        </div>
-        <!-- End Body -->
-      </div>
-    </div>
-    <!-- End Activity -->
-
-    <!-- Welcome Message Modal -->
-    <div class="modal fade" id="welcomeMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <!-- Header -->
-          <div class="modal-close">
-            <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary" data-dismiss="modal" aria-label="Close">
-              <i class="tio-clear tio-lg"></i>
-            </button>
-          </div>
-          <!-- End Header -->
-
-          <!-- Body -->
-          <div class="modal-body p-sm-5">
-            <div class="text-center">
-              <div class="w-75 w-sm-50 mx-auto mb-4">
-                <img class="img-fluid" src="<?= $assets; ?>/assets/svg/illustrations/graphs.svg" alt="Image Description">
-              </div>
-
-              <h4 class="h1">Welcome to Front</h4>
-
-              <p>We're happy to see you in our community.</p>
-            </div>
-          </div>
-          <!-- End Body -->
-
-          <!-- Footer -->
-          <div class="modal-footer d-block text-center py-sm-5">
-            <small class="text-cap mb-4">Trusted by the world's best teams</small>
-
-            <div class="w-85 mx-auto">
-              <div class="row justify-content-between">
-                <div class="col">
-                  <img class="img-fluid ie-welcome-brands" src="<?= $assets; ?>/assets/svg/brands/gitlab-gray.svg" alt="Image Description">
-                </div>
-                <div class="col">
-                  <img class="img-fluid ie-welcome-brands" src="<?= $assets; ?>/assets/svg/brands/fitbit-gray.svg" alt="Image Description">
-                </div>
-                <div class="col">
-                  <img class="img-fluid ie-welcome-brands" src="<?= $assets; ?>/assets/svg/brands/flow-xo-gray.svg" alt="Image Description">
-                </div>
-                <div class="col">
-                  <img class="img-fluid ie-welcome-brands" src="<?= $assets; ?>/assets/svg/brands/layar-gray.svg" alt="Image Description">
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Footer -->
-        </div>
-      </div>
-    </div>
-    <!-- End Welcome Message Modal -->
-
-    <!-- Create a new user Modal -->
-    <div class="modal fade" id="inviteUserModal" tabindex="-1" role="dialog" aria-labelledby="inviteUserModalTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <form class="modal-content">
-          <!-- Header -->
-          <div class="modal-header">
-            <h4 id="inviteUserModalTitle" class="modal-title">Invite users</h4>
-
-            <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary" data-dismiss="modal" aria-label="Close">
-              <i class="tio-clear tio-lg"></i>
-            </button>
-          </div>
-          <!-- End Header -->
-
-          <!-- Body -->
-          <div class="modal-body">
-            <!-- Form Group -->
-            <div class="form-group">
-              <div class="input-group input-group-merge mb-2 mb-sm-0">
-                <div class="input-group-prepend" id="fullName">
-                  <span class="input-group-text">
-                    <i class="tio-search"></i>
-                  </span>
-                </div>
-
-                <input type="text" class="form-control" name="fullName" placeholder="Search name or emails" aria-label="Search name or emails" aria-describedby="fullName">
-
-                <div class="input-group-append input-group-append-last-sm-down-none">
+                <div class="col-sm-9">
                   <!-- Select -->
-                  <div id="permissionSelect" class="select2-custom select2-custom-right">
-                    <select class="js-select2-custom custom-select" size="1" style="opacity: 0;"
-                            data-hs-select2-options='{
-                              "dropdownParent": "#permissionSelect",
-                              "minimumResultsForSearch": "Infinity",
-                              "dropdownAutoWidth": true,
-                              "dropdownWidth": "11rem"
-                            }'>
-                      <option value="guest" selected>Guest</option>
-                      <option value="can edit">Can edit</option>
-                      <option value="can comment">Can comment</option>
-                      <option value="full access">Full access</option>
+                  <div class="mb-3">
+                    <select name="country" id="locationLabel" data-hs-select2-options='{
+                                  "searchInputPlaceholder": "Search a country"
+                                }'>
+                      <option value="<?= $result['country']; ?>"></option>
                     </select>
                   </div>
                   <!-- End Select -->
 
-                  <a class="btn btn-primary d-none d-sm-block" href="javascript:;">Invite</a>
+                  <div class="mb-3">
+                    <input type="text" class="form-control" name="city" id="cityLabel" placeholder="City" aria-label="City" value="<?= $result['city']; ?>">
+                  </div>
+
+                  <input type="text" class="form-control" name="state" id="stateLabel" placeholder="State" aria-label="State" value="<?= $result['state']; ?>">
                 </div>
               </div>
+              <!-- End Form Group -->
 
-              <a class="btn btn-block btn-primary d-sm-none" href="javascript:;">Invite</a>
-            </div>
-            <!-- End Form Group -->
+              <!-- Form Group -->
+              <div class="row form-group">
+                <label for="addressLine1Label" class="col-sm-3 col-form-label input-label">Address line 1</label>
 
-            <div class="form-row">
-              <h5 class="col modal-title">Invite users</h5>
-
-              <div class="col-auto">
-                <a class="d-flex align-items-center font-size-sm text-body" href="#">
-                  <img class="avatar avatar-xss mr-2" src="<?= $assets; ?>/assets/svg/brands/gmail.svg" alt="Image Description">
-                  Import contacts
-                </a>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name="addressLine1" id="addressLine1Label" placeholder="Your address" aria-label="Your address" value="<?= $result['addressline1']; ?>">
+                </div>
               </div>
+              <!-- End Form Group -->
+
+              <!-- Form Group -->
+              <div class="row form-group">
+                <label for="addressLine2Label" class="col-sm-3 col-form-label input-label">Address line 2 <span class="input-label-secondary">(Optional)</span></label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name="addressLine2" id="addressLine2Label" placeholder="Your address" aria-label="Your address" value="<?= $result['addressline2']; ?>">
+                </div>
+              </div>
+              <!-- End Form Group -->
+
+              <div class="d-flex justify-content-end">
+                <button type="submit" name="basic-submit" class="btn btn-primary">Save changes</button>
+              </div>
+              </form>
+              <!-- End Form -->
             </div>
-
-            <hr class="mt-2">
-
-            <ul class="list-unstyled list-unstyled-py-4">
-              <!-- List Group Item -->
-              <li>
-                <div class="media">
-                  <div class="avatar avatar-sm avatar-circle mr-3">
-                    <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img10.jpg" alt="Image Description">
-                  </div>
-
-                  <div class="media-body">
-                    <div class="row align-items-center">
-                      <div class="col-sm">
-                        <h5 class="text-body mb-0">Amanda Harvey <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></h5>
-                        <span class="d-block font-size-sm">amanda@example.com</span>
-                      </div>
-
-                      <div class="col-sm">
-                        <!-- Select -->
-                        <div id="inviteUserSelect1" class="select2-custom select2-custom-sm-right d-sm-flex justify-content-sm-end">
-                          <select class="js-select2-custom custom-select-sm" size="1" style="opacity: 0;"
-                                  data-hs-select2-options='{
-                                    "dropdownParent": "#inviteUserSelect1",
-                                    "minimumResultsForSearch": "Infinity",
-                                    "customClass": "custom-select custom-select-sm custom-select-borderless pl-0",
-                                    "dropdownAutoWidth": true,
-                                    "width": true
-                                  }'>
-                            <option value="guest" selected>Guest</option>
-                            <option value="can edit">Can edit</option>
-                            <option value="can comment">Can comment</option>
-                            <option value="full access">Full access</option>
-                            <option value="remove" data-option-template='<span class="text-danger">Remove</span>'>Remove</option>
-                          </select>
-                        </div>
-                        <!-- End Select -->
-                      </div>
-                    </div>
-                    <!-- End Row -->
-                  </div>
-                </div>
-              </li>
-              <!-- End List Group Item -->
-
-              <!-- List Group Item -->
-              <li>
-                <div class="media">
-                  <div class="avatar avatar-sm avatar-circle mr-3">
-                    <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img3.jpg" alt="Image Description">
-                  </div>
-
-                  <div class="media-body">
-                    <div class="row align-items-center">
-                      <div class="col-sm">
-                        <h5 class="text-body mb-0">David Harrison</h5>
-                        <span class="d-block font-size-sm">david@example.com</span>
-                      </div>
-
-                      <div class="col-sm">
-                        <!-- Select -->
-                        <div id="inviteUserSelect2" class="select2-custom select2-custom-sm-right d-sm-flex justify-content-sm-end">
-                          <select class="js-select2-custom custom-select-sm" size="1" style="opacity: 0;"
-                                  data-hs-select2-options='{
-                                    "dropdownParent": "#inviteUserSelect2",
-                                    "minimumResultsForSearch": "Infinity",
-                                    "customClass": "custom-select custom-select-sm custom-select-borderless pl-0",
-                                    "dropdownAutoWidth": true,
-                                    "width": true
-                                  }'>
-                            <option value="guest" selected>Guest</option>
-                            <option value="can edit">Can edit</option>
-                            <option value="can comment">Can comment</option>
-                            <option value="full access">Full access</option>
-                            <option value="remove" data-option-template='<span class="text-danger">Remove</span>'>Remove</option>
-                          </select>
-                        </div>
-                        <!-- End Select -->
-                      </div>
-                    </div>
-                    <!-- End Row -->
-                  </div>
-                </div>
-              </li>
-              <!-- End List Group Item -->
-
-              <!-- List Group Item -->
-              <li>
-                <div class="media">
-                  <div class="avatar avatar-sm avatar-circle mr-3">
-                    <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img9.jpg" alt="Image Description">
-                  </div>
-
-                  <div class="media-body">
-                    <div class="row align-items-center">
-                      <div class="col-sm">
-                        <h5 class="text-body mb-0">Ella Lauda <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></h5>
-                        <span class="d-block font-size-sm">Markvt@example.com</span>
-                      </div>
-
-                      <div class="col-sm">
-                        <!-- Select -->
-                        <div id="inviteUserSelect4" class="select2-custom select2-custom-sm-right d-sm-flex justify-content-sm-end">
-                          <select class="js-select2-custom custom-select-sm" size="1" style="opacity: 0;"
-                                  data-hs-select2-options='{
-                                    "dropdownParent": "#inviteUserSelect4",
-                                    "minimumResultsForSearch": "Infinity",
-                                    "customClass": "custom-select custom-select-sm custom-select-borderless pl-0",
-                                    "dropdownAutoWidth": true,
-                                    "width": true
-                                  }'>
-                            <option value="guest" selected>Guest</option>
-                            <option value="can edit">Can edit</option>
-                            <option value="can comment">Can comment</option>
-                            <option value="full access">Full access</option>
-                            <option value="remove" data-option-template='<span class="text-danger">Remove</span>'>Remove</option>
-                          </select>
-                        </div>
-                        <!-- End Select -->
-                      </div>
-                    </div>
-                    <!-- End Row -->
-                  </div>
-                </div>
-              </li>
-              <!-- End List Group Item -->
-
-              <!-- List Group Item -->
-              <li>
-                <div class="media">
-                  <div class="avatar avatar-sm avatar-soft-dark avatar-circle mr-3">
-                    <span class="avatar-initials">B</span>
-                  </div>
-
-                  <div class="media-body">
-                    <div class="row align-items-center">
-                      <div class="col-sm">
-                        <h5 class="text-body mb-0">Bob Dean</h5>
-                        <span class="d-block font-size-sm">bob@example.com</span>
-                      </div>
-
-                      <div class="col-sm">
-                        <!-- Select -->
-                        <div id="inviteUserSelect3" class="select2-custom select2-custom-sm-right d-sm-flex justify-content-sm-end">
-                          <select class="js-select2-custom custom-select-sm" size="1" style="opacity: 0;"
-                                  data-hs-select2-options='{
-                                    "dropdownParent": "#inviteUserSelect3",
-                                    "minimumResultsForSearch": "Infinity",
-                                    "customClass": "custom-select custom-select-sm custom-select-borderless pl-0",
-                                    "dropdownAutoWidth": true,
-                                    "width": true
-                                  }'>
-                            <option value="guest" selected>Guest</option>
-                            <option value="can edit">Can edit</option>
-                            <option value="can comment">Can comment</option>
-                            <option value="full access">Full access</option>
-                            <option value="remove" data-option-template='<span class="text-danger">Remove</span>'>Remove</option>
-                          </select>
-                        </div>
-                        <!-- End Select -->
-                      </div>
-                    </div>
-                    <!-- End Row -->
-                  </div>
-                </div>
-              </li>
-              <!-- End List Group Item -->
-            </ul>
+            <!-- End Body -->
           </div>
-          <!-- End Body -->
+          <!-- End Card -->
 
-          <!-- Footer -->
-          <div class="modal-footer justify-content-start">
-            <div class="row align-items-center flex-grow-1 mx-n2">
-              <div class="col-sm-9 mb-2 mb-sm-0">
-                <input type="hidden" id="inviteUserPublicClipboard" value="https://themes.getbootstrap.com/product/front-multipurpose-responsive-template/">
-
-                <p class="modal-footer-text">The public share <a href="#">link settings</a>
-                  <i class="tio-help-outlined" data-toggle="tooltip" data-placement="top" title="The public share link allows people to view the project without giving access to full collaboration features."></i>
-                </p>
-              </div>
-
-              <div class="col-sm-3 text-sm-right">
-                <a class="js-clipboard btn btn-sm btn-white text-nowrap" href="javascript:;" data-toggle="tooltip" data-placement="top" title="Copy to clipboard!"
-                   data-hs-clipboard-options='{
-                    "type": "tooltip",
-                    "successText": "Copied!",
-                    "contentTarget": "#inviteUserPublicClipboard",
-                    "container": "#inviteUserModal"
-                   }'>
-                <i class="tio-link mr-1"></i> Copy link</a>
-              </div>
+          <!-- Card -->
+          <div id="emailSection" class="card mb-3 mb-lg-5">
+            <div class="card-header">
+              <h3 class="card-title h4">Email</h3>
             </div>
+
+            <!-- Body -->
+            <div class="card-body">
+              <p>Your current email address is <span class="font-weight-bold"><?= $result['email']; ?></span></p>
+
+              <!-- Form -->
+              <form method="post" action="">
+                <!-- Form Group -->
+                <div class="row form-group">
+                  <label for="newEmailLabel" class="col-sm-3 col-form-label input-label">New email address</label>
+
+                  <div class="col-sm-9">
+                    <input type="email" name="email" class="form-control" name="newEmail" id="newEmailLabel" placeholder="Enter new email address" aria-label="Enter new email address" required data-msg="Please enter a valid email address.">
+                  </div>
+                </div>
+                <!-- End Form Group -->
+
+                <div class="d-flex justify-content-end">
+                  <button type="submit" name="email_submit" class="btn btn-primary">Save changes</button>
+                </div>
+              </form>
+              <!-- End Form -->
+            </div>
+            <!-- End Body -->
           </div>
-          <!-- End Footer -->
-        </form>
+          <!-- End Card -->
+
+          <!-- Card -->
+          <div id="passwordSection" class="card mb-3 mb-lg-5">
+            <div class="card-header">
+              <h4 class="card-title">Change your password</h4>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body">
+              <!-- Form -->
+              <form id="changePasswordForm" method="POST" action="">
+                <!-- Form Group -->
+                <div class="row form-group">
+                  <label for="currentPasswordLabel" class="col-sm-3 col-form-label input-label">Current password</label>
+
+                  <div class="col-sm-9">
+                    <input type="password" class="form-control" name="currentPassword" id="currentPasswordLabel" placeholder="Enter current password" aria-label="Enter current password">
+                  </div>
+                </div>
+                <!-- End Form Group -->
+
+                <!-- Form Group -->
+                <div class="row form-group">
+                  <label for="newPassword" class="col-sm-3 col-form-label input-label">New password</label>
+
+                  <div class="col-sm-9">
+                    <input type="password" class="js-pwstrength form-control" name="newPassword" id="newPassword" placeholder="Enter new password" aria-label="Enter new password" data-hs-pwstrength-options='{
+                               "ui": {
+                                 "container": "#changePasswordForm",
+                                 "viewports": {
+                                   "progress": "#passwordStrengthProgress",
+                                   "verdict": "#passwordStrengthVerdict"
+                                 }
+                               }
+                             }'>
+
+                    <p id="passwordStrengthVerdict" class="form-text mb-2"></p>
+
+                    <div id="passwordStrengthProgress"></div>
+                  </div>
+                </div>
+                <!-- End Form Group -->
+
+                <!-- Form Group -->
+                <div class="row form-group">
+                  <label for="confirmNewPasswordLabel" class="col-sm-3 col-form-label input-label">Confirm new password</label>
+
+                  <div class="col-sm-9">
+                    <div class="mb-3">
+                      <input type="password" class="form-control" name="confirmNewPassword" id="confirmNewPasswordLabel" placeholder="Confirm your new password" aria-label="Confirm your new password">
+                    </div>
+
+                    <h5>Password requirements:</h5>
+
+                    <p class="font-size-sm mb-2">Ensure that these requirements are met:</p>
+
+                    <ul class="font-size-sm">
+                      <li>Minimum 8 characters long - the more, the better</li>
+                      <li>At least one lowercase character</li>
+                      <li>At least one uppercase character</li>
+                      <li>At least one number, symbol, or whitespace character</li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- End Form Group -->
+
+                <div class="d-flex justify-content-end">
+                  <button type="submit" name="password-submit" class="btn btn-primary">Save Changes</button>
+                </div>
+              </form>
+              <!-- End Form -->
+            </div>
+            <!-- End Body -->
+          </div>
+          <!-- End Card -->
+
+          <!-- Card -->
+            <div id="deleteAccountSection" class="card mb-3 mb-lg-5">
+              <div class="card-header">
+                <h4 class="card-title">Delete your account</h4>
+              </div>
+
+              <!-- Body -->
+              <div class="card-body">
+                <p class="card-text">When you delete your account, you lose access to Front account services, and we permanently delete your personal data. You can cancel the deletion for 14 days.</p>
+
+                <div class="form-group">
+                  <!-- Custom Checkbox -->
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="deleteAccountCheckbox" required data-msg="Please accept delete Check when Delete.">
+                    <label class="custom-control-label" for="deleteAccountCheckbox">Confirm that I want to delete my account.</label>
+                  </div>
+                  <!-- End Custom Checkbox -->
+                </div>
+
+                <div class="d-flex justify-content-end">
+                  <a class="btn btn-white mr-2" href="#">Learn more <i class="tio-open-in-new ml-1"></i></a>
+
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+              </div>
+              <!-- End Body -->
+            </div>
+          <!-- End Card -->
+
+          <!-- Sticky Block End Point -->
+          <div id="stickyBlockEndPoint"></div>
+        </div>
+      </div>
+      <!-- End Row -->
+    </div>
+    <!-- End Content -->
+
+    <!-- Footer -->
+
+    <div class="footer">
+      <div class="row justify-content-between align-items-center">
+        <div class="col">
+          <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
+        </div>
       </div>
     </div>
-    <!-- End Create a new user Modal -->
-    <!-- ========== END SECONDARY CONTENTS ========== -->
+    <!-- End Footer -->
+  </main>
 
-    <!-- JS Global Compulsory  -->
-    <script src="<?= $assets; ?>/assets/vendor/jquery/dist/jquery.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- ========== END MAIN CONTENT ========== -->
 
-    <!-- JS Implementing Plugins -->
-    <script src="<?= $assets; ?>/assets/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/hs-unfold/dist/hs-unfold.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/hs-form-search/dist/hs-form-search.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/select2/dist/js/select2.full.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/chart.js/dist/Chart.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/chart.js.extensions/chartjs-extensions.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/daterangepicker/moment.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/daterangepicker/daterangepicker.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/datatables/media/js/jquery.dataTables.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/datatables.net.extensions/select/select.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/clipboard/dist/clipboard.min.js"></script>
-    
+  <!-- ========== SECONDARY CONTENTS ========== -->
 
-    <!-- JS Front -->
-    <script src="<?= $assets; ?>/assets/js/theme.min.js"></script>
+  <!-- Welcome Message Modal -->
+  <div class="modal fade" id="welcomeMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <!-- Header -->
+        <div class="modal-close">
+          <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary" data-dismiss="modal" aria-label="Close">
+            <i class="tio-clear tio-lg"></i>
+          </button>
+        </div>
+        <!-- End Header -->
 
-    <!-- JS Plugins Init. -->
-    <script>
-      $(document).on('ready', function () {
-        // =======================================================
+        <!-- Body -->
+        <div class="modal-body p-sm-5">
+          <div class="text-center">
+            <div class="w-75 w-sm-50 mx-auto mb-4">
+              <img class="img-fluid" src="../assets/svg/illustrations/graphs.svg" alt="Image Description">
+            </div>
+
+            <h4 class="h1">Welcome to Front</h4>
+
+            <p>We're happy to see you in our community.</p>
+          </div>
+        </div>
+        <!-- End Body -->
+
+        <!-- Footer -->
+        <div class="modal-footer d-block text-center py-sm-5">
+          <small class="text-cap mb-4">Trusted by the world's best teams</small>
+
+          <div class="w-85 mx-auto">
+            <div class="row justify-content-between">
+              <div class="col">
+                <img class="img-fluid ie-welcome-brands" src="../assets/svg/brands/gitlab-gray.svg" alt="Image Description">
+              </div>
+              <div class="col">
+                <img class="img-fluid ie-welcome-brands" src="../assets/svg/brands/fitbit-gray.svg" alt="Image Description">
+              </div>
+              <div class="col">
+                <img class="img-fluid ie-welcome-brands" src="../assets/svg/brands/flow-xo-gray.svg" alt="Image Description">
+              </div>
+              <div class="col">
+                <img class="img-fluid ie-welcome-brands" src="../assets/svg/brands/layar-gray.svg" alt="Image Description">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Footer -->
+      </div>
+    </div>
+  </div>
+  <!-- End Welcome Message Modal -->
+
+  <!-- ========== END SECONDARY CONTENTS ========== -->
+
+  <!-- JS Global Compulsory  -->
+  <script src="../assets/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
+  <script src="../assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- JS Implementing Plugins -->
+  <script src="../assets/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside.min.js"></script>
+  <script src="../assets/vendor/hs-unfold/dist/hs-unfold.min.js"></script>
+  <script src="../assets/vendor/hs-form-search/dist/hs-form-search.min.js"></script>
+  <script src="../assets/vendor/hs-file-attach/dist/hs-file-attach.min.js"></script>
+  <script src="../assets/vendor/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+  <script src="../assets/vendor/select2/dist/js/select2.full.min.js"></script>
+  <script src="../assets/vendor/hs-sticky-block/dist/hs-sticky-block.min.js"></script>
+  <script src="../assets/vendor/hs-scrollspy/dist/hs-scrollspy.min.js"></script>
+  <script src="../assets/vendor/pwstrength-bootstrap/dist/pwstrength-bootstrap.min.js"></script>
+
+  <!-- JS Implementing Plugins -->
+  <script src="../assets/vendor/hs-toggle-password/dist/js/hs-toggle-password.js"></script>
+  <script src="../assets/vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+
+  <!-- JS Front -->
+  <script src="../assets/js/theme.min.js"></script>
 
 
-        // BUILDER TOGGLE INVOKER
-        // =======================================================
-        $('.js-navbar-vertical-aside-toggle-invoker').click(function () {
-          $('.js-navbar-vertical-aside-toggle-invoker i').tooltip('hide');
-        });
+  <!-- JS Plugins Init. -->
+  <script>
+    $(document).on('ready', function() {
+      // =======================================================
 
-        
 
-        
-        // INITIALIZATION OF NAVBAR VERTICAL NAVIGATION
-        // =======================================================
-        var sidebar = $('.js-navbar-vertical-aside').hsSideNav();
+      // BUILDER TOGGLE INVOKER
+      // =======================================================
+      $('.js-navbar-vertical-aside-toggle-invoker').click(function() {
+        $('.js-navbar-vertical-aside-toggle-invoker i').tooltip('hide');
+      });
 
-        
-        // INITIALIZATION OF TOOLTIP IN NAVBAR VERTICAL MENU
-        // =======================================================
-        $('.js-nav-tooltip-link').tooltip({ boundary: 'window' })
 
-        $(".js-nav-tooltip-link").on("show.bs.tooltip", function(e) {
-          if (!$("body").hasClass("navbar-vertical-aside-mini-mode")) {
-            return false;
-          }
-        });
 
-        
-        // INITIALIZATION OF UNFOLD
-        // =======================================================
-        $('.js-hs-unfold-invoker').each(function () {
-          var unfold = new HSUnfold($(this)).init();
-        });
 
-        
-        // INITIALIZATION OF FORM SEARCH
-        // =======================================================
-        $('.js-form-search').each(function () {
-          new HSFormSearch($(this)).init()
-        });
+      // INITIALIZATION OF NAVBAR VERTICAL NAVIGATION
+      // =======================================================
+      var sidebar = $('.js-navbar-vertical-aside').hsSideNav();
 
-        
-        // INITIALIZATION OF SELECT2
-        // =======================================================
-        $('.js-select2-custom').each(function () {
-          var select2 = $.HSCore.components.HSSelect2.init($(this));
-        });
 
-        
-        // INITIALIZATION OF CHARTJS
-        // =======================================================
-        Chart.plugins.unregister(ChartDataLabels);
+      // INITIALIZATION OF TOOLTIP IN NAVBAR VERTICAL MENU
+      // =======================================================
+      $('.js-nav-tooltip-link').tooltip({
+        boundary: 'window'
+      })
 
-        $('.js-chart').each(function () {
-          $.HSCore.components.HSChartJS.init($(this));
-        });
-
-        var updatingChart = $.HSCore.components.HSChartJS.init($('#updatingData'));
-
-        // CALL WHEN TAB IS CLICKED
-        // =======================================================
-        $('[data-toggle="chart-bar"]').click(function(e) {
-          let keyDataset = $(e.currentTarget).attr('data-datasets')
-
-         if (keyDataset === 'lastWeek') {
-           updatingChart.data.labels = ["Apr 22", "Apr 23", "Apr 24", "Apr 25", "Apr 26", "Apr 27", "Apr 28", "Apr 29", "Apr 30", "Apr 31"];
-           updatingChart.data.datasets = [
-             {
-               "data": [120, 250, 300, 200, 300, 290, 350, 100, 125, 320],
-               "backgroundColor": "#377dff",
-               "hoverBackgroundColor": "#377dff",
-               "borderColor": "#377dff"
-             },
-             {
-               "data": [250, 130, 322, 144, 129, 300, 260, 120, 260, 245, 110],
-               "backgroundColor": "#e7eaf3",
-               "borderColor": "#e7eaf3"
-             }
-           ];
-           updatingChart.update();
-         } else {
-           updatingChart.data.labels = ["May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7", "May 8", "May 9", "May 10"];
-           updatingChart.data.datasets = [
-             {
-               "data": [200, 300, 290, 350, 150, 350, 300, 100, 125, 220],
-               "backgroundColor": "#377dff",
-               "hoverBackgroundColor": "#377dff",
-               "borderColor": "#377dff"
-             },
-             {
-               "data": [150, 230, 382, 204, 169, 290, 300, 100, 300, 225, 120],
-               "backgroundColor": "#e7eaf3",
-               "borderColor": "#e7eaf3"
-             }
-           ]
-           updatingChart.update();
-         }
-        })
-
-        
-        // INITIALIZATION OF BUBBLE CHARTJS WITH DATALABELS PLUGIN
-        // =======================================================
-        $('.js-chart-datalabels').each(function () {
-          $.HSCore.components.HSChartJS.init($(this), {
-            plugins: [ChartDataLabels],
-            options: {
-              plugins: {
-                datalabels: {
-                  anchor: function(context) {
-                    var value = context.dataset.data[context.dataIndex];
-                    return value.r < 20 ? 'end' : 'center';
-                  },
-                  align: function(context) {
-                    var value = context.dataset.data[context.dataIndex];
-                    return value.r < 20 ? 'end' : 'center';
-                  },
-                  color: function(context) {
-                    var value = context.dataset.data[context.dataIndex];
-                    return value.r < 20 ? context.dataset.backgroundColor : context.dataset.color;
-                  },
-                  font: function(context) {
-                    var value = context.dataset.data[context.dataIndex],
-                      fontSize = 25;
-
-                    if (value.r > 50) {
-                      fontSize = 35;
-                    }
-
-                    if (value.r > 70) {
-                      fontSize = 55;
-                    }
-
-                    return {
-                      weight: 'lighter',
-                      size: fontSize
-                    };
-                  },
-                  offset: 2,
-                  padding: 0
-                }
-              }
-            },
-          });
-        });
-
-        
-        // INITIALIZATION OF DATERANGEPICKER
-        // =======================================================
-        $('.js-daterangepicker').daterangepicker();
-
-        $('.js-daterangepicker-times').daterangepicker({
-          timePicker: true,
-          startDate: moment().startOf('hour'),
-          endDate: moment().startOf('hour').add(32, 'hour'),
-          locale: {
-            format: 'M/DD hh:mm A'
-          }
-        });
-
-        var start = moment();
-        var end = moment();
-
-        function cb(start, end) {
-          $('#js-daterangepicker-predefined .js-daterangepicker-predefined-preview').html(start.format('MMM D') + ' - ' + end.format('MMM D, YYYY'));
+      $(".js-nav-tooltip-link").on("show.bs.tooltip", function(e) {
+        if (!$("body").hasClass("navbar-vertical-aside-mini-mode")) {
+          return false;
         }
+      });
 
-        $('#js-daterangepicker-predefined').daterangepicker({
-          startDate: start,
-          endDate: end,
-          ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-          }
-        }, cb);
 
-        cb(start, end);
+      // INITIALIZATION OF UNFOLD
+      // =======================================================
+      $('.js-hs-unfold-invoker').each(function() {
+        var unfold = new HSUnfold($(this)).init();
+      });
 
-        
-        // INITIALIZATION OF DATATABLES
-        // =======================================================
-        var datatable = $.HSCore.components.HSDatatables.init($('#datatable'), {
-          select: {
-            style: 'multi',
-            selector: 'td:first-child input[type="checkbox"]',
-            classMap: {
-              checkAll: '#datatableCheckAll',
-              counter: '#datatableCounter',
-              counterInfo: '#datatableCounterInfo'
-            }
+
+      // INITIALIZATION OF FORM SEARCH
+      // =======================================================
+      $('.js-form-search').each(function() {
+        new HSFormSearch($(this)).init()
+      });
+
+
+      // INITIALIZATION OF FILE ATTACH
+      // =======================================================
+      $('.js-file-attach').each(function() {
+        var customFile = new HSFileAttach($(this)).init();
+      });
+
+
+      // INITIALIZATION OF MASKED INPUT
+      // =======================================================
+      $('.js-masked-input').each(function() {
+        var mask = $.HSCore.components.HSMask.init($(this));
+      });
+
+
+      // INITIALIZATION OF SELECT2
+      // =======================================================
+      $('.js-select2-custom').each(function() {
+        var select2 = $.HSCore.components.HSSelect2.init($(this));
+      });
+
+
+      // INITIALIZATION OF SELECT2 WITH FLAGS
+      // =======================================================
+      $.getJSON('../assets/json/flags.json', function(data) {
+        const items = [{
+          id: null,
+          html: '',
+          text: ''
+        }];
+
+        // let images = [];
+
+        $.each(data, function(key, val) {
+          // images[key] = new Image()
+          // images[key].src = '.' + val.image
+
+          items.push({
+            id: val.name,
+            text: val.name,
+            // <img class="avatar avatar-xss avatar-circle mr-2" src="' + images[key].src + '" alt="Flag Image" />
+            html: '<span class="d-flex align-items-center"><span class="text-truncate">' + val.name + '</span></span>'
+          })
+        });
+
+        $.HSCore.components.HSSelect2.init($('#locationLabel'), {
+          data: items,
+          templateResult: function(data) {
+            return data.html
           },
-          language: {
-            zeroRecords: '<div class="text-center p-4">' +
-                '<img class="mb-3" src="<?= $assets; ?>/assets/svg/illustrations/sorry.svg" alt="Image Description" style="width: 7rem;">' +
-                '<p class="mb-0">No data to show</p>' +
-                '</div>'
-          }
-        });
-
-        $('.js-datatable-filter').on('change', function() {
-          var $this = $(this),
-            elVal = $this.val(),
-            targetColumnIndex = $this.data('target-column-index');
-
-          datatable.column(targetColumnIndex).search(elVal).draw();
-        });
-
-        $('#datatableSearch').on('mouseup', function (e) {
-          var $input = $(this),
-            oldValue = $input.val();
-
-          if (oldValue == "") return;
-
-          setTimeout(function(){
-            var newValue = $input.val();
-
-            if (newValue == ""){
-              // Gotcha
-              datatable.search('').draw();
+          templateSelection: function(data) {
+            if (!data.id) {
+              return '<span class="text-muted">Select country</span>'
             }
-          }, 1);
-        });
 
-        
-        // INITIALIZATION OF CLIPBOARD
-        // =======================================================
-        $('.js-clipboard').each(function() {
-          var clipboard = $.HSCore.components.HSClipboard.init(this);
+            return data.html
+          }
         });
       });
-    </script>
 
-    <!-- IE Support -->
-    <script>
-      if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) document.write('<script src="<?= $assets; ?>/assets/vendor/babel-polyfill/polyfill.min.js"><\/script>');
-    </script>
-  </body>
+
+      // INITIALIZATION OF STICKY BLOCKS
+      // =======================================================
+      $('.js-sticky-block').each(function() {
+        var stickyBlock = new HSStickyBlock($(this), {
+          targetSelector: $('#header').hasClass('navbar-fixed') ? '#header' : null
+        }).init();
+      });
+
+
+      // INITIALIZATION OF SCROLL NAV
+      // =======================================================
+      var scrollspy = new HSScrollspy($('body'), {
+        // !SETTING "resolve" PARAMETER AND RETURNING "resolve('completed')" IS REQUIRED
+        beforeScroll: function(resolve) {
+          if (window.innerWidth < 992) {
+            $('#navbarVerticalNavMenu').collapse('hide').on('hidden.bs.collapse', function() {
+              return resolve('completed');
+            });
+          } else {
+            return resolve('completed');
+          }
+        }
+      }).init();
+
+
+      // INITIALIZATION OF PASSWORD STRENGTH MODULE
+      // =======================================================
+      $('.js-pwstrength').each(function() {
+        var pwstrength = $.HSCore.components.HSPWStrength.init($(this));
+      });
+    });
+  </script>
+
+  <!-- IE Support -->
+  <script>
+    if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) document.write('<script src="../assets/vendor/babel-polyfill/polyfill.min.js"><\/script>');
+  </script>
+</body>
+
 </html>
