@@ -74,7 +74,7 @@ if($request['status']=="active"){
       $result = mysqli_fetch_assoc(mysqli_query($conn, $qry));
       if ($result['password'] == $_POST['currentPassword']) {
         if ($_POST['confirmNewPassword'] == $_POST['newPassword']) {
-          $update_qry = "UPDATE user SET password='$_POST[currentPassword]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
+          $update_qry = "UPDATE user SET password='$_POST[newPassword]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
           if (mysqli_query($conn, $update_qry)) {
             echo "<script>Swal.fire('Update Password Success!','Your information already update...','success');window.location.href = '#passwordSection';</script>";
           } else { echo "<script>Swal.fire('Update Password Error!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }

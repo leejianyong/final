@@ -314,8 +314,8 @@ include('navbar.php');
                 <label for="phoneLabel" class="col-sm-3 col-form-label input-label">Phone <span class="input-label-secondary">(Optional)</span></label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="Phone Number" aria-label="Phone Number" value="<?= $result['contact']; ?>" data-hs-mask-options='{
-                               
+                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="+xxx-xxxx-xxx" aria-label="+xxx-xxxx-xxx" value="<?= $result['contact']; ?>" data-hs-mask-options='{
+                               "template": "+000-0000-000"
                              }'>
                 </div>
               </div>

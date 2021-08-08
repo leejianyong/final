@@ -33,7 +33,7 @@ require('./navbar.php');
         <!-- Card -->
         <div class="card">
           <?php 
-          $company_qry = "SELECT applied_job.*,compony_job_request.*,user.* FROM applied_job LEFT JOIN compony_job_request ON applied_job.job_id = compony_job_request.id LEFT JOIN user ON applied_job.user_id = user.id WHERE compony_job_request.company_id = '$_SESSION[userid]'";
+          $company_qry = "SELECT applied_job.*,compony_job_request.*,user.*,applied_job.created_at as request_date,compony_job_request.created_at as job_date FROM applied_job LEFT JOIN compony_job_request ON applied_job.job_id = compony_job_request.id LEFT JOIN user ON applied_job.user_id = user.id WHERE compony_job_request.company_id = '$_SESSION[userid]'";
           $company_sql = mysqli_query($conn,$company_qry);
           ?>
           <!-- Header -->
@@ -103,25 +103,6 @@ require('./navbar.php');
                           <form>
                             <div class="form-row">
                               <div class="col-sm form-group">
-                                <small class="text-cap mb-2">Country</small>
-
-                                <!-- Select -->
-                                <select class="js-select2-custom js-datatable-filter custom-select" size="1" style="opacity: 0;"
-                                        data-target-column-index="3"
-                                        data-hs-select2-options='{
-                                          "minimumResultsForSearch": "Infinity"
-                                        }'>
-                                  <option value="">Any</option>
-                                  <option value="Malaysia">Malaysia</option>
-                                  <option value="Singapore">Singapore</option>
-                                  <option value="India">India</option>
-                                  <option value="China">China</option>
-                                  <option value="Thai">Thai</option>
-                                </select>
-                                <!-- End Select -->
-                              </div>
-
-                              <div class="col-sm form-group">
                                 <small class="text-cap mb-2">Status</small>
 
                                 <!-- Select -->
@@ -187,12 +168,12 @@ require('./navbar.php');
                       <label class="custom-control-label" for="datatableCheckAll"></label>
                     </div>
                   </th>
-                  <th class="table-column-pl-0">Name</th>
-                  <th>Contact</th>
-                  <th>Country</th>
+                  <th class="table-column-pl-0">Job</th>
+                  <th>User</th>
+                  <th>Salary</th>
                   <th>Status</th>
-                  <th>Create Date</th>
-                  <th>Role</th>
+                  <th>Request Job Date</th>
+                  <th>Create Job Date</th>
                   <th></th>
                 </tr>
               </thead>
@@ -209,18 +190,23 @@ require('./navbar.php');
                   <td class="table-column-pl-0">
                     <a class="d-flex align-items-center" href="./user-profile.html">
                       <div class="avatar avatar-circle">
-                        <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['profile_image'])?'/image/'.$company_array['profile_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
+                        <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['job_image'])?'/image/'.$company_array['job_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
                       </div>
                       <div class="ml-3">
-                        <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['firstname']; ?> <?= $company_array['lastname']; ?><i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                        <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['title']; ?></span>
+                        <span class="d-block font-size-sm text-body"><?= $company_array['subtitle']; ?></span>
+                      </div>
+                    </a>
+                  </td>
+                  <td class="table-column-pl-0">
+                  <a class="d-flex align-items-center" href="./user-profile.html">
+                      <div class="ml-3">
+                        <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['username']; ?></span>
                         <span class="d-block font-size-sm text-body"><?= $company_array['email']; ?></span>
                       </div>
                     </a>
                   </td>
-                  <td>
-                    <span class="d-block h5 mb-0"><?= $company_array['contact']; ?></span>
-                  </td>
-                  <td><?= $company_array['country']; ?> <span class="text-hide">Code: <?= $company_array['country']; ?></span></td>
+                  <td><span class="d-block h5 mb-0"><?= $company_array['currency']; ?> <?= $company_array['salary']; ?></span></td>
                   <td>
                     <?php if($company_array['status']=="active"){ ?>
                       <span class="legend-indicator bg-success"></span>Active
@@ -232,8 +218,8 @@ require('./navbar.php');
                       <span class="legend-indicator bg-second"></span>BlackList
                     <?php } ?>
                   </td>
-                  <td><?= $company_array['created_at']; ?></td>
-                  <td><?= $company_array['permission']; ?></td>
+                  <td><?= $company_array['request_date']; ?></td>
+                  <td><?= $company_array['job_date']; ?></td>
                   <td>
                       <div class="btn-group" role="group">
                       <?php if($company_array['status']=="pending" || $company_array['status']=="drop"){ ?>
@@ -368,59 +354,6 @@ require('./navbar.php');
     <!-- ========== END MAIN CONTENT ========== -->
 
     <!-- ========== SECONDARY CONTENTS ========== -->
-
-    <!-- Welcome Message Modal -->
-    <div class="modal fade" id="welcomeMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <!-- Header -->
-          <div class="modal-close">
-            <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary" data-dismiss="modal" aria-label="Close">
-              <i class="tio-clear tio-lg"></i>
-            </button>
-          </div>
-          <!-- End Header -->
-
-          <!-- Body -->
-          <div class="modal-body p-sm-5">
-            <div class="text-center">
-              <div class="w-75 w-sm-50 mx-auto mb-4">
-                <img class="img-fluid" src="<?= $assets; ?>/assets/svg/illustrations/graphs.svg" alt="Image Description">
-              </div>
-
-              <h4 class="h1">Welcome to Front</h4>
-
-              <p>We're happy to see you in our community.</p>
-            </div>
-          </div>
-          <!-- End Body -->
-
-          <!-- Footer -->
-          <div class="modal-footer d-block text-center py-sm-5">
-            <small class="text-cap mb-4">Trusted by the world's best teams</small>
-
-            <div class="w-85 mx-auto">
-              <div class="row justify-content-between">
-                <div class="col">
-                  <img class="img-fluid ie-welcome-brands" src="<?= $assets; ?>/assets/svg/brands/gitlab-gray.svg" alt="Image Description">
-                </div>
-                <div class="col">
-                  <img class="img-fluid ie-welcome-brands" src="<?= $assets; ?>/assets/svg/brands/fitbit-gray.svg" alt="Image Description">
-                </div>
-                <div class="col">
-                  <img class="img-fluid ie-welcome-brands" src="<?= $assets; ?>/assets/svg/brands/flow-xo-gray.svg" alt="Image Description">
-                </div>
-                <div class="col">
-                  <img class="img-fluid ie-welcome-brands" src="<?= $assets; ?>/assets/svg/brands/layar-gray.svg" alt="Image Description">
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Footer -->
-        </div>
-      </div>
-    </div>
-    <!-- End Welcome Message Modal -->
 
     <!-- ========== END SECONDARY CONTENTS ========== -->
 

@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Title -->
-    <title>Dashboard | Front - Admin &amp; Dashboard Template</title>
+    <title>Company &amp; Company Request</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="./favicon.ico">
@@ -92,7 +92,15 @@
                      }'>
                     <div class="avatar avatar-sm avatar-circle">
                       <img class="avatar-img" src="<?php if(!empty($result['profile_image'])){ echo "../image/".$result['profile_image'];}else{ echo "../assets/img/160x160/img6.jpg"; } ?>" alt="Image Description">
-                      <span class="avatar-status avatar-sm-status avatar-status-success"></span>
+                      <?php if($result['status']=='active'){ ?>
+                        <span class="avatar-status avatar-sm-status avatar-status-success"></span>
+                      <?php }elseif($result['status']=='pending'){ ?>
+                        <span class="avatar-status avatar-sm-status avatar-status-warning"></span>
+                      <?php }elseif($result['status']=='drop'){ ?>
+                        <span class="avatar-status avatar-sm-status avatar-status-danger"></span>
+                      <?php }elseif($result['status']=='blacklist'){ ?>
+                        <span class="avatar-status avatar-sm-status avatar-status-secondary"></span>
+                      <?php } ?>
                     </div>
                   </a>
 
@@ -163,20 +171,7 @@
             <!-- Content -->
             <div class="navbar-vertical-content">
               <ul class="navbar-nav navbar-nav-lg nav-tabs">
-                <!-- Dashboards -->
-                <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./index.php" title="Welcome page" data-placement="left">
-                  <i class="tio-home-vs-1-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Dashboard</span>
-                  </a>
-                </li>
                 
-                <!-- End Dashboards -->
-
-                <li class="nav-item">
-                  <div class="nav-divider"></div>
-                </li>
-
                 <!-- Start Company -->
                 <li class="nav-item">
                   <small class="nav-subtitle" title="Pages">Company</small>
@@ -184,7 +179,7 @@
                 </li>
 
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/account-profile.php") ? "active" : ""; ?>" href="./account-profile.php" title="Welcome page" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./index.php" title="Welcome page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Account Profile</span>
                   </a>
@@ -222,12 +217,12 @@
                   </a>
                 </li>
 
-                <li class="nav-item ">
+                <!-- <li class="nav-item ">
                   <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User Rating Page</span>
                   </a>
-                </li>
+                </li> -->
                 <!-- End user -->
 
                 <li class="nav-item">
