@@ -57,12 +57,12 @@ include('navbar.php');
   }
 
   if (isset($_POST['password-submit'])) {
-    if (!empty($_POST['currentPassword']) & !empty($_POST['confirmNewPassword']) & !empty($_POST['newPassword'])) {
+    if (!empty($_POST['currentPassword']) && !empty($_POST['confirmNewPassword']) && !empty($_POST['newPassword'])) {
       $qry = "SELECT * FROM user WHERE id='$_SESSION[userid]'";
       $result = mysqli_fetch_assoc(mysqli_query($conn, $qry));
       if ($result['password'] == $_POST['currentPassword']) {
         if ($_POST['confirmNewPassword'] == $_POST['newPassword']) {
-          $update_qry = "UPDATE user SET password='$_POST[currentPassword]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
+          $update_qry = "UPDATE user SET `password`='$_POST[newPassword]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
           if (mysqli_query($conn, $update_qry)) {
             echo "<script>Swal.fire('Update Password Success!','Your information already update...','success');window.location.href = '#passwordSection';</script>";
           } else { echo "<script>Swal.fire('Update Password Error!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
@@ -73,7 +73,7 @@ include('navbar.php');
 
   if(isset($_POST['basic-submit'])){
     $datetime = date("YmdHis");
-
+    
     $targetDir = "../image/";
     $fileName = basename($_FILES["profile_image"]["name"]);
     $Extension=explode(".", $fileName);
@@ -81,7 +81,7 @@ include('navbar.php');
     $NewFileName=$prod .".".end($Extension);
     $targetFilePath = $targetDir . $NewFileName;
     $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-
+    
     if(!empty($_FILES["profile_image"]["name"])){
         // Allow certain file formats
         $allowTypes = array('jpg','png','jpeg','gif','pdf');
@@ -120,21 +120,12 @@ include('navbar.php');
         }
     }
 
-    if(!isset($_POST['account'])){ $account = 0; }else{ $account = 1; }
-    if(!isset($_POST['it_enginner'])){ $it_enginner = 0; }else{ $it_enginner = 1; }
-    if(!isset($_POST['multimedia'])){ $multimedia = 0; }else{ $multimedia = 1; }
-    if(!isset($_POST['electronic_enginner'])){ $electronic_enginner = 0; }else{ $electronic_enginner = 1; }
-
-    $update_qry = "UPDATE company_detail SET 
+    $update_qry = "UPDATE jobseeker_detail SET 
     firstname='$_POST[firstName]',
     lastname='$_POST[lastName]',
     contact='$_POST[contact]',
-    organization='$_POST[organization]',
-    account_business='$account',
-    it_engineer='$it_enginner',
-    multimedia='$multimedia',
-    eletronic='$electronic_enginner',
-    country='$_POST[country]',
+    coursetype='$_POST[coursetype]',
+    -- country='$_POST[country]',
     city='$_POST[city]',
     state='$_POST[state]',
     addressline1='$_POST[addressLine1]',
@@ -218,6 +209,11 @@ include('navbar.php');
                 <li class="nav-item">
                   <a class="nav-link active" href="#content">
                     <i class="tio-user-outlined nav-icon"></i> Basic information
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#resumeSection">
+                    <i class="tio-online nav-icon"></i> Resume
                   </a>
                 </li>
                 <li class="nav-item">
@@ -314,97 +310,23 @@ include('navbar.php');
               <!-- End Form Group -->
 
               <!-- Form Group -->
-              <!-- <div class="row form-group">
-                    <label for="emailLabel" class="col-sm-3 col-form-label input-label">Email</label>
-
-                    <div class="col-sm-9">
-                      <input type="email" class="form-control" name="email" id="emailLabel" placeholder="Email" aria-label="Email" value="mark@example.com">
-                    </div>
-                  </div> -->
-              <!-- End Form Group -->
-
-              <!-- Form Group -->
               <div class="row form-group">
                 <label for="phoneLabel" class="col-sm-3 col-form-label input-label">Phone <span class="input-label-secondary">(Optional)</span></label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="+x(xxx)xxx-xx-xx" aria-label="+x(xxx)xxx-xx-xx" value="<?= $result['contact']; ?>" data-hs-mask-options='{
-                               "template": "+0(000)000-00-00"
+                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="Phone Number" aria-label="Phone Number" value="<?= $result['contact']; ?>" data-hs-mask-options='{
+                               
                              }'>
                 </div>
               </div>
               <!-- End Form Group -->
 
               <!-- Form Group -->
-              <div class="row form-group">
-                <label for="organizationLabel" class="col-sm-3 col-form-label input-label">Organization</label>
+               <div class="row form-group">
+                <label for="coursetype" class="col-sm-3 col-form-label input-label">Course Type</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" name="organization" id="organizationLabel" placeholder="Your organization" aria-label="Your organization" value="<?= $result['organization']; ?>">
-                </div>
-              </div>
-              <!-- End Form Group -->
-
-              <!-- Form Group -->
-              <!-- <div class="row form-group">
-                    <label for="departmentLabel" class="col-sm-3 col-form-label input-label">Department</label>
-
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control" name="department" id="departmentLabel" placeholder="Your department" aria-label="Your department">
-                    </div>
-                  </div> -->
-              <!-- End Form Group -->
-
-              <!-- Form Group -->
-              <div id="accountType" class="row form-group">
-                <label class="col-sm-3 col-form-label input-label">Course type</label>
-
-                <div class="col-sm-9">
-                  <div class="input-group input-group-sm-down-break">
-                    <!-- Custom Radio -->
-                    <div class="form-control">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="account" id="customInlineCheck1" class="custom-control-input indeterminate-checkbox" <?php if ($result['account_business'] == 1) {
-                                                                                                                                            echo "checked";
-                                                                                                                                          }; ?>>
-                        <label class="custom-control-label" for="customInlineCheck1">Account Business</label>
-                      </div>
-                    </div>
-                    <!-- End Custom Radio -->
-
-                    <!-- Custom Radio -->
-                    <div class="form-control">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="it_enginner" id="customInlineCheck2" class="custom-control-input indeterminate-checkbox" <?php if ($result['it_engineer'] == 1) {
-                                                                                                                                                echo "checked";
-                                                                                                                                              }; ?>>
-                        <label class="custom-control-label" for="customInlineCheck2">IT Engineering</label>
-                      </div>
-                    </div>
-                    <!-- End Custom Radio -->
-
-                    <!-- Custom Radio -->
-                    <div class="form-control">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="multimedia" id="customInlineCheck3" class="custom-control-input indeterminate-checkbox" <?php if ($result['multimedia'] == 1) {
-                                                                                                                                                echo "checked";
-                                                                                                                                              }; ?>>
-                        <label class="custom-control-label" for="customInlineCheck3">Multimedia Design</label>
-                      </div>
-                    </div>
-                    <!-- End Custom Radio -->
-
-                    <!-- Custom Radio -->
-                    <div class="form-control">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="electronic_enginner" id="customInlineCheck4" class="custom-control-input indeterminate-checkbox" <?php if ($result['eletronic'] == 1) {
-                                                                                                                                                          echo "checked";
-                                                                                                                                                        }; ?>>
-                        <label class="custom-control-label" for="customInlineCheck4">Electronic Engineering</label>
-                      </div>
-                    </div>
-                    <!-- End Custom Radio -->
-                  </div>
+                  <input type="text" class="form-control" name="coursetype" id="coursetype" placeholder="Your Course Type" aria-label="Your coursetype" value="<?= $result['organization']; ?>">
                 </div>
               </div>
               <!-- End Form Group -->
@@ -423,7 +345,7 @@ include('navbar.php');
                     </select>
                   </div>
                   <!-- End Select -->
-
+                  
                   <div class="mb-3">
                     <input type="text" class="form-control" name="city" id="cityLabel" placeholder="City" aria-label="City" value="<?= $result['city']; ?>">
                   </div>
@@ -456,6 +378,111 @@ include('navbar.php');
               <div class="d-flex justify-content-end">
                 <button type="submit" name="basic-submit" class="btn btn-primary">Save changes</button>
               </div>
+              </form>
+              <!-- End Form -->
+            </div>
+            <!-- End Body -->
+          </div>
+          <!-- End Card -->
+
+           <!-- Card -->
+           <div id="resumeSection" class="card mb-3 mb-lg-5">
+            <div class="card-header">
+              <h3 class="card-title h4">Resume</h3>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body">
+              <!-- Form -->
+              <form method="post" action="">
+                <!-- Form Group -->
+                <div class="row form-group">
+                  <label for="newEmailLabel" class="col-sm-3 col-form-label input-label">Uploaded Resume</label>
+
+                  <div class="col-sm-9">
+                      <!-- List Item -->
+                      <li class="list-group-item">
+                        <div class="row align-items-center gx-2">
+                          <div class="col-auto">
+                            <img class="avatar avatar-xs avatar-4by3" src="../assets/svg/brands/pdf.svg" alt="Image Description">
+                          </div>
+
+                          <div class="col">
+                            <h5 class="mb-0">
+                              <a class="text-dark" href="#">Dashboard layout flow</a>
+                            </h5>
+                            <ul class="list-inline list-separator small">
+                              <li class="list-inline-item">Updated 1 hour ago</li>
+                              <li class="list-inline-item">1mb</li>
+                            </ul>
+                          </div>
+
+                          <div class="col-auto">
+                            <!-- Unfold -->
+                            <div class="hs-unfold">
+                              <a class="js-hs-unfold-invoker btn btn-sm btn-white" href="javascript:;"
+                                data-hs-unfold-options='{
+                                  "target": "#filesListDropdown2",
+                                  "type": "css-animation"
+                                }'>
+                                <span class="d-none d-sm-inline-block mr-1">More</span>
+                                <i class="tio-chevron-down"></i>
+                              </a>
+
+                              <div id="filesListDropdown2" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right" style="min-width: 13rem;">
+                           
+                                <a class="dropdown-item" href="#">
+                                  <i class="tio-download-to dropdown-item-icon"></i> Download
+                                </a>
+
+                                <div class="dropdown-divider"></div>
+
+                                <a class="dropdown-item" href="#">
+                                  <i class="tio-delete-outlined dropdown-item-icon"></i> Delete
+                                </a>
+                              </div>
+                            </div>
+                            <!-- End Unfold -->
+                          </div>
+                        </div>
+                        <!-- End Row -->
+                      </li>
+                      <!-- End List Item -->
+                  </div>
+                </div>
+                <!-- End Form Group -->
+
+                <!-- Form Group -->
+                <div class="row form-group">
+                  <label for="newEmailLabel" class="col-sm-3 col-form-label input-label">New Resume</label>
+
+                    <div class="col-sm-auto">
+                      <div class="btn-group" role="group">
+                        <a class="btn btn-primary" href="javascript:;" data-toggle="modal" data-target="#uploadFilesModal"><i class="tio-upload-on-cloud mr-1"></i> Upload</a>
+
+                        <!-- Unfold -->
+                        <div class="hs-unfold btn-group">
+                          <a class="js-hs-unfold-invoker btn btn-icon btn-primary dropdown-toggle dropdown-toggle-empty" href="javascript:;"
+                            data-hs-unfold-options='{
+                              "target": "#uploadGroupDropdown",
+                              "type": "css-animation"
+                            }'></a>
+
+                          <div id="uploadGroupDropdown" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right">
+                              <a class="dropdown-item" href="javascript:;" data-toggle="modal" data-target="#uploadFilesModal">
+                                <i class="tio-file-add-outlined dropdown-item-icon"></i> Upload files
+                              </a>
+                          </div>
+                        </div>
+                        <!-- End Unfold -->
+                      </div>
+                    </div>
+                </div>
+                <!-- End Form Group -->
+
+                <div class="d-flex justify-content-end">
+                  <button type="submit" name="resume_submit" class="btn btn-primary">Save changes</button>
+                </div>
               </form>
               <!-- End Form -->
             </div>
@@ -675,7 +702,49 @@ include('navbar.php');
     </div>
   </div>
   <!-- End Welcome Message Modal -->
+  
+  <!-- Upload files Modal -->
+  <div class="modal fade" id="uploadFilesModal" tabindex="-1" role="dialog" aria-labelledby="uploadFilesModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <!-- Header -->
+        <div class="modal-header">
+          <h4 id="uploadFilesModalTitle" class="modal-title">Add files</h4>
 
+          <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary" data-dismiss="modal" aria-label="Close">
+            <i class="tio-clear tio-lg"></i>
+          </button>
+        </div>
+        <!-- End Header -->
+
+        <!-- Body -->
+        <div class="modal-body">
+          <!-- Dropzone -->
+          <div id="attachFilesLabel" class="js-dropzone dropzone-custom custom-file-boxed">
+            <div class="dz-message custom-file-boxed-label">
+              <img class="avatar avatar-xl avatar-4by3 mb-3" src="../assets/svg/illustrations/browse.svg" alt="Image Description">
+
+              <h5>Drag and drop your file here</h5>
+
+              <p class="mb-2">or</p>
+
+              <span class="btn btn-sm btn-white">Browse files</span>
+            </div>
+          </div>
+          <!-- End Dropzone -->
+        </div>
+        <!-- End Body -->
+
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-white" data-dismiss="modal" aria-label="Close">Cancel</button>
+          <button type="button" class="btn btn-primary">Upload</button>
+        </div>
+        <!-- End Footer -->
+      </div>
+    </div>
+  </div>
+  <!-- End Upload files Modal -->
   <!-- ========== END SECONDARY CONTENTS ========== -->
 
   <!-- JS Global Compulsory  -->
@@ -754,7 +823,6 @@ include('navbar.php');
       $('.js-file-attach').each(function() {
         var customFile = new HSFileAttach($(this)).init();
       });
-
 
       // INITIALIZATION OF MASKED INPUT
       // =======================================================
