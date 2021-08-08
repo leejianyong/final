@@ -124,8 +124,8 @@ include('navbar.php');
     firstname='$_POST[firstName]',
     lastname='$_POST[lastName]',
     contact='$_POST[contact]',
-    coursetype='$_POST[coursetype]',
-    -- country='$_POST[country]',
+    course_type='$_POST[course_type]',
+    country='$_POST[country]',
     city='$_POST[city]',
     state='$_POST[state]',
     addressline1='$_POST[addressLine1]',
@@ -137,13 +137,16 @@ include('navbar.php');
       $update_qry .= "profile_image='$profile_image',";
     }
     $update_qry .= "updated_at='$Date' 
-    WHERE company_id='$_SESSION[userid]'";
+    WHERE user_id='$_SESSION[userid]'";
     if (mysqli_query($conn, $update_qry)) {
       echo "<script>Swal.fire('Update Basic Information Success!','Your information already update...','success');window.location.href = '#content';</script>";
     } else { echo "<script>Swal.fire('Update Basic Information Error!','Your information update failed...','error');window.location.href = '#content';</script>"; }
   }
 
-  include('profile-detail.php');
+  $qry = "SELECT user.*,jobseeker_detail.* FROM user LEFT JOIN jobseeker_detail ON user.id = jobseeker_detail.user_id WHERE user.id = '$_SESSION[userid]'";
+  $sql = mysqli_query($conn,$qry);
+  $result = mysqli_fetch_assoc($sql);
+
   ?>
 
   <!-- ========== MAIN CONTENT ========== -->
@@ -323,10 +326,10 @@ include('navbar.php');
 
               <!-- Form Group -->
                <div class="row form-group">
-                <label for="coursetype" class="col-sm-3 col-form-label input-label">Course Type</label>
+                <label for="course_type" class="col-sm-3 col-form-label input-label">Course Type</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" name="coursetype" id="coursetype" placeholder="Your Course Type" aria-label="Your coursetype" value="<?= $result['organization']; ?>">
+                  <input type="text" class="form-control" name="course_type" id="course_type" placeholder="Your Course Type" aria-label="Your course_type" value="<?= $result['course_type']; ?>">
                 </div>
               </div>
               <!-- End Form Group -->
@@ -668,7 +671,7 @@ include('navbar.php');
             <div class="w-75 w-sm-50 mx-auto mb-4">
               <img class="img-fluid" src="../assets/svg/illustrations/graphs.svg" alt="Image Description">
             </div>
-            
+
             <h4 class="h1">Welcome to Front</h4>
 
             <p>We're happy to see you in our community.</p>
@@ -776,11 +779,15 @@ include('navbar.php');
     $(document).on('ready', function() {
       // =======================================================
 
+
       // BUILDER TOGGLE INVOKER
       // =======================================================
       $('.js-navbar-vertical-aside-toggle-invoker').click(function() {
         $('.js-navbar-vertical-aside-toggle-invoker i').tooltip('hide');
       });
+
+
+
 
       // INITIALIZATION OF NAVBAR VERTICAL NAVIGATION
       // =======================================================
