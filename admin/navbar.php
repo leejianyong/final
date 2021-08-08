@@ -293,7 +293,7 @@
 
                 <!-- Start Group -->
                 <li class="nav-item">
-                  <small class="nav-subtitle" title="Pages">About Me</small>
+                  <small class="nav-subtitle" title="Pages">About</small>
                   <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                 </li>
 

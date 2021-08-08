@@ -1,16 +1,5 @@
 <?php
-include_once('security.php');
-if($request['status']=="active"){
-  echo "<script>window.location.href='index.php'</script>";
-}elseif($request['status']=="pending"){
-  // echo "<script>window.location.href='index.php'</script>";
-}elseif($request['status']=="drop"){
-  // echo "<script>window.location.href='index.php'</script>";
-}elseif($request['status']=="blacklist"){
-  // echo "<script>window.location.href='index.php'</script>";
-}else{
-  
-}
+include_once('navbar.php');
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +11,7 @@ if($request['status']=="active"){
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Title -->
-  <title>Company Approve Details</title>
+  <title>Company Account Details</title>
 
   <!-- Favicon -->
   <link rel="shortcut icon" href="./favicon.ico">
@@ -163,7 +152,6 @@ if($request['status']=="active"){
       echo "<script>Swal.fire('Update Basic Information Success!','Your information already update...','success');window.location.href = '#content';</script>";
     } else { echo "<script>Swal.fire('Update Basic Information Error!','Your information update failed...','error');window.location.href = '#content';</script>"; }
   }
-
   $qry = "SELECT user.*,company_detail.* FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.id = '$_SESSION[userid]'";
   $sql = mysqli_query($conn,$qry);
   $result = mysqli_fetch_assoc($sql);
@@ -181,13 +169,13 @@ if($request['status']=="active"){
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb breadcrumb-no-gutter">
                 <li class="breadcrumb-item"><a class="breadcrumb-link" href="../index.php">Pages</a></li>
-                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Account</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Approve</li>
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Company</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Account</li>
               </ol>
             </nav>
 
-            <h1 class="page-header-title">Waiting For The Approved ...</h1>
-            <h5 class="page-header-title text-muted">Fill in your company information ...</h1>
+            <h1 class="page-header-title">Company Account Detail</h1>
+            <h5 class="page-header-title text-muted">Fill in your Company Accoount information ...</h1>
           </div>
 
           <!-- <div class="col-sm-auto">

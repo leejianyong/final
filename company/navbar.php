@@ -1,8 +1,9 @@
 <?php
   include('security.php');
   include_once('asset.php');
-  // include_once("../auth/db.php");
-  include('profile-detail.php');
+  $qry = "SELECT user.*,company_detail.* FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.id = '$_SESSION[userid]'";
+  $sql = mysqli_query($conn,$qry);
+  $result = mysqli_fetch_assoc($sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +45,7 @@
         <div class="navbar-nav-wrap">
           <div class="navbar-brand-wrapper">
             <!-- Logo -->
-            <a class="navbar-brand" href="./index.html" aria-label="Front">
+            <a class="navbar-brand" href="./index.php" aria-label="Front">
               <img class="navbar-brand-logo" src="<?= $assets; ?>/assets/img/logo_png/logo_ysl_lg2.png" alt="Logo">
               <img class="navbar-brand-logo-mini" src="<?= $assets; ?>/assets/img/logo_png/logo_y2.png" alt="Logo">
             </a>
@@ -145,7 +146,7 @@
             <div class="navbar-brand-wrapper justify-content-between">
               <!-- Logo -->
               
-                <a class="navbar-brand" href="./index.html" aria-label="Front">
+                <a class="navbar-brand" href="./index.php" aria-label="Front">
                   <img class="navbar-brand-logo" src="<?= $assets; ?>/assets/img/logo_png/logo_ysl_lg2.png" alt="Logo">
                   <img class="navbar-brand-logo-mini" src="<?= $assets; ?>/assets/img/logo_png/logo_y2.png" alt="Logo">
                 </a>
@@ -183,9 +184,9 @@
                 </li>
 
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/company_list.php") ? "active" : ""; ?>" href="./company_list.php" title="Welcome page" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/account-profile.php") ? "active" : ""; ?>" href="./account-profile.php" title="Welcome page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Company Page</span>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Account Profile</span>
                   </a>
                 </li>
 
@@ -197,9 +198,9 @@
                 </li>
 
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/company_black_list.php") ? "active" : ""; ?>" href="./company_black_list.php" title="Welcome page" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/job_black_list.php") ? "active" : ""; ?>" href="./job_black_list.php" title="job_black_list page" data-placement="left">
                   <i class="tio-lock-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Company BlackList</span>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Job BlackList</span>
                   </a>
                 </li>
                 <!-- End Company -->
@@ -215,9 +216,9 @@
                 </li>
 
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/user-applied.php") ? "active" : ""; ?>" href="./user-applied.php" title="User applied page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User Aprovel Page</span>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User Appiled Page</span>
                   </a>
                 </li>
 
@@ -225,13 +226,6 @@
                   <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User Rating Page</span>
-                  </a>
-                </li>
-
-                <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
-                  <i class="tio-lock-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User BlackList</span>
                   </a>
                 </li>
                 <!-- End user -->
@@ -242,21 +236,14 @@
 
                 <!-- Start Group -->
                 <li class="nav-item">
-                  <small class="nav-subtitle" title="Pages">Group</small>
+                  <small class="nav-subtitle" title="Pages">About</small>
                   <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                 </li>
 
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."../index.php") ? "active" : ""; ?>" href="../index.php" title="Welcome page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Category</span>
-                  </a>
-                </li>
-
-                <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
-                  <i class="tio-pages-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Hr</span>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">About Me</span>
                   </a>
                 </li>
                 <!-- End Group -->

@@ -1,6 +1,6 @@
 <?php
 include('navbar.php');
-$job_qry = "SELECT * FROM `compony_job_request` WHERE company_id = '$_SESSION[userid]' AND deleted_at IS NULL";
+$job_qry = "SELECT * FROM `compony_job_request` WHERE company_id = '$_SESSION[userid]' AND deleted_at IS NULL AND status = 'blacklist'";
 $job_sql = mysqli_query($conn,$job_qry);
 $job_row = mysqli_num_rows($job_sql);
 ?>
@@ -11,7 +11,7 @@ $job_row = mysqli_num_rows($job_sql);
         <div class="page-header">
           <div class="row align-items-center mb-3">
             <div class="col-sm mb-2 mb-sm-0">
-              <h1 class="page-header-title">Job List <span class="badge badge-soft-dark ml-2"><?= $job_row; ?></span></h1>
+              <h1 class="page-header-title">Black Job List <span class="badge badge-soft-dark ml-2"><?= $job_row; ?></span></h1>
 
               <!-- <div class="mt-2">
                 <a class="text-body mr-3" href="javascript:;" data-toggle="modal" data-target="#exportProductsModal">
@@ -23,9 +23,7 @@ $job_row = mysqli_num_rows($job_sql);
               </div> -->
             </div>
 
-            <div class="col-sm-auto">
-              <a class="btn btn-primary" href="./project-add.php">Add Job Request</a>
-            </div>
+         
           </div>
           <!-- End Row -->
         </div>

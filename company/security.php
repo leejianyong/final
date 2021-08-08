@@ -15,16 +15,21 @@ if(isset($_SESSION['userid'])){
             if($request['status']=="pending"){
                 if($_SERVER['REQUEST_URI']!=="/company_job/company/account-setting.php"){
                     echo "<script>window.location.href='account-setting.php'</script>";
-                }else{
                 }
             }elseif($request['status']=="active"){
+
                 // echo "<script>window.location.href='index.php'</script>";
-            }elseif($request['status']=="drop"){
-                // echo "<script>window.location.href='index.php'</script>";
-            }elseif($request['status']=="blacklist"){
-                // echo "<script>window.location.href='index.php'</script>";
-            }else{
                 
+            }elseif($request['status']=="drop"){
+                if($_SERVER['REQUEST_URI']!=="/company_job/company/account-setting.php"){
+                    echo "<script>window.location.href='account-setting.php'</script>";
+                }
+            }elseif($request['status']=="blacklist"){
+                if($_SERVER['REQUEST_URI']!=="/company_job/company/account-setting.php"){
+                    echo "<script>window.location.href='account-setting.php'</script>";
+                }
+            }else{
+
             }
         }
     }
