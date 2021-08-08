@@ -668,7 +668,7 @@ include('navbar.php');
             <div class="w-75 w-sm-50 mx-auto mb-4">
               <img class="img-fluid" src="../assets/svg/illustrations/graphs.svg" alt="Image Description">
             </div>
-
+            
             <h4 class="h1">Welcome to Front</h4>
 
             <p>We're happy to see you in our community.</p>
@@ -776,15 +776,11 @@ include('navbar.php');
     $(document).on('ready', function() {
       // =======================================================
 
-
       // BUILDER TOGGLE INVOKER
       // =======================================================
       $('.js-navbar-vertical-aside-toggle-invoker').click(function() {
         $('.js-navbar-vertical-aside-toggle-invoker i').tooltip('hide');
       });
-
-
-
 
       // INITIALIZATION OF NAVBAR VERTICAL NAVIGATION
       // =======================================================
