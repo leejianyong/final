@@ -1912,16 +1912,15 @@
                     <label for="locationLabel" class="col-sm-3 col-form-label input-label">Location</label>
 
                     <div class="col-sm-9">
-                      <!-- Select -->
-                      <div class="mb-3">
-                        <select id="locationLabel"
-                                data-hs-select2-options='{
-                                  "searchInputPlaceholder": "Search a country"
-                                }'>
-                          <option value=""></option>
-                        </select>
-                      </div>
-                      <!-- End Select -->
+                        <!-- Select -->
+                        <div class="mb-3">
+                          <select name="country" id="locationLabel" data-hs-select2-options='{
+                                        "searchInputPlaceholder": "Search a country"
+                                      }'>
+                            <option value="<?= $result['country']; ?>"></option>
+                          </select>
+                        </div>
+                        <!-- End Select -->
 
                       <div class="mb-3">
                         <input type="text" class="form-control" name="city" id="cityLabel" placeholder="City" aria-label="City" value="London">
