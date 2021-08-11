@@ -8,8 +8,6 @@ if (mysqli_num_rows($company_sql) != 1) {
 $company_array = mysqli_fetch_array($company_sql);
 ?>
 
-<!-- End Navbar Vertical -->
-
 <main id="content" role="main" class="main">
     <!-- Content -->
     <div class="content container-fluid">
@@ -75,10 +73,10 @@ $company_array = mysqli_fetch_array($company_sql);
 
                     <ul class="nav nav-tabs align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link active" href="user-profile.html">Profile</a>
+                            <a class="nav-link active" href="profile-company.php?detail=<?= $_GET['detail']; ?>">Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="user-profile-teams.html">Teams</a>
+                            <a class="nav-link " href="profile-company-job.php?detail=<?= $_GET['detail']; ?>">JobList</a>
                         </li>
                         <li class="nav-item ml-auto">
                             <!-- Unfold -->
@@ -161,7 +159,6 @@ $company_array = mysqli_fetch_array($company_sql);
                                     <li class="py-0">
                                         <small class="card-subtitle">About</small>
                                     </li>
-
                                     <li>
                                         <i class="tio-user-outlined nav-icon"></i>
                                         <?= $company_array['firstname']; ?> <?= $company_array['lastname']; ?>
@@ -178,7 +175,6 @@ $company_array = mysqli_fetch_array($company_sql);
                                     <li class="pt-2 pb-0">
                                         <small class="card-subtitle">Contacts</small>
                                     </li>
-
                                     <li>
                                         <i class="tio-online nav-icon"></i>
                                         <?= $company_array['email']; ?>
@@ -187,43 +183,27 @@ $company_array = mysqli_fetch_array($company_sql);
                                         <i class="tio-android-phone-vs nav-icon"></i>
                                         <?= $company_array['contact']; ?>
                                     </li>
-
                                     <li class="pt-2 pb-0">
-                                        <small class="card-subtitle">AddressLine1</small>
+                                        <small class="card-subtitle">Location</small>
                                     </li>
-
                                     <li>
                                         <i class="tio-briefcase-outlined nav-icon"></i>
                                         <?= $company_array['addressline1']; ?>
                                     </li>
                                     <?php if(!empty($company_array['addressline2'])){ ?>
-                                    <li class="pt-2 pb-0">
-                                        <small class="card-subtitle">AddressLine2</small>
-                                    </li>
-
                                     <li>
                                         <i class="tio-briefcase-outlined nav-icon"></i>
                                         <?= $company_array['addressline2']; ?>
                                     </li>
                                     <?php } ?>
-                                    <li class="pt-2 pb-0">
-                                        <small class="card-subtitle">City</small>
-                                    </li>
-
                                     <li>
                                         <i class="tio-briefcase-outlined nav-icon"></i>
                                         <?= $company_array['city']; ?>
                                     </li>
-
-                                    <li class="pt-2 pb-0">
-                                        <small class="card-subtitle">State</small>
-                                    </li>
-
                                     <li>
                                         <i class="tio-briefcase-outlined nav-icon"></i>
                                         <?= $company_array['state']; ?>
                                     </li>
-                                    
                                 </ul>
                             </div>
                             <!-- End Body -->
@@ -231,42 +211,18 @@ $company_array = mysqli_fetch_array($company_sql);
                         <!-- End Card -->
                     </div>
 
+                    
+
                     <div class="col-lg-8">
                         <!-- Card -->
                         <div class="card mb-3 mb-lg-5">
                             <!-- Header -->
                             <div class="card-header">
-                                <h5 class="card-header-title">Activity stream</h5>
-
-                                <!-- Unfold -->
-                                <div class="hs-unfold">
-                                    <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-ghost-secondary rounded-circle" href="javascript:;" data-hs-unfold-options='{
-                                        "target": "#contentActivityStreamDropdown",
-                                        "type": "css-animation"
-                                        }'>
-                                        <i class="tio-more-vertical"></i>
-                                    </a>
-
-                                    <div id="contentActivityStreamDropdown" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
-                                        <span class="dropdown-header">Settings</span>
-
-                                        <a class="dropdown-item" href="#">
-                                            <i class="tio-share dropdown-item-icon"></i> Share connections
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="tio-info-outined dropdown-item-icon"></i> Suggest edits
-                                        </a>
-
-                                        <div class="dropdown-divider"></div>
-
-                                        <span class="dropdown-header">Feedback</span>
-
-                                        <a class="dropdown-item" href="#">
-                                            <i class="tio-chat-outlined dropdown-item-icon"></i> Report
-                                        </a>
-                                    </div>
-                                </div>
-                                <!-- End Unfold -->
+                            <?php 
+                                $job_qry = "SELECT user.*,user.status as user_status,compony_job_request.*,compony_job_request.status as job_status,compony_job_request.id as job_id,compony_job_request.created_at as job_date FROM user LEFT JOIN compony_job_request ON user.id = compony_job_request.company_id WHERE user.id='$_GET[detail]' AND user.permission = 'company' AND user.status !='blacklist' AND compony_job_request.status !='blacklist' ORDER BY job_id DESC";
+                                $job_sql = mysqli_query($conn,$job_qry);
+                            ?>
+                                <h5 class="card-header-title">Activity Job Request Stream</h5>
                             </div>
                             <!-- End Header -->
 
@@ -274,6 +230,7 @@ $company_array = mysqli_fetch_array($company_sql);
                             <div class="card-body card-body-height" style="height: 30rem;">
                                 <!-- Step -->
                                 <ul class="step step-icon-xs">
+                                    <?php while($job_array = mysqli_fetch_array($job_sql)){ ?>
                                     <!-- Step Item -->
                                     <li class="step-item">
                                         <div class="step-content-wrapper">
@@ -281,10 +238,24 @@ $company_array = mysqli_fetch_array($company_sql);
 
                                             <div class="step-content">
                                                 <h5 class="mb-1">
-                                                    <a class="text-dark" href="#">Task report - uploaded weekly reports</a>
+                                                    <a class="text-dark" href="#"><?= $job_array['title']; ?>
+                                                        <?php if($job_array['job_status'] == 'active'){ ?>
+                                                            <span class="badge badge-soft-success badge-pill"><span class="legend-indicator bg-success"></span>Active</span>
+                                                        <?php }elseif($job_array['job_status'] == 'pending'){ ?>
+                                                            <span class="badge badge-soft-success badge-pill"><span class="legend-indicator bg-warning"></span>Pending</span>
+                                                        <?php }elseif($job_array['job_status'] == 'blacklist'){?>
+                                                            <span class="badge badge-soft-success badge-pill"><span class="legend-indicator bg-second"></span>Blacklist</span>
+                                                        <?php }elseif($job_array['job_status'] == 'drop'){?>
+                                                            <span class="badge badge-soft-success badge-pill"><span class="legend-indicator bg-danger"></span>Suspended</span>
+                                                        <?php }else{ ?>
+                                                            <span class="badge badge-soft-success badge-pill"><span class="legend-indicator bg-second"></span>Unknown</span>
+                                                        <?php } ?>
+                                                    </a>
                                                 </h5>
 
-                                                <p class="font-size-sm mb-1">Added 3 files to task <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fd-7</a></p>
+                                                <p class="font-size-sm mb-1"><?= $job_array['subtitle']; ?>
+                                                    <!-- <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fd-7</a> -->
+                                                </p>
 
                                                 <ul class="list-group">
                                                     <!-- List Item -->
@@ -293,33 +264,11 @@ $company_array = mysqli_fetch_array($company_sql);
                                                             <div class="col">
                                                                 <div class="media">
                                                                     <span class="mt-1 mr-2">
-                                                                        <img class="avatar avatar-xs" src="../assets/svg/brands/excel.svg" alt="Image Description">
+                                                                        <img class="avatar avatar-m" src="../<?= ($job_array['job_image'])?'/image/'.$job_array['job_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
                                                                     </span>
                                                                     <div class="media-body text-truncate">
-                                                                        <span class="d-block font-size-sm text-dark text-truncate" title="weekly-reports.xls">weekly-reports.xls</span>
-                                                                        <small class="d-block text-muted">12kb</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col">
-                                                                <div class="media">
-                                                                    <span class="mt-1 mr-2">
-                                                                        <img class="avatar avatar-xs" src="../assets/svg/brands/word.svg" alt="Image Description">
-                                                                    </span>
-                                                                    <div class="media-body text-truncate">
-                                                                        <span class="d-block font-size-sm text-dark text-truncate" title="weekly-reports.xls">weekly-reports.xls</span>
-                                                                        <small class="d-block text-muted">4kb</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col">
-                                                                <div class="media">
-                                                                    <span class="mt-1 mr-2">
-                                                                        <img class="avatar avatar-xs" src="../assets/svg/brands/word.svg" alt="Image Description">
-                                                                    </span>
-                                                                    <div class="media-body text-truncate">
-                                                                        <span class="d-block font-size-sm text-dark text-truncate" title="monthly-reports.xls">monthly-reports.xls</span>
-                                                                        <small class="d-block text-muted">8kb</small>
+                                                                        <span class="d-block font-size-sm text-dark text-truncate" title="weekly-reports.xls"><?= $job_array['currency']; ?> <?= $job_array['salary']; ?></span>
+                                                                        <small class="d-block text-muted"><?= $job_array['description']; ?></small>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -328,165 +277,16 @@ $company_array = mysqli_fetch_array($company_sql);
                                                     <!-- End List Item -->
                                                 </ul>
 
-                                                <small class="text-muted text-uppercase">Now</small>
+                                                <small class="text-muted text-uppercase"><?= $job_array['job_date']; ?></small>
                                             </div>
                                         </div>
                                     </li>
                                     <!-- End Step Item -->
-
-                                    <!-- Step Item -->
-                                    <li class="step-item">
-                                        <div class="step-content-wrapper">
-                                            <span class="step-icon step-icon-pseudo step-icon-soft-dark"></span>
-
-                                            <div class="step-content">
-                                                <h5 class="mb-1">
-                                                    <a class="text-dark" href="#">Project status updated</a>
-                                                </h5>
-
-                                                <p class="font-size-sm mb-1">Marked <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fr-6</a> as <span class="badge badge-soft-success badge-pill"><span class="legend-indicator bg-success"></span>"Completed"</span></p>
-
-                                                <small class="text-muted text-uppercase">Today</small>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- End Step Item -->
-
-                                    <!-- Step Item -->
-                                    <li class="step-item">
-                                        <div class="step-content-wrapper">
-                                            <span class="step-icon step-icon-pseudo step-icon-soft-dark"></span>
-
-                                            <div class="step-content">
-                                                <h5 class="mb-1">
-                                                    <a class="text-dark" href="#">New card styles added</a>
-                                                </h5>
-
-                                                <p class="font-size-sm mb-1">Added 5 card to <a href="#">Payments</a></p>
-
-                                                <ul class="list-group">
-                                                    <!-- List Item -->
-                                                    <li class="list-group-item list-group-item-light">
-                                                        <div class="row gx-1">
-                                                            <div class="col">
-                                                                <img class="img-fluid rounded ie-card-img" src="../assets/svg/illustrations/card-1.svg" alt="Image Description">
-                                                            </div>
-                                                            <div class="col">
-                                                                <img class="img-fluid rounded ie-card-img" src="../assets/svg/illustrations/card-2.svg" alt="Image Description">
-                                                            </div>
-                                                            <div class="col">
-                                                                <img class="img-fluid rounded ie-card-img" src="../assets/svg/illustrations/card-3.svg" alt="Image Description">
-                                                            </div>
-                                                            <div class="col">
-                                                                <img class="img-fluid rounded ie-card-img" src="../assets/svg/illustrations/card-4.svg" alt="Image Description">
-                                                            </div>
-                                                            <div class="col">
-                                                                <img class="img-fluid rounded ie-card-img" src="../assets/svg/illustrations/card-5.svg" alt="Image Description">
-                                                            </div>
-                                                            <div class="col-auto align-self-center">
-                                                                <div class="text-center">
-                                                                    <a href="#">+2</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <!-- List Item -->
-                                                </ul>
-
-                                                <small class="text-muted text-uppercase">May 12</small>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- End Step Item -->
-
-                                    <!-- Step Item -->
-                                    <li class="step-item">
-                                        <div class="step-content-wrapper">
-                                            <span class="step-icon step-icon-pseudo step-icon-soft-dark"></span>
-
-                                            <div class="step-content">
-                                                <h5 class="mb-1">
-                                                    <a class="text-dark" href="#">Dean added a new team member</a>
-                                                </h5>
-
-                                                <p class="font-size-sm mb-1">Added a new member to Front Dashboard</p>
-
-                                                <small class="text-muted text-uppercase">May 15</small>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- End Step Item -->
-
-                                    <!-- Step Item -->
-                                    <li class="step-item">
-                                        <div class="step-content-wrapper">
-                                            <span class="step-icon step-icon-pseudo step-icon-soft-dark"></span>
-
-                                            <div class="step-content">
-                                                <h5 class="mb-1">
-                                                    <a class="text-dark" href="#">Project status updated</a>
-                                                </h5>
-
-                                                <p class="font-size-sm mb-1">Marked <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fr-3</a> as <span class="badge badge-soft-primary badge-pill"><span class="legend-indicator bg-primary"></span>"In progress"</span></p>
-
-                                                <small class="text-muted text-uppercase">Apr 29</small>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- End Step Item -->
-
-                                    <!-- Step Item -->
-                                    <li class="step-item">
-                                        <div class="step-content-wrapper">
-                                            <span class="step-icon step-icon-pseudo step-icon-soft-dark"></span>
-
-                                            <div class="step-content">
-                                                <h5 class="mb-1">
-                                                    <a class="text-dark" href="#">Achievements</a>
-                                                </h5>
-
-                                                <p class="font-size-sm mb-1">Earned a "Top endorsed" <i class="tio-verified text-primary"></i> badge</p>
-
-                                                <small class="text-muted text-uppercase">Apr 06</small>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- End Step Item -->
-
-                                    <!-- Step Item -->
-                                    <li id="collapseActivitySection" class="step-item collapse">
-                                        <div class="step-content-wrapper">
-                                            <span class="step-icon step-icon-pseudo step-icon-soft-dark"></span>
-
-                                            <div class="step-content">
-                                                <h5 class="mb-1">
-                                                    <a class="text-dark" href="#">Project status updated</a>
-                                                </h5>
-
-                                                <p class="font-size-sm mb-1">Updated <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fr-3</a> as <span class="badge badge-soft-secondary badge-pill"><span class="legend-indicator bg-secondary"></span>"To do"</span></p>
-
-                                                <small class="text-muted text-uppercase">Feb 10</small>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- End Step Item -->
+                                    <?php } ?>
                                 </ul>
                                 <!-- End Step -->
                             </div>
                             <!-- End Body -->
-
-                            <!-- Footer -->
-                            <div class="card-footer">
-                                <a class="btn btn-sm btn-ghost-secondary" data-toggle="collapse" href="#collapseActivitySection" role="button" aria-expanded="false" aria-controls="collapseActivitySection">
-                                    <span class="btn-toggle-default">
-                                        <i class="tio-chevron-down mr-1"></i> View more
-                                    </span>
-                                    <span class="btn-toggle-toggled">
-                                        <i class="tio-chevron-up mr-1"></i> View less
-                                    </span>
-                                </a>
-                            </div>
-                            <!-- End Footer -->
                         </div>
                         <!-- End Card -->
 
