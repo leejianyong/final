@@ -33,7 +33,7 @@ require('./navbar.php');
     <!-- Card -->
     <div class="card">
       <?php
-      $company_qry = "SELECT user.*,company_detail.* FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.permission = 'company' AND status ='blacklist'";
+      $company_qry = "SELECT user.*,company_detail.*,user.id as userid FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.permission = 'company' AND status ='blacklist'";
       $company_sql = mysqli_query($conn, $company_qry);
       ?>
       <!-- Header -->
@@ -199,7 +199,7 @@ require('./navbar.php');
                   </div>
                 </td>
                 <td class="table-column-pl-0">
-                  <a class="d-flex align-items-center" href="./user-profile.html">
+                  <a class="d-flex align-items-center" href="./profile-company.php?detail=<?= $company_array['userid']; ?>">
                     <div class="avatar avatar-circle">
                       <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['profile_image']) ? '/image/' . $company_array['profile_image'] : '/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
                     </div>

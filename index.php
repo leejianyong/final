@@ -79,7 +79,7 @@ if (isset($_SESSION['userid'])) {
                     </a>
                     <!-- End Logo -->
                   <?php }
-                  } else { ?>
+                } else { ?>
                   <a class="navbar-brand" href="#" aria-label="Company Job Request">
                     <img class="navbar-brand-logo" src="assets/img/logo_png/logo_ysl_lg2.png" alt="Logo">
                   </a>
@@ -103,19 +103,19 @@ if (isset($_SESSION['userid'])) {
                       <?php } else { ?>
                         <img class="avatar-img" src="assets/img/160x160/img1.jpg" alt="Image Description">
                       <?php } ?>
-                      
-                      <?php 
-                      if(isset($result['status'])){
-                            if($result['status']=='active'){ ?>
-                        <span class="avatar-status avatar-sm-status avatar-status-success"></span>
-                      <?php }elseif($result['status']=='pending'){ ?>
-                        <span class="avatar-status avatar-sm-status avatar-status-warning"></span>
-                      <?php }elseif($result['status']=='drop'){ ?>
-                        <span class="avatar-status avatar-sm-status avatar-status-danger"></span>
-                      <?php }elseif($result['status']=='blacklist'){ ?>
-                        <span class="avatar-status avatar-sm-status avatar-status-secondary"></span>
-                      <?php } 
-                      }else{ ?>
+
+                      <?php
+                      if (isset($result['status'])) {
+                        if ($result['status'] == 'active') { ?>
+                          <span class="avatar-status avatar-sm-status avatar-status-success"></span>
+                        <?php } elseif ($result['status'] == 'pending') { ?>
+                          <span class="avatar-status avatar-sm-status avatar-status-warning"></span>
+                        <?php } elseif ($result['status'] == 'drop') { ?>
+                          <span class="avatar-status avatar-sm-status avatar-status-danger"></span>
+                        <?php } elseif ($result['status'] == 'blacklist') { ?>
+                          <span class="avatar-status avatar-sm-status avatar-status-secondary"></span>
+                        <?php }
+                      } else { ?>
                         <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                       <?php } ?>
                     </div>
@@ -152,10 +152,25 @@ if (isset($_SESSION['userid'])) {
                     </div>
 
                     <div class="dropdown-divider"></div>
-                    <?php if (isset($_SESSION['userid'])) { ?>
-                      <a class="dropdown-item" href="#">
-                        <span class="text-truncate pr-2" title="Profile &amp; account">Profile &amp; account</span>
-                      </a>
+                    <?php if (isset($_SESSION['userid'])) {
+                      if (isset($array['permission'])) {
+                        if ($array['permission'] == "company") {
+                          if ($array['status'] == "pending") { ?>
+                            <a class="dropdown-item" href="company/account-setting.php">
+                              <span class="text-truncate pr-2" title="Profile &amp; account">Profile &amp; account</span>
+                            </a>
+                          <?php } elseif ($array['status'] == "active") { ?>
+                            <a class="dropdown-item" href="company/index.php">
+                              <span class="text-truncate pr-2" title="Profile &amp; account">Profile &amp; account</span>
+                            </a>
+                          <?php }
+                        } elseif ($array['permission'] == "user") { ?>
+                          <a class="dropdown-item" href="user/account-setting.php">
+                            <span class="text-truncate pr-2" title="Profile &amp; account">Profile &amp; account</span>
+                          </a>
+                      <?php }
+                      }
+                      ?>
                       <a class="dropdown-item" href="signout.php">
                         <span class="text-truncate pr-2" title="Sign out">Sign out</span>
                       </a>

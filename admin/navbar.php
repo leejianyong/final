@@ -117,7 +117,7 @@
                        "type": "css-animation"
                      }'>
                     <div class="avatar avatar-sm avatar-circle">
-                      <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img6.jpg" alt="Image Description">
+                      <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img1.jpg" alt="Image Description">
                       <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                     </div>
                   </a>
@@ -126,7 +126,7 @@
                     <div class="dropdown-item-text">
                       <div class="media align-items-center">
                         <div class="avatar avatar-sm avatar-circle mr-2">
-                          <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img6.jpg" alt="Image Description">
+                          <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img1.jpg" alt="Image Description">
                         </div>
                         <div class="media-body">
                           <span class="card-title h5"><?= $request['username']; ?></span>
@@ -137,9 +137,9 @@
 
                     <div class="dropdown-divider"></div>
 
-                    <a class="dropdown-item" href="#">
+                    <!-- <a class="dropdown-item" href="#">
                       <span class="text-truncate pr-2" title="Profile &amp; account">Profile &amp; account</span>
-                    </a>
+                    </a> -->
 
                     <a class="dropdown-item" href="#">
                       <span class="text-truncate pr-2" title="Settings">Settings</span>

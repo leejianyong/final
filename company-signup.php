@@ -1,3 +1,6 @@
+<?php
+  include_once('auth/db.php');
+?>
 <!DOCTYPE html>
 <html lang="en" class="h-100">
   <head>
@@ -17,12 +20,14 @@
     <!-- CSS Implementing Plugins -->
     <link rel="stylesheet" href="./assets/vendor/icon-set/style.css">
     <link rel="stylesheet" href="./assets/vendor/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="./assets/js/sweetalert2.all.min.js">
 
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="./assets/css/theme.min.css">
   </head>
 
   <body class="d-flex align-items-center min-h-100">
+  <script src="./assets/js/sweetalert2.all.min.js"></script>
 
     <!-- ========== HEADER ========== -->
     <header class="position-absolute top-0 left-0 right-0 mt-3 mx-3">
@@ -36,6 +41,26 @@
 
     <!-- ========== MAIN CONTENT ========== -->
     <main id="content" role="main" class="main pt-0">
+    <?php
+    if (isset($_POST['submit'])) {
+      $Date = date("Y-m-d H:i:s");
+      $row = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM user WHERE email = '$_POST[email]'"));
+      if ($row !== 0) {
+        echo "<script>Swal.fire('This Email Already Exist!','Your Email Exist...','error');</script>";
+      } else {
+        $qry = "INSERT INTO `user`(`email`, `username`, `password`, `permission`, `status`, `group_id`, `created_at`) 
+        VALUES ('$_POST[email]','$_POST[company_name]','$_POST[password]','company','active','3','$Date')";
+        $result = $conn->query($qry);
+        if (!$result) {
+          echo "<script>Swal.fire('Create Account Error!','Your account created failed...','error');</script>";
+        } else {
+          $qry_detail = "INSERT INTO `company_detail`(`company_id`, `company_name`, `created_at`) VALUES 
+          ('$conn->insert_id','$_POST[company_name]','$Date')";
+          $conn->query($qry_detail);
+          echo "<script>Swal.fire('Create Account Success!','Your account created...','success');</script>";
+        }
+      }
+    } ?>
       <!-- Content -->
       <div class="container-fluid px-3">
         <div class="row">
@@ -96,7 +121,7 @@
           <div class="col-lg-6 d-flex justify-content-center align-items-center min-vh-lg-100">
             <div class="w-100 pt-10 pt-lg-7 pb-7" style="max-width: 25rem;">
               <!-- Form -->
-              <form class="js-validate">
+              <form class="js-validate" method="post" action="">
                 <div class="text-center mb-5">
                   <h1 class="display-4">Create your Company</h1>
                   <p>Already have an account? <a href="authentication-signin-cover.html">Sign in here</a></p>
@@ -107,23 +132,11 @@
                   <span class="divider text-muted">Register</span>
                 </div>
 
-                
-
-                <label class="input-label" for="fullNameSrEmail">Full name</label>
-
                 <!-- Form Group -->
-                <div class="form-row">
-                  <div class="col-sm-6">
-                    <div class="js-form-message form-group">
-                      <input type="text" class="form-control form-control-lg" name="fullName" id="fullNameSrEmail" placeholder="Mark" aria-label="Mark" required data-msg="Please enter your first name.">
-                    </div>
-                  </div>
+                <div class="js-form-message form-group">
+                  <label class="input-label" for="signupSrEmail">Company Name</label>
 
-                  <div class="col-sm-6">
-                    <div class="js-form-message form-group">
-                      <input type="text" class="form-control form-control-lg" placeholder="Williams" aria-label="Williams" required data-msg="Please enter your last name.">
-                    </div>
-                  </div>
+                  <input type="text" class="form-control form-control-lg" name="company_name" id="signupSrEmail" placeholder="Company Name" aria-label="Company Name" required data-msg="Please enter a valid company name.">
                 </div>
                 <!-- End Form Group -->
 
@@ -192,7 +205,7 @@
                   <p>Want create as user? <a href="user-signup.php">Click here</a></p>
                 </div>
 
-                <button type="submit" class="btn btn-lg btn-block btn-primary mb-2">Create an Company</button>
+                <button type="submit" name="submit" class="btn btn-lg btn-block btn-primary mb-2">Create an Company</button>
                 
               </form>
               <!-- End Form -->

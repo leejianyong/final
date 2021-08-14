@@ -164,7 +164,9 @@ if($request['status']=="active"){
     } else { echo "<script>Swal.fire('Update Basic Information Error!','Your information update failed...','error');window.location.href = '#content';</script>"; }
   }
 
-  include('profile-detail.php');
+  $qry = "SELECT user.*,company_detail.* FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.id = '$_SESSION[userid]'";
+  $sql = mysqli_query($conn,$qry);
+  $result = mysqli_fetch_assoc($sql);
   ?>
 
   <!-- ========== MAIN CONTENT ========== -->
