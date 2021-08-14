@@ -38,120 +38,179 @@ include('navbar.php');
 
   <script src="../assets/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside-mini-cache.js"></script>
   <script src="../assets/js/sweetalert2.all.min.js"></script>
-  <?php
-  $Date = date("Y-m-d H:i:s");
 
-  if (isset($_POST['email_submit'])) {
-    if (!empty($_POST['email'])) {
-      $qry = "SELECT * FROM user WHERE email ='$_POST[email]'";
-      $row = mysqli_num_rows(mysqli_query($conn, $qry));
-      if ($row >= 1) {
-        echo "<script>Swal.fire('Email already Exist!','Choose another email...','error');window.location.href = '#emailSection';</script>";
-      } else {
-        $update_qry = "UPDATE user SET email='$_POST[email]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
-        if (mysqli_query($conn, $update_qry)) {
-          echo "<script>Swal.fire('Update Email Success!','Your information already update...','success');window.location.href = '#emailSection';</script>";
-        } else {  echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');window.location.href = '#emailSection';</script>"; }
-      }
-    } else { echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');window.location.href = '#emailSection';</script>"; }
-  }
-
-  if (isset($_POST['password-submit'])) {
-    if (!empty($_POST['currentPassword']) && !empty($_POST['confirmNewPassword']) && !empty($_POST['newPassword'])) {
-      $qry = "SELECT * FROM user WHERE id='$_SESSION[userid]'";
-      $result = mysqli_fetch_assoc(mysqli_query($conn, $qry));
-      if ($result['password'] == $_POST['currentPassword']) {
-        if ($_POST['confirmNewPassword'] == $_POST['newPassword']) {
-          $update_qry = "UPDATE user SET `password`='$_POST[newPassword]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
-          if (mysqli_query($conn, $update_qry)) {
-            echo "<script>Swal.fire('Update Password Success!','Your information already update...','success');window.location.href = '#passwordSection';</script>";
-          } else { echo "<script>Swal.fire('Update Password Error!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
-        } else { echo "<script>Swal.fire('Dual New Password Unmatch!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
-      } else { echo "<script>Swal.fire('Wrong Current Password!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
-    }
-  }
-
-  if(isset($_POST['basic-submit'])){
-    $datetime = date("YmdHis");
-    
-    $targetDir = "../image/";
-    $fileName = basename($_FILES["profile_image"]["name"]);
-    $Extension=explode(".", $fileName);
-    $prod = $_SESSION['userid']."profile_image".$datetime;
-    $NewFileName=$prod .".".end($Extension);
-    $targetFilePath = $targetDir . $NewFileName;
-    $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-    
-    if(!empty($_FILES["profile_image"]["name"])){
-        // Allow certain file formats
-        $allowTypes = array('jpg','png','jpeg','gif','pdf');
-        if(in_array($fileType, $allowTypes)){
-            // Upload file to server
-            if(move_uploaded_file($_FILES["profile_image"]["tmp_name"], $targetFilePath)){
-              $profile_image = $NewFileName;
-            }else{
-              echo "<script>Swal.fire('Error Upload Profile Image!','Your profile image update failed...','error');window.location.href = '#passwordSection';</script>";
-            }
-        }else{
-          echo "<script>Swal.fire('Error Upload Profile Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');window.location.href = '#passwordSection';</script>";
-        }
-    }
-
-    $targetDir = "../image/";
-    $fileName = basename($_FILES["background_image"]["name"]);
-    $Extension=explode(".", $fileName);
-    $prod = $_SESSION['userid']."background_image".$datetime;
-    $NewFileName=$prod .".".end($Extension);
-    $targetFilePath = $targetDir . $NewFileName;
-    $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-
-    if(!empty($_FILES["background_image"]["name"])){
-        // Allow certain file formats
-        $allowTypes = array('jpg','png','jpeg','gif','pdf');
-        if(in_array($fileType, $allowTypes)){
-            // Upload file to server
-            if(move_uploaded_file($_FILES["background_image"]["tmp_name"], $targetFilePath)){
-              $background_image = $NewFileName;
-            }else{
-              echo "<script>Swal.fire('Error Upload Background Image!','Your background image update failed...','error');window.location.href = '#passwordSection';</script>";
-            }
-        }else{
-          echo "<script>Swal.fire('Error Upload Background Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');window.location.href = '#passwordSection';</script>";
-        }
-    }
-
-    $update_qry = "UPDATE jobseeker_detail SET 
-    firstname='$_POST[firstName]',
-    lastname='$_POST[lastName]',
-    contact='$_POST[contact]',
-    course_type='$_POST[course_type]',
-    country='$_POST[country]',
-    city='$_POST[city]',
-    state='$_POST[state]',
-    addressline1='$_POST[addressLine1]',
-    addressline2='$_POST[addressLine2]',";
-    if(isset($background_image)){
-      $update_qry .= "background_image='$background_image',";
-    }
-    if(isset($profile_image)){
-      $update_qry .= "profile_image='$profile_image',";
-    }
-    $update_qry .= "updated_at='$Date' 
-    WHERE user_id='$_SESSION[userid]'";
-    if (mysqli_query($conn, $update_qry)) {
-      echo "<script>Swal.fire('Update Basic Information Success!','Your information already update...','success');window.location.href = '#content';</script>";
-    } else { echo "<script>Swal.fire('Update Basic Information Error!','Your information update failed...','error');window.location.href = '#content';</script>"; }
-  }
-
-  $qry = "SELECT user.*,jobseeker_detail.* FROM user LEFT JOIN jobseeker_detail ON user.id = jobseeker_detail.user_id WHERE user.id = '$_SESSION[userid]'";
-  $sql = mysqli_query($conn,$qry);
-  $result = mysqli_fetch_assoc($sql);
-
-  ?>
 
   <!-- ========== MAIN CONTENT ========== -->
 
   <main id="content" role="main" class="main">
+
+
+    <?php
+    $Date = date("Y-m-d H:i:s");
+
+    if (isset($_POST['email_submit'])) {
+      if (!empty($_POST['email'])) {
+        $qry = "SELECT * FROM user WHERE email ='$_POST[email]'";
+        $row = mysqli_num_rows(mysqli_query($conn, $qry));
+        if ($row >= 1) {
+          echo "<script>Swal.fire('Email already Exist!','Choose another email...','error');window.location.href = '#emailSection';</script>";
+        } else {
+          $update_qry = "UPDATE user SET email='$_POST[email]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
+          if (mysqli_query($conn, $update_qry)) {
+            echo "<script>Swal.fire('Update Email Success!','Your information already update...','success');window.location.href = '#emailSection';</script>";
+          } else {
+            echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');window.location.href = '#emailSection';</script>";
+          }
+        }
+      } else {
+        echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');window.location.href = '#emailSection';</script>";
+      }
+    }
+
+    if (isset($_POST['password-submit'])) {
+      if (!empty($_POST['currentPassword']) && !empty($_POST['confirmNewPassword']) && !empty($_POST['newPassword'])) {
+        $qry = "SELECT * FROM user WHERE id='$_SESSION[userid]'";
+        $result = mysqli_fetch_assoc(mysqli_query($conn, $qry));
+        if ($result['password'] == $_POST['currentPassword']) {
+          if ($_POST['confirmNewPassword'] == $_POST['newPassword']) {
+            $update_qry = "UPDATE user SET `password`='$_POST[newPassword]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
+            if (mysqli_query($conn, $update_qry)) {
+              echo "<script>Swal.fire('Update Password Success!','Your information already update...','success');window.location.href = '#passwordSection';</script>";
+            } else {
+              echo "<script>Swal.fire('Update Password Error!','Your information update failed...','error');window.location.href = '#passwordSection';</script>";
+            }
+          } else {
+            echo "<script>Swal.fire('Dual New Password Unmatch!','Your information update failed...','error');window.location.href = '#passwordSection';</script>";
+          }
+        } else {
+          echo "<script>Swal.fire('Wrong Current Password!','Your information update failed...','error');window.location.href = '#passwordSection';</script>";
+        }
+      }
+    }
+
+    if (isset($_POST['basic-submit'])) {
+      $datetime = date("YmdHis");
+
+      $targetDir = "../image/";
+      $fileName = basename($_FILES["profile_image"]["name"]);
+      $Extension = explode(".", $fileName);
+      $prod = $_SESSION['userid'] . "profile_image" . $datetime;
+      $NewFileName = $prod . "." . end($Extension);
+      $targetFilePath = $targetDir . $NewFileName;
+      $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+
+      if (!empty($_FILES["profile_image"]["name"])) {
+        // Allow certain file formats
+        $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+        if (in_array($fileType, $allowTypes)) {
+          // Upload file to server
+          if (move_uploaded_file($_FILES["profile_image"]["tmp_name"], $targetFilePath)) {
+            $profile_image = $NewFileName;
+          } else {
+            echo "<script>Swal.fire('Error Upload Profile Image!','Your profile image update failed...','error');window.location.href = '#passwordSection';</script>";
+          }
+        } else {
+          echo "<script>Swal.fire('Error Upload Profile Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');window.location.href = '#passwordSection';</script>";
+        }
+      }
+
+      $targetDir = "../image/";
+      $fileName = basename($_FILES["background_image"]["name"]);
+      $Extension = explode(".", $fileName);
+      $prod = $_SESSION['userid'] . "background_image" . $datetime;
+      $NewFileName = $prod . "." . end($Extension);
+      $targetFilePath = $targetDir . $NewFileName;
+      $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+
+      if (!empty($_FILES["background_image"]["name"])) {
+        // Allow certain file formats
+        $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+        if (in_array($fileType, $allowTypes)) {
+          // Upload file to server
+          if (move_uploaded_file($_FILES["background_image"]["tmp_name"], $targetFilePath)) {
+            $background_image = $NewFileName;
+          } else {
+            echo "<script>Swal.fire('Error Upload Background Image!','Your background image update failed...','error');window.location.href = '#passwordSection';</script>";
+          }
+        } else {
+          echo "<script>Swal.fire('Error Upload Background Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');window.location.href = '#passwordSection';</script>";
+        }
+      }
+
+      $update_qry = "UPDATE jobseeker_detail SET 
+      firstname='$_POST[firstName]',
+      lastname='$_POST[lastName]',
+      contact='$_POST[contact]',
+      course_type='$_POST[course_type]',
+      city='$_POST[city]',
+      state='$_POST[state]',
+      addressline1='$_POST[addressLine1]',
+      addressline2='$_POST[addressLine2]',";
+      if(isset($_POST['country']) || !empty($_POST['country'])){
+        $update_qry .= "country='$_POST[country]',";
+      }
+      if (isset($background_image)) {
+        $update_qry .= "background_image='$background_image',";
+      }
+      if (isset($profile_image)) {
+        $update_qry .= "profile_image='$profile_image',";
+      }
+      $update_qry .= "updated_at='$Date' WHERE user_id='$_SESSION[userid]'";
+      if (mysqli_query($conn, $update_qry)) {
+        echo "<script>Swal.fire('Update Basic Information Success!','Your information already update...','success');window.location.href = '#content';</script>";
+      } else {
+        // echo "<script>Swal.fire('Update Basic Information Error!','Your information update failed...','error');window.location.href = '#content';</script>";
+      }
+    }
+
+    if (isset($_POST['resume_submit'])) {
+      $datetime = date("YmdHis");
+
+      $targetDir = "../resume/";
+      $fileName = basename($_FILES["resume"]["name"]);
+      $Extension = explode(".", $fileName);
+      $prod = $_SESSION['userid'] . "resume" . $datetime;
+      $NewFileName = $prod . "." . end($Extension);
+      $targetFilePath = $targetDir . $NewFileName;
+      $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+      if (!empty($_FILES["resume"]["name"])) {
+        // Allow certain file formats
+        $allowTypes = array('pdf');
+        if (in_array($fileType, $allowTypes)) {
+          // Upload file to server
+          if (move_uploaded_file($_FILES["resume"]["tmp_name"], $targetFilePath)) {
+            $resume = $NewFileName;
+
+            $update_qry = "UPDATE jobseeker_detail SET 
+              resume = '$resume',
+              updated_at='$Date' 
+              WHERE user_id='$_SESSION[userid]'";
+
+            if (mysqli_query($conn, $update_qry)) {
+              echo "<script>Swal.fire('Update Resume Success!','Your Resume already update...','success');window.location.href = '#resumeSection';</script>";
+            } else {
+              echo "<script>Swal.fire('Update Resume Error!','Your Resume update failed...','error');window.location.href = '#resumeSection';</script>";
+            }
+          } else {
+            echo "<script>Swal.fire('Error Upload Resume!','Your Resume update failed...','error');window.location.href = '#resumeSection';</script>";
+          }
+        } else {
+          echo "<script>Swal.fire('Error Upload Resume!','Sorry, only PDF files are allowed to upload.','error');window.location.href = '#resumeSection';</script>";
+        }
+      } else {
+        echo "<script>Swal.fire('Empty Resume!','Please upload your resume...','error');window.location.href = '#resumeSection';</script>";
+      }
+    }
+
+    $qry = "SELECT user.*,jobseeker_detail.* FROM user LEFT JOIN jobseeker_detail ON user.id = jobseeker_detail.user_id WHERE user.id = '$_SESSION[userid]'";
+    $sql = mysqli_query($conn, $qry);
+    $result = mysqli_fetch_assoc($sql);
+
+    ?>
+
+
+
+
     <!-- Content -->
     <div class="content container-fluid">
       <!-- Page Header -->
@@ -166,8 +225,8 @@ include('navbar.php');
               </ol>
             </nav>
 
-            <h1 class="page-header-title">Waiting For The Approved ...</h1>
-            <h5 class="page-header-title text-muted">Fill in your company information ...</h1>
+            <h1 class="page-header-title">Account Profile</h1>
+            <h5 class="page-header-title text-muted">Fill in your account information ...</h1>
           </div>
 
           <!-- <div class="col-sm-auto">
@@ -248,7 +307,11 @@ include('navbar.php');
             <form id="Basic_information" method="POST" action="" enctype="multipart/form-data">
               <div class="profile-cover">
                 <div class="profile-cover-img-wrapper">
-                  <img id="profileCoverImg" class="profile-cover-img" src="<?php if(!empty($result['background_image'])){ echo "../image/".$result['background_image'];}else{ echo "../assets/img/1920x400/img2.jpg"; } ?>" alt="Image Description">
+                  <img id="profileCoverImg" class="profile-cover-img" src="<?php if (!empty($result['background_image'])) {
+                                                                              echo "../image/" . $result['background_image'];
+                                                                            } else {
+                                                                              echo "../assets/img/1920x400/img2.jpg";
+                                                                            } ?>" alt="Image Description">
 
                   <!-- Custom File Cover -->
                   <div class="profile-cover-content profile-cover-btn">
@@ -272,7 +335,11 @@ include('navbar.php');
 
               <!-- Avatar -->
               <label class="avatar avatar-xxl avatar-circle avatar-border-lg avatar-uploader profile-cover-avatar" for="avatarUploader">
-                <img id="avatarImg" class="avatar-img" src="<?php if(!empty($result['profile_image'])){ echo "../image/".$result['profile_image'];}else{ echo "../assets/img/160x160/img6.jpg"; } ?>" alt="Image Description">
+                <img id="avatarImg" class="avatar-img" src="<?php if (!empty($result['profile_image'])) {
+                                                              echo "../image/" . $result['profile_image'];
+                                                            } else {
+                                                              echo "../assets/img/160x160/img1.jpg";
+                                                            } ?>" alt="Image Description">
 
                 <input type="file" name="profile_image" class="js-file-attach avatar-uploader-input" id="avatarUploader" data-hs-file-attach-options='{
                           "textTarget": "#avatarImg",
@@ -325,7 +392,7 @@ include('navbar.php');
               <!-- End Form Group -->
 
               <!-- Form Group -->
-               <div class="row form-group">
+              <div class="row form-group">
                 <label for="course_type" class="col-sm-3 col-form-label input-label">Course Type</label>
 
                 <div class="col-sm-9">
@@ -340,20 +407,32 @@ include('navbar.php');
 
                 <div class="col-sm-9">
                   <!-- Select -->
-                  <div class="mb-3">
-                    <select name="country" id="locationLabel" data-hs-select2-options='{
+                  <select name="country" id="locationLabel" data-hs-select2-options='{
                                   "searchInputPlaceholder": "Search a country"
                                 }'>
-                      <option value="<?= $result['country']; ?>"></option>
-                    </select>
-                  </div>
-                  <!-- End Select -->
-                  
-                  <div class="mb-3">
-                    <input type="text" class="form-control" name="city" id="cityLabel" placeholder="City" aria-label="City" value="<?= $result['city']; ?>">
-                  </div>
+                    <option value="<?= $result['country']; ?>"></option>
+                  </select>
+                </div>
+                <!-- End Select -->
+              </div>
+              <!-- End Form Group -->
 
-                  <input type="text" class="form-control" name="state" id="stateLabel" placeholder="State" aria-label="State" value="<?= $result['state']; ?>">
+              <!-- Form Group -->
+              <div class="row form-group">
+                <label for="addressLine1Label" class="col-sm-3 col-form-label input-label">City</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name="city" id="city" placeholder="Your City" aria-label="Your City" value="<?= $result['city']; ?>">
+                </div>
+              </div>
+              <!-- End Form Group -->
+
+              <!-- Form Group -->
+              <div class="row form-group">
+                <label for="addressLine1Label" class="col-sm-3 col-form-label input-label">State</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name="state" id="state" placeholder="Your State" aria-label="Your State" value="<?= $result['state']; ?>">
                 </div>
               </div>
               <!-- End Form Group -->
@@ -388,8 +467,8 @@ include('navbar.php');
           </div>
           <!-- End Card -->
 
-           <!-- Card -->
-           <div id="resumeSection" class="card mb-3 mb-lg-5">
+          <!-- Card -->
+          <div id="resumeSection" class="card mb-3 mb-lg-5">
             <div class="card-header">
               <h3 class="card-title h4">Resume</h3>
             </div>
@@ -397,60 +476,59 @@ include('navbar.php');
             <!-- Body -->
             <div class="card-body">
               <!-- Form -->
-              <form method="post" action="">
+              <form method="post" action="" enctype="multipart/form-data">
                 <!-- Form Group -->
                 <div class="row form-group">
                   <label for="newEmailLabel" class="col-sm-3 col-form-label input-label">Uploaded Resume</label>
 
                   <div class="col-sm-9">
-                      <!-- List Item -->
-                      <li class="list-group-item">
-                        <div class="row align-items-center gx-2">
-                          <div class="col-auto">
-                            <img class="avatar avatar-xs avatar-4by3" src="../assets/svg/brands/pdf.svg" alt="Image Description">
-                          </div>
+                    <!-- List Item -->
+                    <li class="list-group-item">
+                      <div class="row align-items-center gx-2">
+                        <div class="col-auto">
+                          <img class="avatar avatar-xs avatar-4by3" src="../assets/svg/brands/pdf.svg" alt="Image Description">
+                        </div>
 
-                          <div class="col">
-                            <h5 class="mb-0">
-                              <a class="text-dark" href="#">Dashboard layout flow</a>
-                            </h5>
-                            <ul class="list-inline list-separator small">
-                              <li class="list-inline-item">Updated 1 hour ago</li>
-                              <li class="list-inline-item">1mb</li>
-                            </ul>
-                          </div>
+                        <div class="col">
+                          <h5 class="mb-0">
+                            <a class="text-dark" href="download-file.php?detail=<?= $result['resume']; ?>"><?= $result['resume']; ?></a>
+                          </h5>
+                          <!-- <ul class="list-inline list-separator small">
+                            <li class="list-inline-item">Updated 1 hour ago</li>
+                            <li class="list-inline-item">1mb</li>
+                          </ul> -->
+                        </div>
 
-                          <div class="col-auto">
-                            <!-- Unfold -->
-                            <div class="hs-unfold">
-                              <a class="js-hs-unfold-invoker btn btn-sm btn-white" href="javascript:;"
-                                data-hs-unfold-options='{
+                        <div class="col-auto">
+                          <!-- Unfold -->
+                          <div class="hs-unfold">
+                            <a class="js-hs-unfold-invoker btn btn-sm btn-white" href="javascript:;" data-hs-unfold-options='{
                                   "target": "#filesListDropdown2",
                                   "type": "css-animation"
                                 }'>
-                                <span class="d-none d-sm-inline-block mr-1">More</span>
-                                <i class="tio-chevron-down"></i>
+                              <span class="d-none d-sm-inline-block mr-1">More</span>
+                              <i class="tio-chevron-down"></i>
+                            </a>
+
+                            <div id="filesListDropdown2" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right" style="min-width: 13rem;">
+
+                              <a class="dropdown-item" href="download-file.php?detail=<?= $result['resume']; ?>">
+                                <i class="tio-download-to dropdown-item-icon"></i> Download
                               </a>
 
-                              <div id="filesListDropdown2" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right" style="min-width: 13rem;">
-                           
-                                <a class="dropdown-item" href="#">
-                                  <i class="tio-download-to dropdown-item-icon"></i> Download
-                                </a>
+                              <!-- <div class="dropdown-divider"></div>
 
-                                <div class="dropdown-divider"></div>
-
-                                <a class="dropdown-item" href="#">
-                                  <i class="tio-delete-outlined dropdown-item-icon"></i> Delete
-                                </a>
-                              </div>
+                              <a class="dropdown-item" href="#">
+                                <i class="tio-delete-outlined dropdown-item-icon"></i> Delete
+                              </a> -->
                             </div>
-                            <!-- End Unfold -->
                           </div>
+                          <!-- End Unfold -->
                         </div>
-                        <!-- End Row -->
-                      </li>
-                      <!-- End List Item -->
+                      </div>
+                      <!-- End Row -->
+                    </li>
+                    <!-- End List Item -->
                   </div>
                 </div>
                 <!-- End Form Group -->
@@ -458,28 +536,15 @@ include('navbar.php');
                 <!-- Form Group -->
                 <div class="row form-group">
                   <label for="newEmailLabel" class="col-sm-3 col-form-label input-label">New Resume</label>
-
-                    <div class="col-sm-auto">
-                      <div class="btn-group" role="group">
-                        <a class="btn btn-primary" href="javascript:;" data-toggle="modal" data-target="#uploadFilesModal"><i class="tio-upload-on-cloud mr-1"></i> Upload</a>
-
-                        <!-- Unfold -->
-                        <div class="hs-unfold btn-group">
-                          <a class="js-hs-unfold-invoker btn btn-icon btn-primary dropdown-toggle dropdown-toggle-empty" href="javascript:;"
-                            data-hs-unfold-options='{
-                              "target": "#uploadGroupDropdown",
-                              "type": "css-animation"
-                            }'></a>
-
-                          <div id="uploadGroupDropdown" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right">
-                              <a class="dropdown-item" href="javascript:;" data-toggle="modal" data-target="#uploadFilesModal">
-                                <i class="tio-file-add-outlined dropdown-item-icon"></i> Upload files
-                              </a>
-                          </div>
-                        </div>
-                        <!-- End Unfold -->
+                    <div class="col-sm-6">
+                      <div class="custom-file">
+                        <input type="file" name="resume" class="js-file-attach custom-file-input" id="customFile"
+                                data-hs-file-attach-options='{
+                                  "textTarget": "[for=\"customFile\"]"
+                              }'>
+                        <label class="custom-file-label" for="customFile">Choose file</label>
                       </div>
-                    </div>
+                  </div>
                 </div>
                 <!-- End Form Group -->
 
@@ -601,32 +666,32 @@ include('navbar.php');
           <!-- End Card -->
 
           <!-- Card -->
-            <div id="deleteAccountSection" class="card mb-3 mb-lg-5">
-              <div class="card-header">
-                <h4 class="card-title">Delete your account</h4>
-              </div>
-
-              <!-- Body -->
-              <div class="card-body">
-                <p class="card-text">When you delete your account, you lose access to Front account services, and we permanently delete your personal data. You can cancel the deletion for 14 days.</p>
-
-                <div class="form-group">
-                  <!-- Custom Checkbox -->
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="deleteAccountCheckbox" required data-msg="Please accept delete Check when Delete.">
-                    <label class="custom-control-label" for="deleteAccountCheckbox">Confirm that I want to delete my account.</label>
-                  </div>
-                  <!-- End Custom Checkbox -->
-                </div>
-
-                <div class="d-flex justify-content-end">
-                  <a class="btn btn-white mr-2" href="#">Learn more <i class="tio-open-in-new ml-1"></i></a>
-
-                  <button type="submit" class="btn btn-danger">Delete</button>
-                </div>
-              </div>
-              <!-- End Body -->
+          <div id="deleteAccountSection" class="card mb-3 mb-lg-5">
+            <div class="card-header">
+              <h4 class="card-title">Delete your account</h4>
             </div>
+
+            <!-- Body -->
+            <div class="card-body">
+              <p class="card-text">When you delete your account, you lose access to Front account services, and we permanently delete your personal data. You can cancel the deletion for 14 days.</p>
+
+              <div class="form-group">
+                <!-- Custom Checkbox -->
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="deleteAccountCheckbox" required data-msg="Please accept delete Check when Delete.">
+                  <label class="custom-control-label" for="deleteAccountCheckbox">Confirm that I want to delete my account.</label>
+                </div>
+                <!-- End Custom Checkbox -->
+              </div>
+
+              <div class="d-flex justify-content-end">
+                <a class="btn btn-white mr-2" href="#">Learn more <i class="tio-open-in-new ml-1"></i></a>
+
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </div>
+            </div>
+            <!-- End Body -->
+          </div>
           <!-- End Card -->
 
           <!-- Sticky Block End Point -->
@@ -705,7 +770,7 @@ include('navbar.php');
     </div>
   </div>
   <!-- End Welcome Message Modal -->
-  
+
   <!-- Upload files Modal -->
   <div class="modal fade" id="uploadFilesModal" tabindex="-1" role="dialog" aria-labelledby="uploadFilesModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -754,6 +819,7 @@ include('navbar.php');
   <script src="../assets/vendor/jquery/dist/jquery.min.js"></script>
   <script src="../assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
   <script src="../assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/dropzone/dist/min/dropzone.min.js"></script>
 
   <!-- JS Implementing Plugins -->
   <script src="../assets/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside.min.js"></script>
@@ -786,8 +852,11 @@ include('navbar.php');
         $('.js-navbar-vertical-aside-toggle-invoker i').tooltip('hide');
       });
 
-
-
+      // INITIALIZATION OF DROPZONE FILE ATTACH MODULE
+      // =======================================================
+      $('.js-dropzone').each(function() {
+        var dropzone = $.HSCore.components.HSDropzone.init('#' + $(this).attr('id'));
+      });
 
       // INITIALIZATION OF NAVBAR VERTICAL NAVIGATION
       // =======================================================

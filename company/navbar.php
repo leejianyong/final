@@ -91,7 +91,7 @@
                        "type": "css-animation"
                      }'>
                     <div class="avatar avatar-sm avatar-circle">
-                      <img class="avatar-img" src="<?php if(!empty($result['profile_image'])){ echo "../image/".$result['profile_image'];}else{ echo "../assets/img/160x160/img6.jpg"; } ?>" alt="Image Description">
+                      <img class="avatar-img" src="<?php if(!empty($result['profile_image'])){ echo "../image/".$result['profile_image'];}else{ echo "../assets/img/160x160/img2.jpg"; } ?>" alt="Image Description">
                       <?php if($result['status']=='active'){ ?>
                         <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                       <?php }elseif($result['status']=='pending'){ ?>
@@ -108,7 +108,7 @@
                     <div class="dropdown-item-text">
                       <div class="media align-items-center">
                         <div class="avatar avatar-sm avatar-circle mr-2">
-                          <img class="avatar-img" src="<?php if(!empty($result['profile_image'])){ echo "../image/".$result['profile_image'];}else{ echo "../assets/img/160x160/img6.jpg"; } ?>" alt="Image Description">
+                          <img class="avatar-img" src="<?php if(!empty($result['profile_image'])){ echo "../image/".$result['profile_image'];}else{ echo "../assets/img/160x160/img2.jpg"; } ?>" alt="Image Description">
                         </div>
                         <div class="media-body">
                           <span class="card-title h5"><?= $result['firstname']." ".$result['lastname']; ?></span>
@@ -119,13 +119,13 @@
 
                     <div class="dropdown-divider"></div>
 
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="account-setting.php">
                       <span class="text-truncate pr-2" title="Profile &amp; account">Profile &amp; account</span>
                     </a>
 
-                    <a class="dropdown-item" href="#">
+                    <!-- <a class="dropdown-item" href="#">
                       <span class="text-truncate pr-2" title="Settings">Settings</span>
-                    </a>
+                    </a> -->
 
                     <div class="dropdown-divider"></div>
 

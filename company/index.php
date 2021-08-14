@@ -47,14 +47,14 @@ include_once('navbar.php');
       $qry = "SELECT * FROM user WHERE email ='$_POST[email]'";
       $row = mysqli_num_rows(mysqli_query($conn, $qry));
       if ($row >= 1) {
-        echo "<script>Swal.fire('Email already Exist!','Choose another email...','error');window.location.href = '#emailSection';</script>";
+        echo "<script>Swal.fire('Email already Exist!','Choose another email...','error');</script>";
       } else {
         $update_qry = "UPDATE user SET email='$_POST[email]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
         if (mysqli_query($conn, $update_qry)) {
-          echo "<script>Swal.fire('Update Email Success!','Your information already update...','success');window.location.href = '#emailSection';</script>";
-        } else {  echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');window.location.href = '#emailSection';</script>"; }
+          echo "<script>Swal.fire('Update Email Success!','Your information already update...','success');</script>";
+        } else {  echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');</script>"; }
       }
-    } else { echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');window.location.href = '#emailSection';</script>"; }
+    } else { echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');</script>"; }
   }
 
   if (isset($_POST['password-submit'])) {
@@ -65,10 +65,10 @@ include_once('navbar.php');
         if ($_POST['confirmNewPassword'] == $_POST['newPassword']) {
           $update_qry = "UPDATE user SET password='$_POST[newPassword]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
           if (mysqli_query($conn, $update_qry)) {
-            echo "<script>Swal.fire('Update Password Success!','Your information already update...','success');window.location.href = '#passwordSection';</script>";
-          } else { echo "<script>Swal.fire('Update Password Error!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
-        } else { echo "<script>Swal.fire('Dual New Password Unmatch!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
-      } else { echo "<script>Swal.fire('Wrong Current Password!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
+            echo "<script>Swal.fire('Update Password Success!','Your information already update...','success');</script>";
+          } else { echo "<script>Swal.fire('Update Password Error!','Your information update failed...','error');</script>"; }
+        } else { echo "<script>Swal.fire('Dual New Password Unmatch!','Your information update failed...','error');</script>"; }
+      } else { echo "<script>Swal.fire('Wrong Current Password!','Your information update failed...','error');</script>"; }
     }
   }
 
@@ -91,10 +91,10 @@ include_once('navbar.php');
             if(move_uploaded_file($_FILES["profile_image"]["tmp_name"], $targetFilePath)){
               $profile_image = $NewFileName;
             }else{
-              echo "<script>Swal.fire('Error Upload Profile Image!','Your profile image update failed...','error');window.location.href = '#passwordSection';</script>";
+              echo "<script>Swal.fire('Error Upload Profile Image!','Your profile image update failed...','error');</script>";
             }
         }else{
-          echo "<script>Swal.fire('Error Upload Profile Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');window.location.href = '#passwordSection';</script>";
+          echo "<script>Swal.fire('Error Upload Profile Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');</script>";
         }
     }
 
@@ -114,10 +114,10 @@ include_once('navbar.php');
             if(move_uploaded_file($_FILES["background_image"]["tmp_name"], $targetFilePath)){
               $background_image = $NewFileName;
             }else{
-              echo "<script>Swal.fire('Error Upload Background Image!','Your background image update failed...','error');window.location.href = '#passwordSection';</script>";
+              echo "<script>Swal.fire('Error Upload Background Image!','Your background image update failed...','error');</script>";
             }
         }else{
-          echo "<script>Swal.fire('Error Upload Background Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');window.location.href = '#passwordSection';</script>";
+          echo "<script>Swal.fire('Error Upload Background Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');</script>";
         }
     }
 
@@ -127,8 +127,7 @@ include_once('navbar.php');
     if(!isset($_POST['electronic_enginner'])){ $electronic_enginner = 0; }else{ $electronic_enginner = 1; }
 
     $update_qry = "UPDATE company_detail SET 
-    firstname='$_POST[firstName]',
-    lastname='$_POST[lastName]',
+    company_name='$_POST[company_name]',
     contact='$_POST[contact]',
     organization='$_POST[organization]',
     account_business='$account',
@@ -149,8 +148,8 @@ include_once('navbar.php');
     $update_qry .= "updated_at='$Date' 
     WHERE company_id='$_SESSION[userid]'";
     if (mysqli_query($conn, $update_qry)) {
-      echo "<script>Swal.fire('Update Basic Information Success!','Your information already update...','success');window.location.href = '#content';</script>";
-    } else { echo "<script>Swal.fire('Update Basic Information Error!','Your information update failed...','error');window.location.href = '#content';</script>"; }
+      echo "<script>Swal.fire('Update Basic Information Success!','Your information already update...','success');</script>";
+    } else { echo "<script>Swal.fire('Update Basic Information Error!','Your information update failed...','error');</script>"; }
   }
   
   $qry = "SELECT user.*,company_detail.* FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.id = '$_SESSION[userid]'";
@@ -276,7 +275,7 @@ include_once('navbar.php');
 
               <!-- Avatar -->
               <label class="avatar avatar-xxl avatar-circle avatar-border-lg avatar-uploader profile-cover-avatar" for="avatarUploader">
-                <img id="avatarImg" class="avatar-img" src="<?php if(!empty($result['profile_image'])){ echo "../image/".$result['profile_image'];}else{ echo "../assets/img/160x160/img6.jpg"; } ?>" alt="Image Description">
+                <img id="avatarImg" class="avatar-img" src="<?php if(!empty($result['profile_image'])){ echo "../image/".$result['profile_image'];}else{ echo "../assets/img/160x160/img2.jpg"; } ?>" alt="Image Description">
 
                 <input type="file" name="profile_image" class="js-file-attach avatar-uploader-input" id="avatarUploader" data-hs-file-attach-options='{
                           "textTarget": "#avatarImg",
@@ -305,13 +304,10 @@ include_once('navbar.php');
 
               <!-- Form Group -->
               <div class="row form-group">
-                <label for="firstNameLabel" class="col-sm-3 col-form-label input-label">Full name <i class="tio-help-outlined text-body ml-1" data-toggle="tooltip" data-placement="top" title="Displayed on public forums, such as Front."></i></label>
+                <label for="newEmailLabel" class="col-sm-3 col-form-label input-label">Company Name</label>
 
                 <div class="col-sm-9">
-                  <div class="input-group input-group-sm-down-break">
-                    <input type="text" class="form-control" name="firstName" id="firstNameLabel" placeholder="Your first name" aria-label="Your first name" value="<?= $result['firstname']; ?>">
-                    <input type="text" class="form-control" name="lastName" id="lastNameLabel" placeholder="Your last name" aria-label="Your last name" value="<?= $result['lastname']; ?>">
-                  </div>
+                  <input type="text" name="company_name" value="<?= $result['company_name']; ?>" class="form-control" name="newEmail" id="newEmailLabel" placeholder="Enter Company Name" aria-label="Enter Company Name" required data-msg="Please enter a valid Company Name.">
                 </div>
               </div>
               <!-- End Form Group -->

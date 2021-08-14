@@ -138,8 +138,7 @@ if($request['status']=="active"){
     if(!isset($_POST['electronic_enginner'])){ $electronic_enginner = 0; }else{ $electronic_enginner = 1; }
 
     $update_qry = "UPDATE company_detail SET 
-    firstname='$_POST[firstName]',
-    lastname='$_POST[lastName]',
+    company_name='$_POST[company_name]',
     contact='$_POST[contact]',
     organization='$_POST[organization]',
     account_business='$account',
@@ -316,16 +315,13 @@ if($request['status']=="active"){
 
               <!-- Form Group -->
               <div class="row form-group">
-                <label for="firstNameLabel" class="col-sm-3 col-form-label input-label">Full name <i class="tio-help-outlined text-body ml-1" data-toggle="tooltip" data-placement="top" title="Displayed on public forums, such as Front."></i></label>
+                  <label for="newEmailLabel" class="col-sm-3 col-form-label input-label">Company Name</label>
 
-                <div class="col-sm-9">
-                  <div class="input-group input-group-sm-down-break">
-                    <input type="text" class="form-control" name="firstName" id="firstNameLabel" placeholder="Your first name" aria-label="Your first name" value="<?= $result['firstname']; ?>">
-                    <input type="text" class="form-control" name="lastName" id="lastNameLabel" placeholder="Your last name" aria-label="Your last name" value="<?= $result['lastname']; ?>">
+                  <div class="col-sm-9">
+                    <input type="text" name="company_name" value="<?= $result['company_name']; ?>" class="form-control" name="newEmail" id="newEmailLabel" placeholder="Enter Company Name" aria-label="Enter Company Name" required data-msg="Please enter a valid Company Name.">
                   </div>
                 </div>
-              </div>
-              <!-- End Form Group -->
+                <!-- End Form Group -->
 
               <!-- Form Group -->
               <!-- <div class="row form-group">

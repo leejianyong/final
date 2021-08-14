@@ -38,7 +38,7 @@ $company_array = mysqli_fetch_array($company_sql);
                     </div>
                     <!-- End Avatar -->
 
-                    <h1 class="page-header-title"><?= $company_array['firstname']; ?> <?= $company_array['lastname']; ?></h1>
+                    <h1 class="page-header-title"><?= $company_array['company_name']; ?></h1>
 
                     <!-- List -->
                     <ul class="list-inline list-inline-m-1">

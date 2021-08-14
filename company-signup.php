@@ -49,7 +49,7 @@
         echo "<script>Swal.fire('This Email Already Exist!','Your Email Exist...','error');</script>";
       } else {
         $qry = "INSERT INTO `user`(`email`, `username`, `password`, `permission`, `status`, `group_id`, `created_at`) 
-        VALUES ('$_POST[email]','$_POST[company_name]','$_POST[password]','company','active','3','$Date')";
+        VALUES ('$_POST[email]','$_POST[company_name]','$_POST[password]','company','pending','3','$Date')";
         $result = $conn->query($qry);
         if (!$result) {
           echo "<script>Swal.fire('Create Account Error!','Your account created failed...','error');</script>";

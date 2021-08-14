@@ -212,7 +212,7 @@ require('./navbar.php');
                         <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['profile_image'])?'/image/'.$company_array['profile_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
                       </div>
                       <div class="ml-3">
-                        <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['firstname']; ?> <?= $company_array['lastname']; ?><i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                        <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['company_name']; ?><i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                         <span class="d-block font-size-sm text-body"><?= $company_array['email']; ?></span>
                       </div>
                     </a>

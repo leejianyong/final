@@ -1,61 +1,7 @@
 <?php
   include_once('./auth/db.php');
 ?>
-<?php
-if(isset($_SESSION['userid'])){
-  $qry = "SELECT * FROM user WHERE id = '$_SESSION[userid]'";
-  $sql = mysqli_query($conn,$qry);
-  if (mysqli_num_rows($sql) !== 1){
-    echo "<script>$('#welcomeMessageModal').modal('show');</script>";
-  }else{
-    $request = mysqli_fetch_assoc($sql);
-    switch ($request['permission']) {
-      case "admin":
-        $_SESSION['userid']=$request['id'];
-        echo "<script>window.location.href='./admin/index.php'</script>";
-        break;
-      case "company":   
-        $_SESSION['userid']=$request['id'];
-        echo "<script>window.location.href='./company/security.php'</script>";
-        break;
-      case "user":
-        $_SESSION['userid']=$request['id'];
-        echo "<script>window.location.href='./user/index.php'</script>";
-        break;
-      default:
-        echo "<script>$('#welcomeMessageModal').modal('show');</script>";
-    }
-  }
-}
-if(isset($_POST['submit'])){
-  if(!empty($_POST['email'])&!empty($_POST['password'])){
-    $qry = "SELECT * FROM user WHERE email = '$_POST[email]' AND password = '$_POST[password]'";
-    $sql = mysqli_query($conn,$qry);
-    if (mysqli_num_rows($sql) !== 1){
-      echo "<script>$('#welcomeMessageModal').modal('show');</script>";
-    }else{
-      $request = mysqli_fetch_assoc($sql);
-      switch ($request['permission']) {
-        case "admin":
-          $_SESSION['userid']=$request['id'];
-          echo "<script>window.location.href='./admin/index.php'</script>";
-          break;
-        case "company":   
-          $_SESSION['userid']=$request['id'];
-          echo "<script>window.location.href='./company/index.php'</script>";
-          break;
-        case "user":
-          $_SESSION['userid']=$request['id'];
-          echo "<script>window.location.href='./user/index.php'</script>";
-          break;
-        default:
-          echo "<script>$('#welcomeMessageModal').modal('show');</script>";
-      }
-    }
-  }
-}
 
-?>
 <!DOCTYPE html>
 <html lang="en">
   
@@ -78,9 +24,67 @@ if(isset($_POST['submit'])){
 
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="./assets/css/theme.min.css">
+    <link rel="stylesheet" href="./assets/js/sweetalert2.all.min.js">
+
   </head>
 
     <body>
+      <script src="./assets/js/sweetalert2.all.min.js"></script>
+
+      <?php
+        if(isset($_SESSION['userid'])){
+          $qry = "SELECT * FROM user WHERE id = '$_SESSION[userid]'";
+          $sql = mysqli_query($conn,$qry);
+          if (mysqli_num_rows($sql) !== 1){
+            // echo "<script>$('#welcomeMessageModal').modal('show');</script>";
+          }else{
+            $request = mysqli_fetch_assoc($sql);
+            switch ($request['permission']) {
+              case "admin":
+                $_SESSION['userid']=$request['id'];
+                echo "<script>window.location.href='./admin/index.php'</script>";
+                break;
+              case "company":   
+                $_SESSION['userid']=$request['id'];
+                echo "<script>window.location.href='./company/security.php'</script>";
+                break;
+              case "user":
+                $_SESSION['userid']=$request['id'];
+                echo "<script>window.location.href='./user/index.php'</script>";
+                break;
+              default:
+                echo "<script>$('#welcomeMessageModal').modal('show');</script>";
+            }
+          }
+        }
+        if(isset($_POST['submit'])){
+          if(!empty($_POST['email'])&!empty($_POST['password'])){
+            $qry = "SELECT * FROM user WHERE email = '$_POST[email]' AND password = '$_POST[password]'";
+            $sql = mysqli_query($conn,$qry);
+            if (mysqli_num_rows($sql) !== 1){
+              echo "<script>Swal.fire('Email or Passeword Wrong!','This account dont exist...','error');</script>";
+            }else{
+              $request = mysqli_fetch_assoc($sql);
+              switch ($request['permission']) {
+                case "admin":
+                  $_SESSION['userid']=$request['id'];
+                  echo "<script>window.location.href='./admin/index.php'</script>";
+                  break;
+                case "company":   
+                  $_SESSION['userid']=$request['id'];
+                  echo "<script>window.location.href='./company/index.php'</script>";
+                  break;
+                case "user":
+                  $_SESSION['userid']=$request['id'];
+                  echo "<script>window.location.href='./user/index.php'</script>";
+                  break;
+                default:
+                  echo "<script>Swal.fire('Unknown Account or Banned!','This account dont exist...','error');</script>";
+              }
+            }
+          }
+        }
+      ?>
       <!-- ========== MAIN CONTENT ========== -->
       <main id="content" role="main" class="main">
         <div class="position-fixed top-0 right-0 left-0 bg-img-hero" style="height: 32rem; background-image: url(./assets/svg/components/abstract-bg-4.svg);">
@@ -95,7 +99,7 @@ if(isset($_POST['submit'])){
 
         <!-- Content -->
         <div class="container py-5 py-sm-7">
-          <a class="d-flex justify-content-center mb-5" href="index.html">
+          <a class="d-flex justify-content-center mb-5" href="./index.php">
             <img class="z-index-2" src="./assets/img/logo_png/logo_ysl.png" alt="Image Description" style="width: 8rem;">
           </a>
 
