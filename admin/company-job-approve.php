@@ -1,5 +1,6 @@
 <?php
-include_once('../auth/db.php');
+include_once('security.php');
+
 if(isset($_GET['company']) & !empty($_GET['company'])){
     $qry = "UPDATE `compony_job_request` SET `status`='active' WHERE id ='$_GET[company]'";
     if(mysqli_query($conn,$qry)){

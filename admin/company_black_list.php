@@ -31,7 +31,7 @@ require('./navbar.php');
     <!-- End Page Header -->
 
     <!-- Card -->
-    <div class="card">
+    <div class="card border border-danger border-bottom-0 border-right-0">
       <?php
       $company_qry = "SELECT user.*,company_detail.*,user.id as userid FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.permission = 'company' AND status ='blacklist'";
       $company_sql = mysqli_query($conn, $company_qry);
@@ -174,10 +174,10 @@ require('./navbar.php');
           <thead class="thead-light">
             <tr>
               <th class="table-column-pr-0">
-                <div class="custom-control custom-checkbox">
+                <!-- <div class="custom-control custom-checkbox">
                   <input id="datatableCheckAll" type="checkbox" class="custom-control-input">
                   <label class="custom-control-label" for="datatableCheckAll"></label>
-                </div>
+                </div> -->
               </th>
               <th class="table-column-pl-0">Name</th>
               <th>Contact</th>
@@ -193,10 +193,10 @@ require('./navbar.php');
             <?php while ($company_array = mysqli_fetch_array($company_sql)) { ?>
               <tr>
                 <td class="table-column-pr-0">
-                  <div class="custom-control custom-checkbox">
+                  <!-- <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" id="usersDataCheck1">
                     <label class="custom-control-label" for="usersDataCheck1"></label>
-                  </div>
+                  </div> -->
                 </td>
                 <td class="table-column-pl-0">
                   <a class="d-flex align-items-center" href="./profile-company.php?detail=<?= $company_array['userid']; ?>">
@@ -204,7 +204,7 @@ require('./navbar.php');
                       <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['profile_image']) ? '/image/' . $company_array['profile_image'] : '/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
                     </div>
                     <div class="ml-3">
-                      <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['company_name']; ?><i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                      <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['company_name']; ?></span>
                       <span class="d-block font-size-sm text-body"><?= $company_array['email']; ?></span>
                     </div>
                   </a>
@@ -229,7 +229,7 @@ require('./navbar.php');
                 <td>
                   <div class="btn-group" role="group">
                     <?php if ($company_array['status'] == "blacklist") { ?>
-                      <a class="btn btn-sm btn-white" href="./company-whitelist.php?company=<?= $company_array['company_id']; ?>">
+                      <a class="btn btn-sm btn-outline-primary" href="./company-whitelist.php?company=<?= $company_array['company_id']; ?>">
                         <i class="tio-done"></i> WhiteList
                       </a>
                     <?php } ?>
@@ -291,39 +291,7 @@ require('./navbar.php');
   <div class="footer">
     <div class="row justify-content-between align-items-center">
       <div class="col">
-        <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
-      </div>
-      <div class="col-auto">
-        <div class="d-flex justify-content-end">
-          <!-- List Dot -->
-          <ul class="list-inline list-separator">
-            <li class="list-inline-item">
-              <a class="list-separator-link" href="#">FAQ</a>
-            </li>
-
-            <li class="list-inline-item">
-              <a class="list-separator-link" href="#">License</a>
-            </li>
-
-            <li class="list-inline-item">
-              <!-- Keyboard Shortcuts Toggle -->
-              <div class="hs-unfold">
-                <a class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle" href="javascript:;" data-hs-unfold-options='{
-                              "target": "#keyboardShortcutsSidebar",
-                              "type": "css-animation",
-                              "animationIn": "fadeInRight",
-                              "animationOut": "fadeOutRight",
-                              "hasOverlay": true,
-                              "smartPositionOff": true
-                             }'>
-                  <i class="tio-command-key"></i>
-                </a>
-              </div>
-              <!-- End Keyboard Shortcuts Toggle -->
-            </li>
-          </ul>
-          <!-- End List Dot -->
-        </div>
+        <p class="font-size-sm mb-0">&copy; Company Request Job. <span class="d-none d-sm-inline-block">2021.</span></p>
       </div>
     </div>
   </div>

@@ -286,7 +286,7 @@ if($request['status']=="active"){
 
               <!-- Avatar -->
               <label class="avatar avatar-xxl avatar-circle avatar-border-lg avatar-uploader profile-cover-avatar" for="avatarUploader">
-                <img id="avatarImg" class="avatar-img" src="<?php if(!empty($result['profile_image'])){ echo "../image/".$result['profile_image'];}else{ echo "../assets/img/160x160/img6.jpg"; } ?>" alt="Image Description">
+                <img id="avatarImg" class="avatar-img" src="<?php if(!empty($result['profile_image'])){ echo "../image/".$result['profile_image'];}else{ echo "../assets/img/160x160/img2.jpg"; } ?>" alt="Image Description">
 
                 <input type="file" name="profile_image" class="js-file-attach avatar-uploader-input" id="avatarUploader" data-hs-file-attach-options='{
                           "textTarget": "#avatarImg",
@@ -338,8 +338,8 @@ if($request['status']=="active"){
                 <label for="phoneLabel" class="col-sm-3 col-form-label input-label">Phone <span class="input-label-secondary">(Optional)</span></label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="+x(xxx)xxx-xx-xx" aria-label="+x(xxx)xxx-xx-xx" value="<?= $result['contact']; ?>" data-hs-mask-options='{
-                               "template": "+0(000)000-00-00"
+                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="+(xx)xx-xxxx-xxz" aria-label="+(xx)xx-xxxx-xxx" value="<?= $result['contact']; ?>" data-hs-mask-options='{
+                               "template": "+(00)00-0000-000"
                              }'>
                 </div>
               </div>
@@ -388,7 +388,7 @@ if($request['status']=="active"){
                         <input type="checkbox" name="it_enginner" id="customInlineCheck2" class="custom-control-input indeterminate-checkbox" <?php if ($result['it_engineer'] == 1) {
                                                                                                                                                 echo "checked";
                                                                                                                                               }; ?>>
-                        <label class="custom-control-label" for="customInlineCheck2">IT Engineering</label>
+                        <label class="custom-control-label" for="customInlineCheck2">Software Programmer</label>
                       </div>
                     </div>
                     <!-- End Custom Radio -->
@@ -410,7 +410,7 @@ if($request['status']=="active"){
                         <input type="checkbox" name="electronic_enginner" id="customInlineCheck4" class="custom-control-input indeterminate-checkbox" <?php if ($result['eletronic'] == 1) {
                                                                                                                                                           echo "checked";
                                                                                                                                                         }; ?>>
-                        <label class="custom-control-label" for="customInlineCheck4">Electronic Engineering</label>
+                        <label class="custom-control-label" for="customInlineCheck4">Hardware Electronic</label>
                       </div>
                     </div>
                     <!-- End Custom Radio -->
@@ -622,7 +622,7 @@ if($request['status']=="active"){
     <div class="footer">
       <div class="row justify-content-between align-items-center">
         <div class="col">
-          <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
+          <p class="font-size-sm mb-0">&copy; Company Job Request. <span class="d-none d-sm-inline-block">2021.</span></p>
         </div>
       </div>
     </div>

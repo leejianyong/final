@@ -31,7 +31,7 @@ require('./navbar.php');
         <!-- End Page Header -->
 
         <!-- Card -->
-        <div class="card">
+        <div class="card border-primary border-bottom-0 border-right-0">
           <?php 
           $company_qry = "SELECT job.*,request.*,user.*,request.job_image as job_image FROM `applied_job` as job LEFT JOIN compony_job_request as request ON job.job_id = request.id LEFT JOIN user ON job.user_id = user.id";
           $company_sql = mysqli_query($conn,$company_qry);
@@ -230,7 +230,7 @@ require('./navbar.php');
                   </td>
                   <td><?= $company_array['created_at']; ?></td>
                   <td><?= $company_array['type']; ?></td>
-                  <td><span class="d-block h5 mb-0"><?= $company_array['salary']; ?></span></td>
+                  <td><span class="d-block h5 mb-0"><?= $company_array['currency']; ?> <?= $company_array['salary']; ?></span></td>
                 </tr>
                 <?php } ?>
               </tbody>
@@ -287,40 +287,7 @@ require('./navbar.php');
         <div class="footer">
           <div class="row justify-content-between align-items-center">
             <div class="col">
-              <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
-            </div>
-            <div class="col-auto">
-              <div class="d-flex justify-content-end">
-                <!-- List Dot -->
-                <ul class="list-inline list-separator">
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">FAQ</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">License</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <!-- Keyboard Shortcuts Toggle -->
-                    <div class="hs-unfold">
-                      <a class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle" href="javascript:;"
-                         data-hs-unfold-options='{
-                              "target": "#keyboardShortcutsSidebar",
-                              "type": "css-animation",
-                              "animationIn": "fadeInRight",
-                              "animationOut": "fadeOutRight",
-                              "hasOverlay": true,
-                              "smartPositionOff": true
-                             }'>
-                        <i class="tio-command-key"></i>
-                      </a>
-                    </div>
-                    <!-- End Keyboard Shortcuts Toggle -->
-                  </li>
-                </ul>
-                <!-- End List Dot -->
-              </div>
+              <p class="font-size-sm mb-0">&copy; Company Request Job. <span class="d-none d-sm-inline-block">2021.</span></p>
             </div>
           </div>
         </div>

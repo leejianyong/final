@@ -31,7 +31,7 @@ require('./navbar.php');
         <!-- End Page Header -->
 
         <!-- Card -->
-        <div class="card">
+        <div class="card border border-danger border-bottom-0 border-right-0">
           <?php 
           $company_qry = "SELECT user.*,user.status as user_status,compony_job_request.*,compony_job_request.status as job_status,compony_job_request.id as job_id FROM user LEFT JOIN compony_job_request ON user.id = compony_job_request.company_id WHERE user.permission = 'company' AND user.status !='blacklist' AND compony_job_request.status ='blacklist'";
           $company_sql = mysqli_query($conn,$company_qry);
@@ -179,10 +179,10 @@ require('./navbar.php');
               <thead class="thead-light">
                 <tr>
                   <th class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
+                    <!-- <div class="custom-control custom-checkbox">
                       <input id="datatableCheckAll" type="checkbox" class="custom-control-input">
                       <label class="custom-control-label" for="datatableCheckAll"></label>
-                    </div>
+                    </div> -->
                   </th>
                   <th class="table-column-pl-0">Name</th>
                   <th>Salary</th>
@@ -198,14 +198,14 @@ require('./navbar.php');
                 <?php while($company_array = mysqli_fetch_array($company_sql)){ ?>
                 <tr>
                   <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
+                    <!-- <div class="custom-control custom-checkbox">
                       <input type="checkbox" class="custom-control-input" id="usersDataCheck1">
                       <label class="custom-control-label" for="usersDataCheck1"></label>
-                    </div>
+                    </div> -->
                   </td>
                   <td class="table-column-pl-0">
                     <a class="d-flex align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-circle">
+                      <div class="avatar avatar-square">
                         <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['job_image'])?'/image/'.$company_array['job_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
                       </div>
                       <div class="ml-3">
@@ -215,7 +215,7 @@ require('./navbar.php');
                     </a>
                   </td>
                   <td>
-                    <span class="d-block h5 mb-0"><?= $company_array['salary']; ?></span>
+                    <span class="d-block h5 mb-0"><?= $company_array['currency']; ?> <?= $company_array['salary']; ?></span>
                   </td>
                   <td><?= $company_array['subject']; ?> <span class="text-hide">Code: <?= $company_array['subject']; ?></span></td>
                   <td>
@@ -234,7 +234,7 @@ require('./navbar.php');
                   <td>
                       <div class="btn-group" role="group">
                       <?php if($company_array['status']=="blacklist"){ ?>
-                        <a class="btn btn-sm btn-white" href="./company-job-whitelist.php?company=<?= $company_array['job_id']; ?>">
+                        <a class="btn btn-sm btn-outline-primary" href="./company-job-whitelist.php?company=<?= $company_array['job_id']; ?>">
                           <i class="tio-done"></i> Whitelist
                         </a>
                       <?php } ?>
@@ -297,40 +297,7 @@ require('./navbar.php');
         <div class="footer">
           <div class="row justify-content-between align-items-center">
             <div class="col">
-              <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
-            </div>
-            <div class="col-auto">
-              <div class="d-flex justify-content-end">
-                <!-- List Dot -->
-                <ul class="list-inline list-separator">
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">FAQ</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">License</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <!-- Keyboard Shortcuts Toggle -->
-                    <div class="hs-unfold">
-                      <a class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle" href="javascript:;"
-                         data-hs-unfold-options='{
-                              "target": "#keyboardShortcutsSidebar",
-                              "type": "css-animation",
-                              "animationIn": "fadeInRight",
-                              "animationOut": "fadeOutRight",
-                              "hasOverlay": true,
-                              "smartPositionOff": true
-                             }'>
-                        <i class="tio-command-key"></i>
-                      </a>
-                    </div>
-                    <!-- End Keyboard Shortcuts Toggle -->
-                  </li>
-                </ul>
-                <!-- End List Dot -->
-              </div>
+            <p class="font-size-sm mb-0">&copy; Company Request Job. <span class="d-none d-sm-inline-block">2021.</span></p>
             </div>
           </div>
         </div>

@@ -31,7 +31,7 @@ require('./navbar.php');
         <!-- End Page Header -->
 
         <!-- Card -->
-        <div class="card">
+        <div class="card border border-primary border-bottom-0 border-right-0">
           <?php 
           $company_qry = "SELECT user.*,user.status as user_status,compony_job_request.*,compony_job_request.status as job_status,compony_job_request.id as job_id FROM user LEFT JOIN compony_job_request ON user.id = compony_job_request.company_id WHERE user.permission = 'company' AND user.status !='blacklist' AND compony_job_request.status !='blacklist'";
           $company_sql = mysqli_query($conn,$company_qry);
@@ -160,7 +160,7 @@ require('./navbar.php');
           <!-- End Header -->
 
           <!-- Table -->
-          <div class="table-responsive datatable-custom">
+          <div class="table-responsive datatable-custom ">
             <table id="datatable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
                    data-hs-datatables-options='{
                      "columnDefs": [{
@@ -181,10 +181,10 @@ require('./navbar.php');
               <thead class="thead-light">
                 <tr>
                   <th class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
+                    <!-- <div class="custom-control custom-checkbox">
                       <input id="datatableCheckAll" type="checkbox" class="custom-control-input">
                       <label class="custom-control-label" for="datatableCheckAll"></label>
-                    </div>
+                    </div> -->
                   </th>
                   <th class="table-column-pl-0">Name</th>
                   <th>Salary</th>
@@ -200,14 +200,14 @@ require('./navbar.php');
                 <?php while($company_array = mysqli_fetch_array($company_sql)){ ?>
                 <tr>
                   <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
+                    <!-- <div class="custom-control custom-checkbox">
                       <input type="checkbox" class="custom-control-input" id="usersDataCheck1">
                       <label class="custom-control-label" for="usersDataCheck1"></label>
-                    </div>
+                    </div> -->
                   </td>
                   <td class="table-column-pl-0">
                     <a class="d-flex align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-circle">
+                      <div class="avatar avatar-square">
                         <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['job_image'])?'/image/'.$company_array['job_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
                       </div>
                       <div class="ml-3">
@@ -217,7 +217,7 @@ require('./navbar.php');
                     </a>
                   </td>
                   <td>
-                    <span class="d-block h5 mb-0"><?= $company_array['salary']; ?></span>
+                    <span class="d-block h5 mb-0"><?= $company_array['currency']; ?> <?= $company_array['salary']; ?></span>
                   </td>
                   <td><?= $company_array['subject']; ?> <span class="text-hide">Code: <?= $company_array['subject']; ?></span></td>
                   <td>
@@ -236,35 +236,56 @@ require('./navbar.php');
                   <td>
                       <div class="btn-group" role="group">
                       <?php if($company_array['status']=="pending" || $company_array['status']=="drop"){ ?>
-                        <a class="btn btn-sm btn-white" href="./company-job-approve.php?company=<?= $company_array['job_id']; ?>">
-                          <i class="tio-done"></i> Approve
-                        </a>
-                        <?php }elseif($company_array['status']=="active"){ ?>
-                          <a class="btn btn-sm btn-white" href="./company-job-reject.php?company=<?= $company_array['job_id']; ?>">
-                          <i class="tio-clear"></i> Reject
-                        </a>
-                          <?php } ?>
-                        <!-- Unfold -->
-                        <div class="hs-unfold btn-group">
-                          <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-white dropdown-toggle dropdown-toggle-empty" href="javascript:;"
-                            data-hs-unfold-options='{
-                              "target": "#productsEditDropdown<?= $company_array['job_id']; ?>",
-                              "type": "css-animation",
-                              "smartPositionOffEl": "#datatable"
-                            }'></a>
+                          <a class="btn btn-sm btn-outline-primary" href="./company-job-approve.php?company=<?= $company_array['job_id']; ?>">
+                            <i class="tio-done"></i> Accept
+                          </a>
+                          <!-- Unfold -->
+                            <div class="hs-unfold btn-group">
+                              <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-outline-primary dropdown-toggle dropdown-toggle-empty" href="javascript:;"
+                                data-hs-unfold-options='{
+                                  "target": "#productsEditDropdown<?= $company_array['job_id']; ?>",
+                                  "type": "css-animation",
+                                  "smartPositionOffEl": "#datatable"
+                                }'></a>
 
-                          <div id="productsEditDropdown<?= $company_array['job_id']; ?>" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
-                            <a class="dropdown-item" href="company-job-blacklist.php?company=<?= $company_array['job_id']; ?>">
-                              <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
-                            </a>
-                            <?php if($company_array['status'] != 'drop'){ ?>
-                            <a class="dropdown-item" href="company-job-drop.php?company=<?= $company_array['job_id']; ?>">
-                              <i class="tio-archive dropdown-item-icon"></i> Drop
-                            </a>
-                            <?php } ?>
-                          </div>
-                        </div>
-                        <!-- End Unfold -->
+                              <div id="productsEditDropdown<?= $company_array['job_id']; ?>" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
+                                <a class="dropdown-item" href="company-job-blacklist.php?company=<?= $company_array['job_id']; ?>">
+                                  <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
+                                </a>
+                                <?php if($company_array['status'] != 'drop'){ ?>
+                                <a class="dropdown-item" href="company-job-drop.php?company=<?= $company_array['job_id']; ?>">
+                                  <i class="tio-archive dropdown-item-icon"></i> Drop
+                                </a>
+                                <?php } ?>
+                              </div>
+                            </div>
+                          <!-- End Unfold -->
+                        <?php }elseif($company_array['status']=="active"){ ?>
+                          <a class="btn btn-sm btn-outline-danger" href="./company-job-reject.php?company=<?= $company_array['job_id']; ?>">
+                            <i class="tio-clear"></i> Reject
+                          </a>
+                          <!-- Unfold -->
+                            <div class="hs-unfold btn-group">
+                              <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-outline-danger dropdown-toggle dropdown-toggle-empty" href="javascript:;"
+                                data-hs-unfold-options='{
+                                  "target": "#productsEditDropdown<?= $company_array['job_id']; ?>",
+                                  "type": "css-animation",
+                                  "smartPositionOffEl": "#datatable"
+                                }'></a>
+
+                              <div id="productsEditDropdown<?= $company_array['job_id']; ?>" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
+                                <a class="dropdown-item" href="company-job-blacklist.php?company=<?= $company_array['job_id']; ?>">
+                                  <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
+                                </a>
+                                <?php if($company_array['status'] != 'drop'){ ?>
+                                <a class="dropdown-item" href="company-job-drop.php?company=<?= $company_array['job_id']; ?>">
+                                  <i class="tio-archive dropdown-item-icon"></i> Drop
+                                </a>
+                                <?php } ?>
+                              </div>
+                            </div>
+                          <!-- End Unfold -->
+                          <?php } ?>
                       </div>
                     </td>
                   </td>
@@ -324,40 +345,7 @@ require('./navbar.php');
         <div class="footer">
           <div class="row justify-content-between align-items-center">
             <div class="col">
-              <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
-            </div>
-            <div class="col-auto">
-              <div class="d-flex justify-content-end">
-                <!-- List Dot -->
-                <ul class="list-inline list-separator">
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">FAQ</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">License</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <!-- Keyboard Shortcuts Toggle -->
-                    <div class="hs-unfold">
-                      <a class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle" href="javascript:;"
-                         data-hs-unfold-options='{
-                              "target": "#keyboardShortcutsSidebar",
-                              "type": "css-animation",
-                              "animationIn": "fadeInRight",
-                              "animationOut": "fadeOutRight",
-                              "hasOverlay": true,
-                              "smartPositionOff": true
-                             }'>
-                        <i class="tio-command-key"></i>
-                      </a>
-                    </div>
-                    <!-- End Keyboard Shortcuts Toggle -->
-                  </li>
-                </ul>
-                <!-- End List Dot -->
-              </div>
+              <p class="font-size-sm mb-0">&copy; Company Request Job. <span class="d-none d-sm-inline-block">2021.</span></p>
             </div>
           </div>
         </div>

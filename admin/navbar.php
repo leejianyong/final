@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Title -->
-    <title>Dashboard | Front - Admin &amp; Dashboard Template</title>
+    <title>Admin | Company Request - Admin &amp; Dashboard</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="./favicon.ico">
@@ -117,7 +117,7 @@
                        "type": "css-animation"
                      }'>
                     <div class="avatar avatar-sm avatar-circle">
-                      <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img1.jpg" alt="Image Description">
+                      <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img4.jpg" alt="Image Description">
                       <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                     </div>
                   </a>
@@ -126,7 +126,7 @@
                     <div class="dropdown-item-text">
                       <div class="media align-items-center">
                         <div class="avatar avatar-sm avatar-circle mr-2">
-                          <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img1.jpg" alt="Image Description">
+                          <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img4.jpg" alt="Image Description">
                         </div>
                         <div class="media-body">
                           <span class="card-title h5"><?= $request['username']; ?></span>
@@ -141,11 +141,11 @@
                       <span class="text-truncate pr-2" title="Profile &amp; account">Profile &amp; account</span>
                     </a> -->
 
-                    <a class="dropdown-item" href="#">
+                    <!-- <a class="dropdown-item" href="#">
                       <span class="text-truncate pr-2" title="Settings">Settings</span>
-                    </a>
+                    </a> -->
 
-                    <div class="dropdown-divider"></div>
+                    <!-- <div class="dropdown-divider"></div> -->
 
                     <a class="dropdown-item" href="sign-out.php">
                       <span class="text-truncate pr-2" title="Sign out">Sign out</span>

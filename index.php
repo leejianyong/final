@@ -32,7 +32,7 @@ if (isset($_SESSION['userid'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Title -->
-  <title>Overlay Container - Content Combinations - Layouts | Front - Admin &amp; Dashboard Template</title>
+  <title>Company Job Request</title>
 
   <!-- Favicon -->
   <link rel="shortcut icon" href="../favicon.ico">
@@ -100,9 +100,15 @@ if (isset($_SESSION['userid'])) {
                                                       } else {
                                                         echo "assets/img/160x160/img1.jpg";
                                                       } ?>" alt="Image Description">
-                      <?php } else { ?>
+                      <?php } else {
+                        if (isset($array)){
+                        if($array['permission']=="admin"){ ?>
+                        <img class="avatar-img" src="assets/img/160x160/img4.jpg" alt="Image Description">
+                      <?php }else{ ?>
                         <img class="avatar-img" src="assets/img/160x160/img1.jpg" alt="Image Description">
-                      <?php } ?>
+                      <?php } }else{ ?>
+                        <img class="avatar-img" src="assets/img/160x160/img1.jpg" alt="Image Description">
+                      <?php } } ?>
 
                       <?php
                       if (isset($result['status'])) {
@@ -127,7 +133,7 @@ if (isset($_SESSION['userid'])) {
                         <div class="avatar avatar-sm avatar-circle mr-2">
                           <?php if (isset($result['profile_image'])) { ?>
                             <img class="avatar-img" src="<?php if (!empty($result['profile_image'])) {
-                                                            echo "image/" . $result['profile_image'];
+                                                            echo "image/".$result['profile_image'];
                                                           } else {
                                                             echo "assets/img/160x160/img1.jpg";
                                                           } ?>" alt="Image Description">

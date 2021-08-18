@@ -33,7 +33,7 @@ require('./navbar.php');
         <!-- Card -->
         <div class="card">
           <?php 
-          $company_qry = "SELECT applied_job.*,compony_job_request.*,user.*,applied_job.created_at as request_date,compony_job_request.created_at as job_date FROM applied_job LEFT JOIN compony_job_request ON applied_job.job_id = compony_job_request.id LEFT JOIN user ON applied_job.user_id = user.id WHERE compony_job_request.company_id = '$_SESSION[userid]'";
+          $company_qry = "SELECT applied_job.*,compony_job_request.*,user.*,applied_job.user_id as userid,applied_job.created_at as request_date,compony_job_request.created_at as job_date,jobseeker_detail.*,jobseeker_detail.resume as user_resume FROM applied_job LEFT JOIN compony_job_request ON applied_job.job_id = compony_job_request.id LEFT JOIN user ON applied_job.user_id = user.id LEFT JOIN jobseeker_detail ON applied_job.user_id = jobseeker_detail.user_id WHERE compony_job_request.company_id = '$_SESSION[userid]'";
           $company_sql = mysqli_query($conn,$company_qry);
           ?>
           <!-- Header -->
@@ -171,7 +171,7 @@ require('./navbar.php');
                   <th class="table-column-pl-0">Job</th>
                   <th>User</th>
                   <th>Salary</th>
-                  <th>Status</th>
+                  <th>Resume</th>
                   <th>Request Job Date</th>
                   <th>Create Job Date</th>
                   <th></th>
@@ -206,7 +206,24 @@ require('./navbar.php');
                       </div>
                     </a>
                   </td>
-                  <td><span class="d-block h5 mb-0"><?= $company_array['currency']; ?> <?= $company_array['salary']; ?></span></td>
+                  <td>
+                    <?php if(!empty($company_array['user_resume'])){ ?>
+                    <!-- List Item -->
+                    <li class="list-group-item">
+                      <div class="row align-items-center gx-2">
+                        <div class="col-auto">
+                          <img class="avatar avatar-xs avatar-4by3" src="../assets/svg/brands/pdf.svg" alt="Image Description">
+                        </div>
+                        <div class="col">
+                          <h5 class="mb-0">
+                            <a class="text-dark" href="download-file.php?detail=<?= $company_array['user_resume']; ?>"><?= $company_array['user_resume']; ?></a>
+                          </h5>
+                        </div>
+                      </div>
+                      <!-- End Row -->
+                    </li>
+                    <!-- End List Item -->
+                    <?php } ?>
                   <td>
                     <?php if($company_array['status']=="active"){ ?>
                       <span class="legend-indicator bg-success"></span>Active
@@ -222,36 +239,9 @@ require('./navbar.php');
                   <td><?= $company_array['job_date']; ?></td>
                   <td>
                       <div class="btn-group" role="group">
-                      <?php if($company_array['status']=="pending" || $company_array['status']=="drop"){ ?>
-                        <a class="btn btn-sm btn-white" href="./company-approve.php?company=<?= $company_array['company_id']; ?>">
-                          <i class="tio-done"></i> Approve
+                        <a class="btn btn-sm btn-white" href="./user-detail.php?user=<?= $company_array['userid']; ?>">
+                          <i class="tio-user"></i> View Detail
                         </a>
-                        <?php }elseif($company_array['status']=="active"){ ?>
-                          <a class="btn btn-sm btn-white" href="./company-reject.php?company=<?= $company_array['company_id']; ?>">
-                          <i class="tio-clear"></i> Reject
-                        </a>
-                          <?php } ?>
-                        <!-- Unfold -->
-                        <div class="hs-unfold btn-group">
-                          <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-white dropdown-toggle dropdown-toggle-empty" href="javascript:;"
-                            data-hs-unfold-options='{
-                              "target": "#productsEditDropdown<?= $company_array['id']; ?>",
-                              "type": "css-animation",
-                              "smartPositionOffEl": "#datatable"
-                            }'></a>
-
-                          <div id="productsEditDropdown<?= $company_array['id']; ?>" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
-                            <a class="dropdown-item" href="company-blacklist.php?company=<?= $company_array['company_id']; ?>">
-                              <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
-                            </a>
-                            <?php if($company_array['status'] != 'drop'){ ?>
-                            <a class="dropdown-item" href="company-drop.php?company=<?= $company_array['company_id']; ?>">
-                              <i class="tio-archive dropdown-item-icon"></i> Drop
-                            </a>
-                            <?php } ?>
-                          </div>
-                        </div>
-                        <!-- End Unfold -->
                       </div>
                     </td>
                   </td>
@@ -311,40 +301,7 @@ require('./navbar.php');
         <div class="footer">
           <div class="row justify-content-between align-items-center">
             <div class="col">
-              <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
-            </div>
-            <div class="col-auto">
-              <div class="d-flex justify-content-end">
-                <!-- List Dot -->
-                <ul class="list-inline list-separator">
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">FAQ</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">License</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <!-- Keyboard Shortcuts Toggle -->
-                    <div class="hs-unfold">
-                      <a class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle" href="javascript:;"
-                         data-hs-unfold-options='{
-                              "target": "#keyboardShortcutsSidebar",
-                              "type": "css-animation",
-                              "animationIn": "fadeInRight",
-                              "animationOut": "fadeOutRight",
-                              "hasOverlay": true,
-                              "smartPositionOff": true
-                             }'>
-                        <i class="tio-command-key"></i>
-                      </a>
-                    </div>
-                    <!-- End Keyboard Shortcuts Toggle -->
-                  </li>
-                </ul>
-                <!-- End List Dot -->
-              </div>
+              <p class="font-size-sm mb-0">&copy; Company Job Request. <span class="d-none d-sm-inline-block">2021 Htmlstream.</span></p>
             </div>
           </div>
         </div>

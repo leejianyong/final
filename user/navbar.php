@@ -2,7 +2,9 @@
   include('security.php');
   include_once('asset.php');
   // include_once("../auth/db.php");
-  include('profile-detail.php');
+  $qry = "SELECT user.*,jobseeker_detail.* FROM user LEFT JOIN jobseeker_detail ON user.id = jobseeker_detail.user_id WHERE user.id = '$_SESSION[userid]'";
+  $sql = mysqli_query($conn,$qry);
+  $result = mysqli_fetch_assoc($sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Title -->
-    <title>Dashboard | Front - Admin &amp; Dashboard Template</title>
+    <title>Company Job Request | User</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="./favicon.ico">
@@ -34,7 +36,7 @@
     <link rel="stylesheet" href="<?= $assets; ?>/assets/css/theme.min.css">
   </head>
 
-  <body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl   footer-offset">
+  <body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl footer-offset">
     
     <script src="<?= $assets; ?>/assets/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside-mini-cache.js"></script>
 
@@ -162,15 +164,23 @@
             <!-- Content -->
             <div class="navbar-vertical-content">
               <ul class="navbar-nav navbar-nav-lg nav-tabs">
-                <!-- Dashboards -->
+                <!-- Company -->
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./index.php" title="Home page" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./index.php" title="Company page" data-placement="left">
+                  <i class="tio-home-vs-1-outlined nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Company List</span>
+                  </a>
+                </li>
+                <!-- End Company -->
+
+                <!-- Job List -->
+                <li class="nav-item ">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/job-list.php") ? "active" : ""; ?>" href="./job-list.php" title="Job page" data-placement="left">
                   <i class="tio-home-vs-1-outlined nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Job List</span>
                   </a>
                 </li>
-                
-                <!-- End Dashboards -->
+                <!-- End Job List -->
 
                 <li class="nav-item">
                   <div class="nav-divider"></div>
@@ -196,12 +206,12 @@
                   </a>
                 </li>
 
-                <li class="nav-item ">
+                <!-- <li class="nav-item ">
                   <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/account-review.php") ? "active" : ""; ?>" href="./account-review.php" title="Account Review" data-placement="left">
                   <i class="tio-lock-outlined nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Rating Review Page</span>
                   </a>
-                </li>
+                </li> -->
                 <!-- End user -->
 
               </ul>

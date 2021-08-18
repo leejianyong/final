@@ -10,6 +10,7 @@ if(isset($_SESSION['userid'])){
         $request = mysqli_fetch_assoc($sql);
         if($request['permission']!=="user"){
             echo "<script>alert('not user')</script>";
+            echo "<script>window.location.href='../index.php'</script>";
         }else{
             if($request['status']!=="active"){
                 if($_SERVER['REQUEST_URI']!=="/company_job/user/account-setting.php"){
