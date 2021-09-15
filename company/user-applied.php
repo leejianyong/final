@@ -37,7 +37,7 @@ if(isset($_SESSION['success']) && !empty($_SESSION['success'])){
       <!-- Card -->
       <div class="card border border-warning">
         <?php 
-        $company_qry = "SELECT applied_job.*,compony_job_request.*,compony_job_request.id as job_id,user.*,applied_job.user_id as userid,applied_job.created_at as request_date,compony_job_request.created_at as job_date,jobseeker_detail.*,jobseeker_detail.resume as user_resume FROM applied_job LEFT JOIN compony_job_request ON applied_job.job_id = compony_job_request.id LEFT JOIN user ON applied_job.user_id = user.id LEFT JOIN jobseeker_detail ON applied_job.user_id = jobseeker_detail.user_id WHERE compony_job_request.company_id = '$_SESSION[userid]'";
+        $company_qry = "SELECT applied_job.*,compony_job_request.*,compony_job_request.id as job_id,user.*,applied_job.id as userid,applied_job.created_at as request_date,compony_job_request.created_at as job_date,jobseeker_detail.*,jobseeker_detail.resume as user_resume FROM applied_job LEFT JOIN compony_job_request ON applied_job.job_id = compony_job_request.id LEFT JOIN user ON applied_job.user_id = user.id LEFT JOIN jobseeker_detail ON applied_job.user_id = jobseeker_detail.user_id WHERE compony_job_request.company_id = '$_SESSION[userid]'";
         $company_sql = mysqli_query($conn,$company_qry);
         ?>
         <!-- Header -->

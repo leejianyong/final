@@ -10,7 +10,7 @@ require '../PHPMailer/src/SMTP.php';
 ?>
     <main id="content" role="main" class="main">
       <?php
-          $company_qry = "SELECT applied_job.*,compony_job_request.*,user.*,applied_job.user_id as userid,applied_job.created_at as request_date,compony_job_request.created_at as job_date,jobseeker_detail.*,jobseeker_detail.resume as user_resume,user.email as user_email
+           $company_qry = "SELECT applied_job.*,compony_job_request.*,user.*,applied_job.user_id as userid,applied_job.created_at as request_date,compony_job_request.created_at as job_date,jobseeker_detail.*,jobseeker_detail.resume as user_resume,user.email as user_email
           FROM applied_job LEFT JOIN compony_job_request ON applied_job.job_id = compony_job_request.id LEFT JOIN user ON applied_job.user_id = user.id LEFT JOIN jobseeker_detail ON applied_job.user_id = jobseeker_detail.user_id
           WHERE compony_job_request.company_id = '$_SESSION[userid]' AND applied_job.id = '$_GET[user]'";
           $company_sql = mysqli_query($conn,$company_qry);
