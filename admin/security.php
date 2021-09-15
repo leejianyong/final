@@ -15,5 +15,4 @@ if(isset($_SESSION['userid'])){
 }else{
     echo "<script>window.location.href='../index.php'</script>";
 }
-
 ?>

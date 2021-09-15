@@ -1,7 +1,19 @@
 <?php
 include('navbar.php');
 ?>
+<link rel="stylesheet" href="../assets/js/sweetalert2.all.min.js">
+<script src="../assets/js/sweetalert2.all.min.js"></script>
   <main id="content" role="main" class="main">
+    <?php
+      if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
+        echo "<script>Swal.fire('$_SESSION[error]','$_SESSION[error]','error');</script>";
+        unset($_SESSION['error']);
+      }
+      if(isset($_SESSION['success']) && !empty($_SESSION['success'])){
+        echo "<script>Swal.fire('$_SESSION[success]','$_SESSION[success]','success');</script>";
+        unset($_SESSION['success']);
+      }
+    ?>
     <?php 
       $company_qry = "SELECT user.*,company_detail.*,user.id as userid FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.permission = 'company' AND status ='active'";
       $company_sql = mysqli_query($conn,$company_qry);
@@ -15,24 +27,7 @@ include('navbar.php');
             <!-- Filter -->
             <div class="row align-items-center mb-5">
               <div class="col">
-                <h3 class="mb-0"><?=$company_row; ?> Company</h3>
-              </div>
-
-              <div class="col-auto">
-                <!-- Nav -->
-                <!-- <ul class="nav nav-segment" id="connectionsTab" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link active" id="grid-tab" data-toggle="tab" href="#grid" role="tab" aria-controls="grid" aria-selected="true" title="Column view">
-                      <i class="tio-column-view-outlined"></i>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="false" title="List view">
-                      <i class="tio-agenda-view-outlined"></i>
-                    </a>
-                  </li>
-                </ul> -->
-                <!-- End Nav -->
+                <h3 class="mb-0"><?=$company_row; ?> Of Company</h3>
               </div>
             </div>
             <!-- End Filter -->
@@ -66,17 +61,20 @@ include('navbar.php');
 
                         <!-- Badges -->
                         <ul class="list-inline list-inline-m-1 mb-0">
-                          <?php if($array['multimedia']==1){ ?>
+                          <?php if($array['multi']==1){ ?>
                             <li class="list-inline-item"><a class="badge badge-soft-secondary p-2" href="#">Multimedia</a></li>
                           <?php } ?>
-                          <?php if($array['account_business']==1){ ?>
+                          <?php if($array['acc']==1){ ?>
                             <li class="list-inline-item"><a class="badge badge-soft-secondary p-2" href="#">Acounting</a></li>
                           <?php } ?>
-                          <?php if($array['eletronic']==1){ ?>
-                            <li class="list-inline-item"><a class="badge badge-soft-secondary p-2" href="#">Eletronic Hardware</a></li>
+                          <?php if($array['elec']==1){ ?>
+                            <li class="list-inline-item"><a class="badge badge-soft-secondary p-2" href="#">Eletronic</a></li>
                           <?php } ?>
-                          <?php if($array['it_engineer']==1){ ?>
-                            <li class="list-inline-item"><a class="badge badge-soft-secondary p-2" href="#">IT Software</a></li>
+                          <?php if($array['pro']==1){ ?>
+                            <li class="list-inline-item"><a class="badge badge-soft-secondary p-2" href="#">Programming</a></li>
+                          <?php } ?>
+                          <?php if($array['net']==1){ ?>
+                            <li class="list-inline-item"><a class="badge badge-soft-secondary p-2" href="#">Networking</a></li>
                           <?php } ?>
                         </ul>
                         <!-- End Badges -->
@@ -674,7 +672,6 @@ include('navbar.php');
         <div class="footer">
           <div class="row justify-content-between align-items-center">
             <div class="col">
-              <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
             </div>
           </div>
         </div>

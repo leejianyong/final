@@ -1,8 +1,19 @@
 <?php
 require('./navbar.php');
-
 ?>
-<main id="content" role="main" class="main">
+<link rel="stylesheet" href="../assets/js/sweetalert2.all.min.js">
+<script src="../assets/js/sweetalert2.all.min.js"></script>
+  <main id="content" role="main" class="main">
+    <?php
+      if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
+        echo "<script>Swal.fire('$_SESSION[error]','$_SESSION[error]','error');</script>";
+        unset($_SESSION['error']);
+      }
+      if(isset($_SESSION['success']) && !empty($_SESSION['success'])){
+        echo "<script>Swal.fire('$_SESSION[success]','$_SESSION[success]','success');</script>";
+        unset($_SESSION['success']);
+      }
+    ?>
       <!-- Content -->
       <div class="content container-fluid">
         <!-- Page Header -->
@@ -253,9 +264,9 @@ require('./navbar.php');
                                   <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
                                 </a>
                                 <?php if($company_array['status'] != 'drop'){ ?>
-                                <a class="dropdown-item" href="company-job-drop.php?company=<?= $company_array['job_id']; ?>">
+                                <!-- <a class="dropdown-item" href="company-job-drop.php?company=<?= $company_array['job_id']; ?>">
                                   <i class="tio-archive dropdown-item-icon"></i> Drop
-                                </a>
+                                </a> -->
                                 <?php } ?>
                               </div>
                             </div>
@@ -278,9 +289,9 @@ require('./navbar.php');
                                   <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
                                 </a>
                                 <?php if($company_array['status'] != 'drop'){ ?>
-                                <a class="dropdown-item" href="company-job-drop.php?company=<?= $company_array['job_id']; ?>">
+                                <!-- <a class="dropdown-item" href="company-job-drop.php?company=<?= $company_array['job_id']; ?>">
                                   <i class="tio-archive dropdown-item-icon"></i> Drop
-                                </a>
+                                </a> -->
                                 <?php } ?>
                               </div>
                             </div>
@@ -345,7 +356,6 @@ require('./navbar.php');
         <div class="footer">
           <div class="row justify-content-between align-items-center">
             <div class="col">
-              <p class="font-size-sm mb-0">&copy; Company Request Job. <span class="d-none d-sm-inline-block">2021.</span></p>
             </div>
           </div>
         </div>
@@ -353,63 +363,6 @@ require('./navbar.php');
       <!-- End Footer -->
     </main>
     <!-- ========== END MAIN CONTENT ========== -->
-
-    <!-- ========== SECONDARY CONTENTS ========== -->
-
-    <!-- Welcome Message Modal -->
-    <div class="modal fade" id="welcomeMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <!-- Header -->
-          <div class="modal-close">
-            <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary" data-dismiss="modal" aria-label="Close">
-              <i class="tio-clear tio-lg"></i>
-            </button>
-          </div>
-          <!-- End Header -->
-
-          <!-- Body -->
-          <div class="modal-body p-sm-5">
-            <div class="text-center">
-              <div class="w-75 w-sm-50 mx-auto mb-4">
-                <img class="img-fluid" src="<?= $assets; ?>/assets/svg/illustrations/graphs.svg" alt="Image Description">
-              </div>
-
-              <h4 class="h1">Welcome to Front</h4>
-
-              <p>We're happy to see you in our community.</p>
-            </div>
-          </div>
-          <!-- End Body -->
-
-          <!-- Footer -->
-          <div class="modal-footer d-block text-center py-sm-5">
-            <small class="text-cap mb-4">Trusted by the world's best teams</small>
-
-            <div class="w-85 mx-auto">
-              <div class="row justify-content-between">
-                <div class="col">
-                  <img class="img-fluid ie-welcome-brands" src="<?= $assets; ?>/assets/svg/brands/gitlab-gray.svg" alt="Image Description">
-                </div>
-                <div class="col">
-                  <img class="img-fluid ie-welcome-brands" src="<?= $assets; ?>/assets/svg/brands/fitbit-gray.svg" alt="Image Description">
-                </div>
-                <div class="col">
-                  <img class="img-fluid ie-welcome-brands" src="<?= $assets; ?>/assets/svg/brands/flow-xo-gray.svg" alt="Image Description">
-                </div>
-                <div class="col">
-                  <img class="img-fluid ie-welcome-brands" src="<?= $assets; ?>/assets/svg/brands/layar-gray.svg" alt="Image Description">
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Footer -->
-        </div>
-      </div>
-    </div>
-    <!-- End Welcome Message Modal -->
-
-    <!-- ========== END SECONDARY CONTENTS ========== -->
 
     <!-- JS Global Compulsory  -->
     <script src="<?= $assets; ?>/assets/vendor/jquery/dist/jquery.min.js"></script>

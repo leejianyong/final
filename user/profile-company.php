@@ -78,57 +78,6 @@ $company_array = mysqli_fetch_array($company_sql);
                         <li class="nav-item">
                             <a class="nav-link " href="profile-company-job.php?detail=<?= $_GET['detail']; ?>">JobList</a>
                         </li>
-                        <li class="nav-item ml-auto">
-                            <!-- Unfold -->
-                            <div class="hs-unfold hs-nav-scroller-unfold">
-                                <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-white" href="javascript:;" data-hs-unfold-options='{
-                         "target": "#profileDropdown",
-                         "type": "css-animation"
-                       }'>
-                                    <i class="tio-more-vertical"></i>
-                                </a>
-
-                                <div id="profileDropdown" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
-                                    <span class="dropdown-header">Settings</span>
-                                    <?php if ($company_array['status'] == 'active') { ?>
-                                        <a class="dropdown-item" href="company-reject.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-share dropdown-item-icon"></i> Reject
-                                        </a>
-                                        <a class="dropdown-item" href="company-blacklist.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-blocked dropdown-item-icon"></i> BlackList
-                                        </a>
-                                        <a class="dropdown-item" href="company-drop.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-info-outined dropdown-item-icon"></i> Drop
-                                        </a>
-                                    <?php } elseif ($company_array['status'] == 'pending') { ?>
-                                        <a class="dropdown-item" href="company-approve.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-share dropdown-item-icon"></i> Approve
-                                        </a>
-                                        <a class="dropdown-item" href="company-blacklist.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-blocked dropdown-item-icon"></i> BlackList
-                                        </a>
-                                        <a class="dropdown-item" href="company-drop.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-info-outined dropdown-item-icon"></i> Drop
-                                        </a>
-                                    <?php } elseif ($company_array['status'] == 'drop') { ?>
-                                        <a class="dropdown-item" href="company-approve.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-share dropdown-item-icon"></i> Approve
-                                        </a>
-                                        <a class="dropdown-item" href="company-reject.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-blocked dropdown-item-icon"></i> Reject
-                                        </a>
-                                        <a class="dropdown-item" href="company-blacklist.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-info-outined dropdown-item-icon"></i> BlackList
-                                        </a>
-                                    <?php } elseif ($company_array['status'] == 'blacklist') { ?>
-                                        <a class="dropdown-item" href="company-whitelist.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-share dropdown-item-icon"></i> WhiteList
-                                        </a>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <!-- End Unfold -->
-                        </li>
                     </ul>
                 </div>
                 <!-- End Nav -->
@@ -161,17 +110,17 @@ $company_array = mysqli_fetch_array($company_sql);
                                     </li>
                                     <li>
                                         <i class="tio-user-outlined nav-icon"></i>
-                                        <?= $company_array['firstname']; ?> <?= $company_array['lastname']; ?>
-                                    </li>
-                                    <li>
-                                        <i class="tio-briefcase-outlined nav-icon"></i>
-                                        <?= $company_array['country']; ?>
+                                        <?= $company_array['username']; ?>
                                     </li>
                                     <li>
                                         <i class="tio-city nav-icon"></i>
-                                        <?= $company_array['username']; ?>
+                                        <?= $company_array['country']; ?>
                                     </li>
-
+                                    <li>
+                                        <i class="tio-briefcase-outlined nav-icon"></i>
+                                        <?= $company_array['organization']; ?>
+                                    </li>
+                                    
                                     <li class="pt-2 pb-0">
                                         <small class="card-subtitle">Contacts</small>
                                     </li>
@@ -210,8 +159,6 @@ $company_array = mysqli_fetch_array($company_sql);
                         </div>
                         <!-- End Card -->
                     </div>
-
-                    
 
                     <div class="col-lg-8">
                         <!-- Card -->
@@ -306,7 +253,6 @@ $company_array = mysqli_fetch_array($company_sql);
     <div class="footer">
         <div class="row justify-content-between align-items-center">
             <div class="col">
-                <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
             </div>
         </div>
     </div>

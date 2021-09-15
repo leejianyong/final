@@ -1,1828 +1,366 @@
-<?php include('navbar.php'); ?>
+<?php
+require('./navbar.php');
+?>
+<link rel="stylesheet" href="../assets/js/sweetalert2.all.min.js">
+<script src="../assets/js/sweetalert2.all.min.js"></script>
+  <main id="content" role="main" class="main">
+    <?php
+      if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
+        echo "<script>Swal.fire('$_SESSION[error]','$_SESSION[error]','error');</script>";
+        unset($_SESSION['error']);
+      }
+      if(isset($_SESSION['success']) && !empty($_SESSION['success'])){
+        echo "<script>Swal.fire('$_SESSION[success]','$_SESSION[success]','success');</script>";
+        unset($_SESSION['success']);
+      }
+    ?>
+    <!-- Content -->
+    <div class="content container-fluid">
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="row align-items-end">
+          <div class="col-sm mb-2 mb-sm-0">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb breadcrumb-no-gutter">
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Pages</a></li>
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Company</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Company</li>
+              </ol>
+            </nav>
 
-    <main id="content" role="main" class="main pointer-event">
-      <!-- Content -->
-      <div class="content container-fluid">
-        <!-- Page Header -->
-        <div class="page-header">
-          <div class="row align-items-center">
-            <div class="col-sm mb-2 mb-sm-0">
-              <h1 class="page-header-title">Dashboard</h1>
-            </div>
-
-            <!-- <div class="col-sm-auto">
-              <a class="btn btn-primary" href="javascript:;" data-toggle="modal" data-target="#inviteUserModal">
-                <i class="tio-user-add mr-1"></i> Invite users
-              </a>
-            </div> -->
-          </div>
-        </div>
-        <!-- End Page Header -->
-
-        <!-- Stats -->
-        <div class="row gx-2 gx-lg-3">
-          <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-            <!-- Card -->
-            <a class="card card-hover-shadow h-100" href="#">
-              <div class="card-body">
-                <h6 class="card-subtitle">Total Users</h6>
-
-                <div class="row align-items-center gx-2 mb-1">
-                  <div class="col-6">
-                    <span class="card-title h2">72,540</span>
-                  </div>
-
-                  <div class="col-6">
-                    <!-- Chart -->
-                    <div class="chartjs-custom" style="height: 3rem;">
-                      <canvas class="js-chart"
-                              data-hs-chartjs-options='{
-                                "type": "line",
-                                "data": {
-                                   "labels": ["1 May","2 May","3 May","4 May","5 May","6 May","7 May","8 May","9 May","10 May","11 May","12 May","13 May","14 May","15 May","16 May","17 May","18 May","19 May","20 May","21 May","22 May","23 May","24 May","25 May","26 May","27 May","28 May","29 May","30 May","31 May"],
-                                   "datasets": [{
-                                    "data": [21,20,24,20,18,17,15,17,18,30,31,30,30,35,25,35,35,40,60,90,90,90,85,70,75,70,30,30,30,50,72],
-                                    "backgroundColor": ["rgba(55, 125, 255, 0)", "rgba(255, 255, 255, 0)"],
-                                    "borderColor": "#377dff",
-                                    "borderWidth": 2,
-                                    "pointRadius": 0,
-                                    "pointHoverRadius": 0
-                                  }]
-                                },
-                                "options": {
-                                   "scales": {
-                                     "yAxes": [{
-                                       "display": false
-                                     }],
-                                     "xAxes": [{
-                                       "display": false
-                                     }]
-                                   },
-                                  "hover": {
-                                    "mode": "nearest",
-                                    "intersect": false
-                                  },
-                                  "tooltips": {
-                                    "postfix": "k",
-                                    "hasIndicator": true,
-                                    "intersect": false
-                                  }
-                                }
-                              }'>
-                      </canvas>
-                    </div>
-                    <!-- End Chart -->
-                  </div>
-                </div>
-                <!-- End Row -->
-
-                <span class="badge badge-soft-success">
-                  <i class="tio-trending-up"></i> 12.5%
-                </span>
-                <span class="text-body font-size-sm ml-1">from 70,104</span>
-              </div>
-            </a>
-            <!-- End Card -->
-          </div>
-
-          <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-            <!-- Card -->
-            <a class="card card-hover-shadow h-100" href="#">
-              <div class="card-body">
-                <h6 class="card-subtitle">Sessions</h6>
-
-                <div class="row align-items-center gx-2 mb-1">
-                  <div class="col-6">
-                    <span class="card-title h2">29.4%</span>
-                  </div>
-
-                  <div class="col-6">
-                    <!-- Chart -->
-                    <div class="chartjs-custom" style="height: 3rem;">
-                      <canvas class="js-chart"
-                              data-hs-chartjs-options='{
-                                "type": "line",
-                                "data": {
-                                   "labels": ["1 May","2 May","3 May","4 May","5 May","6 May","7 May","8 May","9 May","10 May","11 May","12 May","13 May","14 May","15 May","16 May","17 May","18 May","19 May","20 May","21 May","22 May","23 May","24 May","25 May","26 May","27 May","28 May","29 May","30 May","31 May"],
-                                   "datasets": [{
-                                    "data": [21,20,24,20,18,17,15,17,30,30,35,25,18,30,31,35,35,90,90,90,85,100,120,120,120,100,90,75,75,75,90],
-                                    "backgroundColor": ["rgba(55, 125, 255, 0)", "rgba(255, 255, 255, 0)"],
-                                    "borderColor": "#377dff",
-                                    "borderWidth": 2,
-                                    "pointRadius": 0,
-                                    "pointHoverRadius": 0
-                                  }]
-                                },
-                                "options": {
-                                   "scales": {
-                                     "yAxes": [{
-                                       "display": false
-                                     }],
-                                     "xAxes": [{
-                                       "display": false
-                                     }]
-                                   },
-                                  "hover": {
-                                    "mode": "nearest",
-                                    "intersect": false
-                                  },
-                                  "tooltips": {
-                                    "postfix": "%",
-                                    "hasIndicator": true,
-                                    "intersect": false
-                                  }
-                                }
-                              }'>
-                      </canvas>
-                    </div>
-                    <!-- End Chart -->
-                  </div>
-                </div>
-                <!-- End Row -->
-
-                <span class="badge badge-soft-success">
-                  <i class="tio-trending-up"></i> 1.7%
-                </span>
-                <span class="text-body font-size-sm ml-1">from 29.1%</span>
-              </div>
-            </a>
-            <!-- End Card -->
-          </div>
-
-          <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-            <!-- Card -->
-            <a class="card card-hover-shadow h-100" href="#">
-              <div class="card-body">
-                <h6 class="card-subtitle">Avg. Click Rate</h6>
-
-                <div class="row align-items-center gx-2 mb-1">
-                  <div class="col-6">
-                    <span class="card-title h2">56.8%</span>
-                  </div>
-
-                  <div class="col-6">
-                    <!-- Chart -->
-                    <div class="chartjs-custom" style="height: 3rem;">
-                      <canvas class="js-chart"
-                              data-hs-chartjs-options='{
-                                "type": "line",
-                                "data": {
-                                   "labels": ["1 May","2 May","3 May","4 May","5 May","6 May","7 May","8 May","9 May","10 May","11 May","12 May","13 May","14 May","15 May","16 May","17 May","18 May","19 May","20 May","21 May","22 May","23 May","24 May","25 May","26 May","27 May","28 May","29 May","30 May","31 May"],
-                                   "datasets": [{
-                                    "data": [25,18,30,31,35,35,60,60,60,75,21,20,24,20,18,17,15,17,30,120,120,120,100,90,75,90,90,90,75,70,60],
-                                    "backgroundColor": ["rgba(55, 125, 255, 0)", "rgba(255, 255, 255, 0)"],
-                                    "borderColor": "#377dff",
-                                    "borderWidth": 2,
-                                    "pointRadius": 0,
-                                    "pointHoverRadius": 0
-                                  }]
-                                },
-                                "options": {
-                                   "scales": {
-                                     "yAxes": [{
-                                       "display": false
-                                     }],
-                                     "xAxes": [{
-                                       "display": false
-                                     }]
-                                   },
-                                  "hover": {
-                                    "mode": "nearest",
-                                    "intersect": false
-                                  },
-                                  "tooltips": {
-                                    "postfix": "%",
-                                    "hasIndicator": true,
-                                    "intersect": false
-                                  }
-                                }
-                              }'>
-                      </canvas>
-                    </div>
-                    <!-- End Chart -->
-                  </div>
-                </div>
-                <!-- End Row -->
-
-                <span class="badge badge-soft-danger">
-                  <i class="tio-trending-down"></i> 4.4%
-                </span>
-                <span class="text-body font-size-sm ml-1">from 61.2%</span>
-              </div>
-            </a>
-            <!-- End Card -->
-          </div>
-
-          <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-            <!-- Card -->
-            <a class="card card-hover-shadow h-100" href="#">
-              <div class="card-body">
-                <h6 class="card-subtitle">Pageviews</h6>
-
-                <div class="row align-items-center gx-2 mb-1">
-                  <div class="col-6">
-                    <span class="card-title h2">92,913</span>
-                  </div>
-
-                  <div class="col-6">
-                    <!-- Chart -->
-                    <div class="chartjs-custom" style="height: 3rem;">
-                      <canvas class="js-chart"
-                              data-hs-chartjs-options='{
-                                "type": "line",
-                                "data": {
-                                   "labels": ["1 May","2 May","3 May","4 May","5 May","6 May","7 May","8 May","9 May","10 May","11 May","12 May","13 May","14 May","15 May","16 May","17 May","18 May","19 May","20 May","21 May","22 May","23 May","24 May","25 May","26 May","27 May","28 May","29 May","30 May","31 May"],
-                                   "datasets": [{
-                                    "data": [21,20,24,15,17,30,30,35,35,35,40,60,12,90,90,85,70,75,43,75,90,22,120,120,90,85,100,92,92,92,92],
-                                    "backgroundColor": ["rgba(55, 125, 255, 0)", "rgba(255, 255, 255, 0)"],
-                                    "borderColor": "#377dff",
-                                    "borderWidth": 2,
-                                    "pointRadius": 0,
-                                    "pointHoverRadius": 0
-                                  }]
-                                },
-                                "options": {
-                                   "scales": {
-                                     "yAxes": [{
-                                       "display": false
-                                     }],
-                                     "xAxes": [{
-                                       "display": false
-                                     }]
-                                   },
-                                  "hover": {
-                                    "mode": "nearest",
-                                    "intersect": false
-                                  },
-                                  "tooltips": {
-                                    "postfix": "k",
-                                    "hasIndicator": true,
-                                    "intersect": false
-                                  }
-                                }
-                              }'>
-                      </canvas>
-                    </div>
-                    <!-- End Chart -->
-                  </div>
-                </div>
-                <!-- End Row -->
-
-                <span class="badge badge-soft-secondary">0.0%</span>
-                <span class="text-body font-size-sm ml-1">from 2,913</span>
-              </div>
-            </a>
-            <!-- End Card -->
-          </div>
-        </div>
-        <!-- End Stats -->
-
-        <div class="row gx-2 gx-lg-3">
-          
-
-          <div class="col-lg-12 mb-6 mb-lg-10">
-            <!-- Card -->
-            <div class="card h-100">
-              <!-- Header -->
-              <div class="card-header">
-                <h5 class="card-header-title">Monthly expenses</h5>
-
-                <!-- Nav -->
-                <ul class="nav nav-segment" id="expensesTab" role="tablist">
-                  <li class="nav-item" data-toggle="chart-bar" data-datasets="thisWeek" data-trigger="click" data-action="toggle">
-                    <a class="nav-link active" href="javascript:;" data-toggle="tab">This week</a>
-                  </li>
-                  <li class="nav-item" data-toggle="chart-bar" data-datasets="lastWeek" data-trigger="click" data-action="toggle">
-                    <a class="nav-link" href="javascript:;" data-toggle="tab">Last week</a>
-                  </li>
-                </ul>
-                <!-- End Nav -->
-              </div>
-              <!-- End Header -->
-
-              <!-- Body -->
-              <div class="card-body">
-                <div class="row mb-4">
-                  <div class="col-sm mb-2 mb-sm-0">
-                    <div class="d-flex align-items-center">
-                      <span class="h1 mb-0">35%</span>
-                      <span class="text-success ml-2">
-                        <i class="tio-trending-up"></i> 25.3%
-                      </span>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-auto align-self-sm-end">
-                    <!-- Legend Indicators -->
-                    <div class="row font-size-sm">
-                      <div class="col-auto">
-                        <span class="legend-indicator bg-primary"></span> New
-                      </div>
-                      <div class="col-auto">
-                        <span class="legend-indicator"></span> Overdue
-                      </div>
-                    </div>
-                    <!-- End Legend Indicators -->
-                  </div>
-                </div>
-                <!-- End Row -->
-
-                <!-- Bar Chart -->
-                <div class="chartjs-custom">
-                  <canvas id="updatingData" style="height: 20rem;"
-                          data-hs-chartjs-options='{
-                            "type": "bar",
-                            "data": {
-                              "labels": ["May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7", "May 8", "May 9", "May 10"],
-                              "datasets": [{
-                                "data": [200, 300, 290, 350, 150, 350, 300, 100, 125, 220],
-                                "backgroundColor": "#377dff",
-                                "hoverBackgroundColor": "#377dff",
-                                "borderColor": "#377dff"
-                              },
-                              {
-                                "data": [150, 230, 382, 204, 169, 290, 300, 100, 300, 225, 120],
-                                "backgroundColor": "#e7eaf3",
-                                "borderColor": "#e7eaf3"
-                              }]
-                            },
-                            "options": {
-                              "scales": {
-                                "yAxes": [{
-                                  "gridLines": {
-                                    "color": "#e7eaf3",
-                                    "drawBorder": false,
-                                    "zeroLineColor": "#e7eaf3"
-                                  },
-                                  "ticks": {
-                                    "beginAtZero": true,
-                                    "stepSize": 100,
-                                    "fontSize": 12,
-                                    "fontColor": "#97a4af",
-                                    "fontFamily": "Open Sans, sans-serif",
-                                    "padding": 10,
-                                    "postfix": "$"
-                                  }
-                                }],
-                                "xAxes": [{
-                                  "gridLines": {
-                                    "display": false,
-                                    "drawBorder": false
-                                  },
-                                  "ticks": {
-                                    "fontSize": 12,
-                                    "fontColor": "#97a4af",
-                                    "fontFamily": "Open Sans, sans-serif",
-                                    "padding": 5
-                                  },
-                                  "categoryPercentage": 0.5,
-                                  "maxBarThickness": "10"
-                                }]
-                              },
-                              "cornerRadius": 2,
-                              "tooltips": {
-                                "prefix": "$",
-                                "hasIndicator": true,
-                                "mode": "index",
-                                "intersect": false
-                              },
-                              "hover": {
-                                "mode": "nearest",
-                                "intersect": true
-                              }
-                            }
-                          }'></canvas>
-                </div>
-                <!-- End Bar Chart -->
-              </div>
-              <!-- End Body -->
-            </div>
-            <!-- End Card -->
+            <h1 class="page-header-title">Company List</h1>
           </div>
         </div>
         <!-- End Row -->
+      </div>
+      <!-- End Page Header -->
 
-        <!-- Card -->
-        <div class="card mb-3 mb-lg-5">
-          <!-- Header -->
-          <div class="card-header">
-            <div class="row justify-content-between align-items-center flex-grow-1">
-              <div class="col-12 col-md">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="card-header-title">Users</h5>
-
-                  <!-- Datatable Info -->
-                  <div id="datatableCounterInfo" style="display: none;">
-                    <div class="d-flex align-items-center">
-                      <span class="font-size-sm mr-3">
-                        <span id="datatableCounter">0</span>
-                        Selected
-                      </span>
-                      <a class="btn btn-sm btn-outline-danger" href="javascript:;">
-                        <i class="tio-delete-outlined"></i> Delete
-                      </a>
+      <!-- Card -->
+      <div class="card border border-primary border-bottom-0 border-right-0">
+        <?php 
+        $company_qry = "SELECT user.*,company_detail.*,user.id as userid FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.permission = 'company' AND status !='blacklist'";
+        $company_sql = mysqli_query($conn,$company_qry);
+        ?>
+        <!-- Header -->
+        <div class="card-header">
+          <div class="row justify-content-between align-items-center flex-grow-1">
+            <div class="col-sm-6 col-md-4 mb-3 mb-sm-0">
+              <form>
+                <!-- Search -->
+                <div class="input-group input-group-merge input-group-flush">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="tio-search"></i>
                     </div>
                   </div>
-                  <!-- End Datatable Info -->
+                  <input id="datatableSearch" type="search" class="form-control" placeholder="Search users" aria-label="Search users">
                 </div>
-              </div>
-
-              <div class="col-auto">
-                <!-- Filter -->
-                <div class="row align-items-sm-center">
-                  <div class="col-sm-auto">
-                    <div class="d-flex align-items-center mr-2">
-                      <span class="text-secondary mr-2">Status:</span>
-
-                      <!-- Select -->
-                      <select class="js-select2-custom js-datatable-filter custom-select-sm" size="1" style="opacity: 0;"
-                              data-target-column-index="2"
-                              data-hs-select2-options='{
-                                "minimumResultsForSearch": "Infinity",
-                                "customClass": "custom-select custom-select-sm custom-select-borderless",
-                                "dropdownAutoWidth": true,
-                                "width": true
-                              }'>
-                        <option value="">All</option>
-                        <option value="successful">Successful</option>
-                        <option value="overdue">Overdue</option>
-                        <option value="pending">Pending</option>
-                      </select>
-                      <!-- End Select -->
-                    </div>
-                  </div>
-
-                  <div class="col-sm-auto">
-                    <div class="d-flex align-items-center mr-2">
-                      <span class="text-secondary mr-2">Signed up:</span>
-
-                      <!-- Select -->
-                      <select class="js-select2-custom js-datatable-filter custom-select-sm" size="1" style="opacity: 0;"
-                              data-target-column-index="5"
-                              data-hs-select2-options='{
-                                "minimumResultsForSearch": "Infinity",
-                                "customClass": "custom-select custom-select-sm custom-select-borderless",
-                                "dropdownAutoWidth": true,
-                                "width": true
-                              }'>
-                        <option value="">All</option>
-                        <option value="1 year ago">1 year ago</option>
-                        <option value="6 months ago">6 months ago</option>
-                      </select>
-                      <!-- End Select -->
-                    </div>
-                  </div>
-
-                  <div class="col-md">
-                    <form>
-                      <!-- Search -->
-                      <div class="input-group input-group-merge input-group-flush">
-                        <div class="input-group-prepend">
-                          <div class="input-group-text">
-                            <i class="tio-search"></i>
-                          </div>
-                        </div>
-                        <input id="datatableSearch" type="search" class="form-control" placeholder="Search users" aria-label="Search users">
-                      </div>
-                      <!-- End Search -->
-                    </form>
-                  </div>
-                </div>
-                <!-- End Filter -->
-              </div>
+                <!-- End Search -->
+              </form>
             </div>
-          </div>
-          <!-- End Header -->
 
-          <!-- Table -->
-          <div class="table-responsive datatable-custom">
-            <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
-                   data-hs-datatables-options='{
-                     "columnDefs": [{
-                        "targets": [0, 1, 4],
-                        "orderable": false
-                      }],
-                     "order": [],
-                     "info": {
-                       "totalQty": "#datatableWithPaginationInfoTotalQty"
-                     },
-                     "search": "#datatableSearch",
-                     "entries": "#datatableEntries",
-                     "pageLength": 8,
-                     "isResponsive": false,
-                     "isShowPaging": false,
-                     "pagination": "datatablePagination"
-                   }'>
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col" class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input id="datatableCheckAll" type="checkbox" class="custom-control-input">
-                      <label class="custom-control-label" for="datatableCheckAll"></label>
-                    </div>
-                  </th>
-                  <th class="table-column-pl-0">Full name</th>
-                  <th>Status</th>
-                  <th>Type</th>
-                  <th>Email</th>
-                  <th>Signed up</th>
-                  <th>User ID</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck2">
-                      <label class="custom-control-label" for="usersDataCheck2"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img10.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Amanda Harvey <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                      </div>
+            <div class="col-sm-6">
+              <div class="d-sm-flex justify-content-sm-end align-items-sm-center">
+                <!-- Datatable Info -->
+                <div id="datatableCounterInfo" class="mr-2 mb-2 mb-sm-0" style="display: none;">
+                  <div class="d-flex align-items-center">
+                    <span class="font-size-sm mr-3">
+                      <span id="datatableCounter">0</span>
+                      Selected
+                    </span>
+                    <a class="btn btn-sm btn-outline-danger" href="javascript:;">
+                      <i class="tio-delete-outlined"></i> Delete
                     </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Unassigned</td>
-                  <td>amanda@example.com</td>
-                  <td>1 year ago</td>
-                  <td>67989</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck3">
-                      <label class="custom-control-label" for="usersDataCheck3"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-primary avatar-circle mr-2">
-                        <span class="avatar-initials">A</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Anne Richard</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Subscription</td>
-                  <td>anne@example.com</td>
-                  <td>6 months ago</td>
-                  <td>67326</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck4">
-                      <label class="custom-control-label" for="usersDataCheck4"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img3.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">David Harrison</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-danger"></span>Overdue
-                  </td>
-                  <td>Non-subscription</td>
-                  <td>david@example.com</td>
-                  <td>6 months ago</td>
-                  <td>55821</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck5">
-                      <label class="custom-control-label" for="usersDataCheck5"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img5.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Finch Hoot</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Subscription</td>
-                  <td>finch@example.com</td>
-                  <td>1 year ago</td>
-                  <td>85214</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck6">
-                      <label class="custom-control-label" for="usersDataCheck6"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-dark avatar-circle mr-2">
-                        <span class="avatar-initials">B</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Bob Dean</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Subscription</td>
-                  <td>bob@example.com</td>
-                  <td>6 months ago</td>
-                  <td>75470</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck7">
-                      <label class="custom-control-label" for="usersDataCheck7"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img9.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Ella Lauda <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Subscription</td>
-                  <td>Ella@example.com</td>
-                  <td>1 year ago</td>
-                  <td>37534</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck8">
-                      <label class="custom-control-label" for="usersDataCheck8"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img4.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Sam Kart</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Non-subscription</td>
-                  <td>sam@example.com</td>
-                  <td>1 year ago</td>
-                  <td>57300</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck9">
-                      <label class="custom-control-label" for="usersDataCheck9"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img6.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Costa Quinn</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-danger"></span>Overdue
-                  </td>
-                  <td>Unassigned</td>
-                  <td>costa@example.com</td>
-                  <td>1 year ago</td>
-                  <td>71288</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck10">
-                      <label class="custom-control-label" for="usersDataCheck10"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-primary avatar-circle mr-2">
-                        <span class="avatar-initials">R</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Rachel Doe</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Unassigned</td>
-                  <td>rachel@example.com</td>
-                  <td>6 months ago</td>
-                  <td>95211</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck11">
-                      <label class="custom-control-label" for="usersDataCheck11"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-dark avatar-circle mr-2">
-                        <span class="avatar-initials">B</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Brian Halligan</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Subscription</td>
-                  <td>brian@example.com</td>
-                  <td>1 year ago</td>
-                  <td>58643</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck12">
-                      <label class="custom-control-label" for="usersDataCheck12"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img8.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Linda Bates</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Subscription</td>
-                  <td>linda@example.com</td>
-                  <td>1 year ago</td>
-                  <td>44414</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck13">
-                      <label class="custom-control-label" for="usersDataCheck13"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-info avatar-circle mr-2">
-                        <span class="avatar-initials">C</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Chris Mathew <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Non-subscription</td>
-                  <td>chris@example.com</td>
-                  <td>1 year ago</td>
-                  <td>12569</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck14">
-                      <label class="custom-control-label" for="usersDataCheck14"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-dark avatar-circle mr-2">
-                        <span class="avatar-initials">L</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Lewis Clarke</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-danger"></span>Overdue
-                  </td>
-                  <td>Non-subscription</td>
-                  <td>lewis@example.com</td>
-                  <td>1 year ago</td>
-                  <td>54621</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck15">
-                      <label class="custom-control-label" for="usersDataCheck15"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-circle mr-2">
-                        <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img7.jpg" alt="Image Description">
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Clarice Boone <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Non-subscription</td>
-                  <td>clarice@example.com</td>
-                  <td>6 months ago</td>
-                  <td>23485</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck16">
-                      <label class="custom-control-label" for="usersDataCheck16"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-danger avatar-circle mr-2">
-                        <span class="avatar-initials">M</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Mark Colbert</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-success"></span>Successful
-                  </td>
-                  <td>Subscription</td>
-                  <td>mark@example.com</td>
-                  <td>6 months ago</td>
-                  <td>78463</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck17">
-                      <label class="custom-control-label" for="usersDataCheck17"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-info avatar-circle mr-2">
-                        <span class="avatar-initials">J</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Johnny Appleseed</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Subscription</td>
-                  <td>johnny@example.com</td>
-                  <td>1 year ago</td>
-                  <td>23564</td>
-                </tr>
-
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck18">
-                      <label class="custom-control-label" for="usersDataCheck18"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="media align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-sm avatar-soft-primary avatar-circle mr-2">
-                        <span class="avatar-initials">P</span>
-                      </div>
-                      <div class="media-body">
-                        <span class="h5 text-hover-primary mb-0">Phileas Fogg</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <span class="legend-indicator bg-warning"></span>Pending
-                  </td>
-                  <td>Subscription</td>
-                  <td>phileas@example.com</td>
-                  <td>6 months ago</td>
-                  <td>39199</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- End Table -->
-
-          <!-- Footer -->
-          <div class="card-footer">
-            <!-- Pagination -->
-            <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
-              <div class="col-sm mb-2 mb-sm-0">
-                <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
-                  <span class="mr-2">Showing:</span>
-
-                  <!-- Select -->
-                  <select id="datatableEntries" class="js-select2-custom"
-                          data-hs-select2-options='{
-                            "minimumResultsForSearch": "Infinity",
-                            "customClass": "custom-select custom-select-sm custom-select-borderless",
-                            "dropdownAutoWidth": true,
-                            "width": true
-                          }'>
-                    <option value="4">4</option>
-                    <option value="6">6</option>
-                    <option value="8" selected>8</option>
-                    <option value="12">12</option>
-                  </select>
-                  <!-- End Select -->
-
-                  <span class="text-secondary mr-2">of</span>
-
-                  <!-- Pagination Quantity -->
-                  <span id="datatableWithPaginationInfoTotalQty"></span>
-                </div>
-              </div>
-
-              <div class="col-sm-auto">
-                <div class="d-flex justify-content-center justify-content-sm-end">
-                  <!-- Pagination -->
-                  <nav id="datatablePagination" aria-label="Activity pagination"></nav>
-                </div>
-              </div>
-            </div>
-            <!-- End Pagination -->
-          </div>
-          <!-- End Footer -->
-        </div>
-        <!-- End Card -->
-
-        <div class="row gx-2 gx-lg-3">
-          <div class="col-lg-6 mb-3 mb-lg-0">
-            <!-- Card -->
-            <div class="card h-100">
-              <!-- Header -->
-              <div class="card-header">
-                <h5 class="card-header-title">Transactions</h5>
-
-                <!-- Daterangepicker -->
-                <button id="js-daterangepicker-predefined" class="btn btn-sm btn-ghost-secondary dropdown-toggle">
-                  <i class="tio-date-range"></i>
-                  <span class="js-daterangepicker-predefined-preview ml-1"></span>
-                </button>
-                <!-- End Daterangepicker -->
-              </div>
-              <!-- End Header -->
-
-              <!-- Body -->
-              <div class="card-body">
-                <!-- Chart -->
-                <div class="chartjs-custom mx-auto" style="height: 20rem;">
-                  <canvas class="js-chart-datalabels"
-                          data-hs-chartjs-options='{
-                            "type": "bubble",
-                            "data": {
-                              "datasets": [
-                                {
-                                  "label": "Label 1",
-                                  "data": [
-                                    {"x": 55, "y": 65, "r": 99}
-                                  ],
-                                  "color": "#fff",
-                                  "backgroundColor": "gulpRGBA[#377dff,.9]",
-                                  "borderColor": "transparent"
-                                },
-                                {
-                                  "label": "Label 2",
-                                  "data": [
-                                    {"x": 33, "y": 42, "r": 65}
-                                  ],
-                                  "color": "#fff",
-                                  "backgroundColor": "rgba(100, 0, 214, 0.8)",
-                                  "borderColor": "transparent"
-                                },
-                                {
-                                  "label": "Label 3",
-                                  "data": [
-                                    {"x": 46, "y": 26, "r": 38}
-                                  ],
-                                  "color": "#fff",
-                                  "backgroundColor": "#00c9db",
-                                  "borderColor": "transparent"
-                                }
-                              ]
-                            },
-                            "options": {
-                              "scales": {
-                                "yAxes": [{
-                                  "gridLines": {
-                                    "display": false
-                                  },
-                                  "ticks": {
-                                    "display": false,
-                                    "max": 100,
-                                    "beginAtZero": true
-                                  }
-                                }],
-                                "xAxes": [{
-                                "gridLines": {
-                                    "display": false
-                                  },
-                                  "ticks": {
-                                    "display": false,
-                                    "max": 100,
-                                    "beginAtZero": true
-                                  }
-                                }]
-                              },
-                              "tooltips": false
-                            }
-                          }'></canvas>
-                </div>
-                <!-- End Chart -->
-
-                <!-- Legend Indicators -->
-                <div class="row justify-content-center">
-                  <div class="col-auto">
-                    <span class="legend-indicator bg-primary"></span> New
-                  </div>
-
-                  <div class="col-auto">
-                    <span class="legend-indicator" style="background-color: #7000f2;"></span> Pending
-                  </div>
-
-                  <div class="col-auto">
-                    <span class="legend-indicator bg-info"></span> Failed
                   </div>
                 </div>
-                <!-- End Legend Indicators -->
-              </div>
-              <!-- End Body -->
-            </div>
-            <!-- End Card -->
-          </div>
-
-          <div class="col-lg-6">
-            <!-- Card -->
-            <div class="card h-100">
-              <!-- Header -->
-              <div class="card-header">
-                <h5 class="card-header-title">Reports overview</h5>
+                <!-- End Datatable Info -->
 
                 <!-- Unfold -->
                 <div class="hs-unfold">
-                  <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-ghost-secondary rounded-circle" href="javascript:;"
-                     data-hs-unfold-options='{
-                       "target": "#reportsOverviewDropdown1",
-                       "type": "css-animation"
-                     }'>
-                    <i class="tio-more-vertical"></i>
+                  <a class="js-hs-unfold-invoker btn btn-sm btn-white" href="javascript:;"
+                      data-hs-unfold-options='{
+                        "target": "#usersFilterDropdown",
+                        "type": "css-animation",
+                        "smartPositionOff": true
+                      }'>
+                    <i class="tio-filter-list mr-1"></i> Filter <span class="badge badge-soft-dark rounded-circle ml-1">2</span>
                   </a>
 
-                  <div id="reportsOverviewDropdown1" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
-                    <span class="dropdown-header">Settings</span>
+                  <div id="usersFilterDropdown" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-sm-right dropdown-card card-dropdown-filter-centered" style="min-width: 22rem;">
+                    <!-- Card -->
+                    <div class="card">
+                      <div class="card-header">
+                        <h5 class="card-header-title">Filter users</h5>
 
-                    <a class="dropdown-item" href="#">
-                      <i class="tio-share dropdown-item-icon"></i> Share reports
-                    </a>
-                    <a class="dropdown-item" href="#">
-                      <i class="tio-download-to dropdown-item-icon"></i> Download
-                    </a>
-                    <a class="dropdown-item" href="#">
-                      <i class="tio-alt dropdown-item-icon"></i> Connect other apps
-                    </a>
+                        <!-- Toggle Button -->
+                        <a class="js-hs-unfold-invoker btn btn-icon btn-xs btn-ghost-secondary ml-2" href="javascript:;"
+                            data-hs-unfold-options='{
+                            "target": "#usersFilterDropdown",
+                            "type": "css-animation",
+                            "smartPositionOff": true
+                            }'>
+                          <i class="tio-clear tio-lg"></i>
+                        </a>
+                        <!-- End Toggle Button -->
+                      </div>
 
-                    <div class="dropdown-divider"></div>
+                      <div class="card-body">
+                        <form>
+                          <div class="form-row">
+                            <div class="col-sm form-group">
+                              <small class="text-cap mb-2">Country</small>
 
-                    <span class="dropdown-header">Feedback</span>
+                              <!-- Select -->
+                              <select class="js-select2-custom js-datatable-filter custom-select" size="1" style="opacity: 0;"
+                                      data-target-column-index="3"
+                                      data-hs-select2-options='{
+                                        "minimumResultsForSearch": "Infinity"
+                                      }'>
+                                <option value="">Any</option>
+                                <option value="Malaysia">Malaysia</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="India">India</option>
+                                <option value="China">China</option>
+                                <option value="Thai">Thai</option>
+                              </select>
+                              <!-- End Select -->
+                            </div>
 
-                    <a class="dropdown-item" href="#">
-                      <i class="tio-chat-outlined dropdown-item-icon"></i> Report
-                    </a>
+                            <div class="col-sm form-group">
+                              <small class="text-cap mb-2">Status</small>
+
+                              <!-- Select -->
+                              <select class="js-select2-custom js-datatable-filter custom-select" size="1" style="opacity: 0;"
+                                      data-target-column-index="4"
+                                      data-hs-select2-options='{
+                                        "minimumResultsForSearch": "Infinity"
+                                      }'>
+                                <option value="">Any status</option>
+                                <option value="Active" data-option-template='<span class="legend-indicator bg-success"></span>Active'>Active</option>
+                                <option value="Pending" data-option-template='<span class="legend-indicator bg-warning"></span>Pending'>Pending</option>
+                                <option value="Suspended" data-option-template='<span class="legend-indicator bg-danger"></span>Suspended'>Suspended</option>
+                              </select>
+                              <!-- End Select -->
+                            </div>
+                          </div>
+                          <!-- End Row -->
+
+                          <a class="js-hs-unfold-invoker btn btn-block btn-primary" href="javascript:;"
+                              data-hs-unfold-options='{
+                              "target": "#usersFilterDropdown",
+                              "type": "css-animation",
+                              "smartPositionOff": true
+                              }'>Apply</a>
+                        </form>
+                      </div>
+                    </div>
+                    <!-- End Card -->
                   </div>
                 </div>
                 <!-- End Unfold -->
               </div>
-              <!-- End Header -->
-
-              <!-- Body -->
-              <div class="card-body">
-                <span class="h1 d-block mb-4">$7,431.14 USD</span>
-
-                <!-- Progress -->
-                <div class="progress rounded-pill mb-2">
-                  <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="Gross value"></div>
-                  <div class="progress-bar opacity" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="Net volume from sales"></div>
-                  <div class="progress-bar opacity-xs" role="progressbar" style="width: 9%" aria-valuenow="9" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="New volume from sales"></div>
-                </div>
-
-                <div class="d-flex justify-content-between mb-4">
-                  <span>0%</span>
-                  <span>100%</span>
-                </div>
-                <!-- End Progress -->
-
-                <!-- Table -->
-                <div class="table-responsive">
-                  <table class="table table-lg table-nowrap card-table mb-0">
-                    <tr>
-                      <th scope="row">
-                        <span class="legend-indicator bg-primary"></span>Gross value
-                      </th>
-                      <td>$3,500.71</td>
-                      <td>
-                        <span class="badge badge-soft-success">+12.1%</span>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <th scope="row">
-                        <span class="legend-indicator bg-primary opacity"></span>Net volume from sales
-                      </th>
-                      <td>$2,980.45</td>
-                      <td>
-                        <span class="badge badge-soft-warning">+6.9%</span>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <th scope="row">
-                        <span class="legend-indicator bg-primary opacity-xs"></span>New volume from sales
-                      </th>
-                      <td>$950.00</td>
-                      <td>
-                        <span class="badge badge-soft-danger">-1.5%</span>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <th scope="row">
-                        <span class="legend-indicator"></span>Other
-                      </th>
-                      <td>32</td>
-                      <td>
-                        <span class="badge badge-soft-success">1.9%</span>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <!-- End Table -->
-              </div>
-              <!-- End Body -->
             </div>
-            <!-- End Card -->
+          </div>
+          <!-- End Row -->
+        </div>
+        <!-- End Header -->
+
+        <!-- Table -->
+        <div class="table-responsive datatable-custom">
+          <table id="datatable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
+                  data-hs-datatables-options='{
+                    "columnDefs": [{
+                      "targets": [0, 7],
+                      "orderable": false
+                    }],
+                    "order": [],
+                    "info": {
+                      "totalQty": "#datatableWithPaginationInfoTotalQty"
+                    },
+                    "search": "#datatableSearch",
+                    "entries": "#datatableEntries",
+                    "pageLength": 15,
+                    "isResponsive": false,
+                    "isShowPaging": false,
+                    "pagination": "datatablePagination"
+                  }'>
+            <thead class="thead-light">
+              <tr>
+                <th class="table-column-pr-0">
+                  <!-- <div class="custom-control custom-checkbox">
+                    <input id="datatableCheckAll" type="checkbox" class="custom-control-input">
+                    <label class="custom-control-label" for="datatableCheckAll"></label>
+                  </div> -->
+                </th>
+                <th class="table-column-pl-0">Name</th>
+                <th>Contact</th>
+                <th>Country</th>
+                <th>Status</th>
+                <th>Create Date</th>
+                <th>Role</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <?php while($company_array = mysqli_fetch_array($company_sql)){ ?>
+              <tr>
+                <td class="table-column-pr-0">
+                  <!-- <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="usersDataCheck1">
+                    <label class="custom-control-label" for="usersDataCheck1"></label>
+                  </div> -->
+                </td>
+                <td class="table-column-pl-0">
+                  <a class="d-flex align-items-center" href="./profile-company.php?detail=<?= $company_array['userid']; ?>">
+                    <div class="avatar avatar-circle">
+                      <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['profile_image'])?'/image/'.$company_array['profile_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
+                    </div>
+                    <div class="ml-3">
+                      <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['company_name']; ?></span>
+                      <span class="d-block font-size-sm text-body"><?= $company_array['email']; ?></span>
+                    </div>
+                  </a>
+                </td>
+                <td>
+                  <span class="d-block h5 mb-0"><?= $company_array['contact']; ?></span>
+                </td>
+                <td><?= $company_array['country']; ?> <span class="text-hide">Code: <?= $company_array['country']; ?></span></td>
+                <td>
+                  <?php if($company_array['status']=="active"){ ?>
+                    <span class="legend-indicator bg-success"></span>Active
+                  <?php }elseif($company_array['status']=="pending"){ ?>
+                    <span class="legend-indicator bg-warning"></span>Pending
+                  <?php }elseif($company_array['status']=="drop"){ ?>
+                    <span class="legend-indicator bg-danger"></span>Suspended
+                  <?php }else{ ?>
+                    <span class="legend-indicator bg-second"></span>BlackList
+                  <?php } ?>
+                </td>
+                <td><?= $company_array['created_at']; ?></td>
+                <td><?= $company_array['permission']; ?></td>
+                <td>
+                    <div class="btn-group" role="group">
+                    <?php if($company_array['status']=="pending" || $company_array['status']=="drop"){ ?>
+                      <a class="btn btn-sm btn-outline-primary" href="./company-approve.php?company=<?= $company_array['userid']; ?>">
+                        <i class="tio-done"></i> Accept
+                      </a>
+                        <!-- Unfold -->
+                        <div class="hs-unfold btn-group">
+                        <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-outline-primary dropdown-toggle dropdown-toggle-empty" href="javascript:;"
+                          data-hs-unfold-options='{
+                            "target": "#productsEditDropdown<?= $company_array['id']; ?>",
+                            "type": "css-animation",
+                            "smartPositionOffEl": "#datatable"
+                          }'></a>
+
+                        <div id="productsEditDropdown<?= $company_array['id']; ?>" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
+                          <a class="dropdown-item" href="company-blacklist.php?company=<?= $company_array['userid']; ?>">
+                            <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
+                          </a>
+                          <?php if($company_array['status'] != 'drop'){ ?>
+                          <!-- <a class="dropdown-item" href="company-drop.php?company=<?= $company_array['userid']; ?>">
+                            <i class="tio-archive dropdown-item-icon"></i> Drop
+                          </a> -->
+                          <?php } ?>
+                        </div>
+                      </div>
+                      <!-- End Unfold -->
+                      <?php }elseif($company_array['status']=="active"){ ?>
+                        <a class="btn btn-sm btn-outline-danger" href="./company-reject.php?company=<?= $company_array['userid']; ?>">
+                        <i class="tio-clear"></i> Reject
+                      </a>
+                        <!-- Unfold -->
+                        <div class="hs-unfold btn-group">
+                        <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-outline-danger dropdown-toggle dropdown-toggle-empty" href="javascript:;"
+                          data-hs-unfold-options='{
+                            "target": "#productsEditDropdown<?= $company_array['id']; ?>",
+                            "type": "css-animation",
+                            "smartPositionOffEl": "#datatable"
+                          }'></a>
+
+                        <div id="productsEditDropdown<?= $company_array['id']; ?>" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
+                          <a class="dropdown-item" href="company-blacklist.php?company=<?= $company_array['userid']; ?>">
+                            <i class="tio-delete-outlined dropdown-item-icon"></i> BlackList
+                          </a>
+                          <?php if($company_array['status'] != 'drop'){ ?>
+                          <!-- <a class="dropdown-item" href="company-drop.php?company=<?= $company_array['userid']; ?>">
+                            <i class="tio-archive dropdown-item-icon"></i> Drop
+                          </a> -->
+                          <?php } ?>
+                        </div>
+                      </div>
+                      <!-- End Unfold -->
+                        <?php } ?>
+                      
+                    </div>
+                  </td>
+                </td>
+              </tr>
+              <?php } ?>
+            </tbody>
+          </table>
+        </div>
+        <!-- End Table -->
+
+        <!-- Footer -->
+        <div class="card-footer">
+          <!-- Pagination -->
+          <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
+            <div class="col-sm mb-2 mb-sm-0">
+              <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
+                <span class="mr-2">Showing:</span>
+
+                <!-- Select -->
+                <select id="datatableEntries" class="js-select2-custom"
+                        data-hs-select2-options='{
+                          "minimumResultsForSearch": "Infinity",
+                          "customClass": "custom-select custom-select-sm custom-select-borderless",
+                          "dropdownAutoWidth": true,
+                          "width": true
+                        }'>
+                  <option value="10">10</option>
+                  <option value="15" selected>15</option>
+                  <option value="20">20</option>
+                </select>
+                <!-- End Select -->
+
+                <span class="text-secondary mr-2">of</span>
+
+                <!-- Pagination Quantity -->
+                <span id="datatableWithPaginationInfoTotalQty"></span>
+              </div>
+            </div>
+
+            <div class="col-sm-auto">
+              <div class="d-flex justify-content-center justify-content-sm-end">
+                <!-- Pagination -->
+                <nav id="datatablePagination" aria-label="Activity pagination"></nav>
+              </div>
+            </div>
+          </div>
+          <!-- End Pagination -->
+        </div>
+        <!-- End Footer -->
+      </div>
+      <!-- End Card -->
+    </div>
+    <!-- End Content -->
+
+    <!-- Footer -->
+    
+      <div class="footer">
+        <div class="row justify-content-between align-items-center">
+          <div class="col">
           </div>
         </div>
       </div>
-      <!-- End Content -->
 
-      <!-- Footer -->
-        <div class="footer">
-          <div class="row justify-content-between align-items-center">
-            <div class="col">
-              <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
-            </div>
-            <div class="col-auto">
-              <div class="d-flex justify-content-end">
-                <!-- List Dot -->
-                <ul class="list-inline list-separator">
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">FAQ</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">License</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <!-- Keyboard Shortcuts Toggle -->
-                    <div class="hs-unfold">
-                      <a class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle" href="javascript:;"
-                         data-hs-unfold-options='{
-                              "target": "#keyboardShortcutsSidebar",
-                              "type": "css-animation",
-                              "animationIn": "fadeInRight",
-                              "animationOut": "fadeOutRight",
-                              "hasOverlay": true,
-                              "smartPositionOff": true
-                             }'>
-                        <i class="tio-command-key"></i>
-                      </a>
-                    </div>
-                    <!-- End Keyboard Shortcuts Toggle -->
-                  </li>
-                </ul>
-                <!-- End List Dot -->
-              </div>
-            </div>
-          </div>
-        </div>
-      <!-- End Footer -->
-    </main>
+    <!-- End Footer -->
+  </main>
     <!-- ========== END MAIN CONTENT ========== -->
 
     <!-- ========== SECONDARY CONTENTS ========== -->
-    <!-- Keyboard Shortcuts -->
-    <div id="keyboardShortcutsSidebar" class="hs-unfold-content sidebar sidebar-bordered sidebar-box-shadow">
-      <div class="card card-lg sidebar-card">
-        <div class="card-header">
-          <h4 class="card-header-title">Keyboard shortcuts</h4>
-
-          <!-- Toggle Button -->
-          <a class="js-hs-unfold-invoker btn btn-icon btn-xs btn-ghost-dark ml-2" href="javascript:;"
-             data-hs-unfold-options='{
-                "target": "#keyboardShortcutsSidebar",
-                "type": "css-animation",
-                "animationIn": "fadeInRight",
-                "animationOut": "fadeOutRight",
-                "hasOverlay": true,
-                "smartPositionOff": true
-               }'>
-            <i class="tio-clear tio-lg"></i>
-          </a>
-          <!-- End Toggle Button -->
-        </div>
-
-        <!-- Body -->
-        <div class="card-body sidebar-body sidebar-scrollbar">
-          <div class="list-group list-group-sm list-group-flush list-group-no-gutters mb-5">
-            <div class="list-group-item">
-              <h5 class="mb-1">Formatting</h5>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span class="font-weight-bold">Bold</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">b</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <em>italic</em>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">i</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <u>Underline</u>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">u</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <s>Strikethrough</s>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Alt</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">s</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span class="small">Small text</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">s</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <mark>Highlight</mark>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">e</kbd>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="list-group list-group-sm list-group-flush list-group-no-gutters mb-5">
-            <div class="list-group-item">
-              <h5 class="mb-1">Insert</h5>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Mention person <a href="#">(@Brian)</a></span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">@</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Link to doc <a href="#">(+Meeting notes)</a></span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">+</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <a href="#">#hashtag</a>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">#hashtag</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Date</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">/date</kbd>
-                  <kbd class="d-inline-block mb-1">Space</kbd>
-                  <kbd class="d-inline-block mb-1">/datetime</kbd>
-                  <kbd class="d-inline-block mb-1">/datetime</kbd>
-                  <kbd class="d-inline-block mb-1">Space</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Time</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">/time</kbd>
-                  <kbd class="d-inline-block mb-1">Space</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Note box</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">/note</kbd>
-                  <kbd class="d-inline-block mb-1">Enter</kbd>
-                  <kbd class="d-inline-block mb-1">/note red</kbd>
-                  <kbd class="d-inline-block mb-1">/note red</kbd>
-                  <kbd class="d-inline-block mb-1">Enter</kbd>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="list-group list-group-sm list-group-flush list-group-no-gutters mb-5">
-            <div class="list-group-item">
-              <h5 class="mb-1">Editing</h5>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Find and replace</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">r</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Find next</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">n</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Find previous</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">p</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Indent</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Tab</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Un-indent</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Tab</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Move line up</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1"><i class="tio-arrow-large-upward-outlined"></i></kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Move line down</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1"><i class="tio-arrow-large-downward-outlined font-size-sm"></i></kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Add a comment</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Alt</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">m</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Undo</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">z</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Redo</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">y</kbd>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="list-group list-group-sm list-group-flush list-group-no-gutters">
-            <div class="list-group-item">
-              <h5 class="mb-1">Application</h5>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Create new doc</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Alt</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">n</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Present</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">p</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Share</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">s</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Search docs</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">o</kbd>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item">
-              <div class="row align-items-center">
-                <div class="col-5">
-                  <span>Keyboard shortcuts</span>
-                </div>
-                <div class="col-7 text-right">
-                  <kbd class="d-inline-block mb-1">Ctrl</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">Shift</kbd> <small class="text-muted">+</small> <kbd class="d-inline-block mb-1">/</kbd>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End Body -->
-      </div>
-    </div>
-    <!-- End Keyboard Shortcuts -->
-
-    <!-- Activity -->
-    <div id="activitySidebar" class="hs-unfold-content sidebar sidebar-bordered sidebar-box-shadow">
-      <div class="card card-lg sidebar-card">
-        <div class="card-header">
-          <h4 class="card-header-title">Activity stream</h4>
-
-          <!-- Toggle Button -->
-          <a class="js-hs-unfold-invoker btn btn-icon btn-xs btn-ghost-dark ml-2" href="javascript:;"
-             data-hs-unfold-options='{
-              "target": "#activitySidebar",
-              "type": "css-animation",
-              "animationIn": "fadeInRight",
-              "animationOut": "fadeOutRight",
-              "hasOverlay": true,
-              "smartPositionOff": true
-             }'>
-            <i class="tio-clear tio-lg"></i>
-          </a>
-          <!-- End Toggle Button -->
-        </div>
-
-        <!-- Body -->
-        <div class="card-body sidebar-body sidebar-scrollbar">
-          <!-- Step -->
-          <ul class="step step-icon-sm step-avatar-sm">
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <div class="step-avatar">
-                  <img class="step-avatar-img" src="<?= $assets; ?>/assets/img/160x160/img9.jpg" alt="Image Description">
-                </div>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Iana Robinson</h5>
-
-                  <p class="font-size-sm mb-1">Added 2 files to task <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fd-7</a></p>
-
-                  <ul class="list-group list-group-sm">
-                    <!-- List Item -->
-                    <li class="list-group-item list-group-item-light">
-                      <div class="row gx-1">
-                        <div class="col-6">
-                          <div class="media">
-                              <span class="mt-1 mr-2">
-                                <img class="avatar avatar-xs" src="<?= $assets; ?>/assets/svg/brands/excel.svg" alt="Image Description">
-                              </span>
-                            <div class="media-body text-truncate">
-                              <span class="d-block font-size-sm text-dark text-truncate" title="weekly-reports.xls">weekly-reports.xls</span>
-                              <small class="d-block text-muted">12kb</small>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="media">
-                              <span class="mt-1 mr-2">
-                                <img class="avatar avatar-xs" src="<?= $assets; ?>/assets/svg/brands/word.svg" alt="Image Description">
-                              </span>
-                            <div class="media-body text-truncate">
-                              <span class="d-block font-size-sm text-dark text-truncate" title="weekly-reports.xls">weekly-reports.xls</span>
-                              <small class="d-block text-muted">4kb</small>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <!-- End List Item -->
-                  </ul>
-
-                  <small class="text-muted text-uppercase">Now</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <span class="step-icon step-icon-soft-dark">B</span>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Bob Dean</h5>
-
-                  <p class="font-size-sm mb-1">Marked <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fr-6</a> as <span class="badge badge-soft-success badge-pill"><span class="legend-indicator bg-success"></span>"Completed"</span></p>
-
-                  <small class="text-muted text-uppercase">Today</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <div class="step-avatar">
-                  <img class="step-avatar-img" src="<?= $assets; ?>/assets/img/160x160/img3.jpg" alt="Image Description">
-                </div>
-
-                <div class="step-content">
-                  <h5 class="h5 mb-1">Crane</h5>
-
-                  <p class="font-size-sm mb-1">Added 5 card to <a href="#">Payments</a></p>
-
-                  <ul class="list-group list-group-sm">
-                    <li class="list-group-item list-group-item-light">
-                      <div class="row gx-1">
-                        <div class="col">
-                          <img class="img-fluid rounded ie-sidebar-activity-img" src="<?= $assets; ?>/assets/svg/illustrations/card-1.svg" alt="Image Description">
-                        </div>
-                        <div class="col">
-                          <img class="img-fluid rounded ie-sidebar-activity-img" src="<?= $assets; ?>/assets/svg/illustrations/card-2.svg" alt="Image Description">
-                        </div>
-                        <div class="col">
-                          <img class="img-fluid rounded ie-sidebar-activity-img" src="<?= $assets; ?>/assets/svg/illustrations/card-3.svg" alt="Image Description">
-                        </div>
-                        <div class="col-auto align-self-center">
-                          <div class="text-center">
-                            <a href="#">+2</a>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-
-                  <small class="text-muted text-uppercase">May 12</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <span class="step-icon step-icon-soft-info">D</span>
-
-                <div class="step-content">
-                  <h5 class="mb-1">David Lidell</h5>
-
-                  <p class="font-size-sm mb-1">Added a new member to Front Dashboard</p>
-
-                  <small class="text-muted text-uppercase">May 15</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <div class="step-avatar">
-                  <img class="step-avatar-img" src="<?= $assets; ?>/assets/img/160x160/img7.jpg" alt="Image Description">
-                </div>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Rachel King</h5>
-
-                  <p class="font-size-sm mb-1">Marked <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fr-3</a> as <span class="badge badge-soft-success badge-pill"><span class="legend-indicator bg-success"></span>"Completed"</span></p>
-
-                  <small class="text-muted text-uppercase">Apr 29</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                <div class="step-avatar">
-                  <img class="step-avatar-img" src="<?= $assets; ?>/assets/img/160x160/img5.jpg" alt="Image Description">
-                </div>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Finch Hoot</h5>
-
-                  <p class="font-size-sm mb-1">Earned a "Top endorsed" <i class="tio-verified text-primary"></i> badge</p>
-
-                  <small class="text-muted text-uppercase">Apr 06</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
-                  <span class="step-icon step-icon-soft-primary">
-                    <i class="tio-user"></i>
-                  </span>
-
-                <div class="step-content">
-                  <h5 class="mb-1">Project status updated</h5>
-
-                  <p class="font-size-sm mb-1">Marked <a class="text-uppercase" href="#"><i class="tio-folder-bookmarked"></i> Fr-3</a> as <span class="badge badge-soft-primary badge-pill"><span class="legend-indicator bg-primary"></span>"In progress"</span></p>
-
-                  <small class="text-muted text-uppercase">Feb 10</small>
-                </div>
-              </div>
-            </li>
-            <!-- End Step Item -->
-          </ul>
-          <!-- End Step -->
-
-          <a class="btn btn-block btn-white" href="javascript:;">View all <i class="tio-chevron-right"></i></a>
-        </div>
-        <!-- End Body -->
-      </div>
-    </div>
-    <!-- End Activity -->
 
     <!-- Welcome Message Modal -->
     <div class="modal fade" id="welcomeMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -1877,268 +415,6 @@
     </div>
     <!-- End Welcome Message Modal -->
 
-    <!-- Create a new user Modal -->
-    <div class="modal fade" id="inviteUserModal" tabindex="-1" role="dialog" aria-labelledby="inviteUserModalTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <form class="modal-content">
-          <!-- Header -->
-          <div class="modal-header">
-            <h4 id="inviteUserModalTitle" class="modal-title">Invite users</h4>
-
-            <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary" data-dismiss="modal" aria-label="Close">
-              <i class="tio-clear tio-lg"></i>
-            </button>
-          </div>
-          <!-- End Header -->
-
-          <!-- Body -->
-          <div class="modal-body">
-            <!-- Form Group -->
-            <div class="form-group">
-              <div class="input-group input-group-merge mb-2 mb-sm-0">
-                <div class="input-group-prepend" id="fullName">
-                  <span class="input-group-text">
-                    <i class="tio-search"></i>
-                  </span>
-                </div>
-
-                <input type="text" class="form-control" name="fullName" placeholder="Search name or emails" aria-label="Search name or emails" aria-describedby="fullName">
-
-                <div class="input-group-append input-group-append-last-sm-down-none">
-                  <!-- Select -->
-                  <div id="permissionSelect" class="select2-custom select2-custom-right">
-                    <select class="js-select2-custom custom-select" size="1" style="opacity: 0;"
-                            data-hs-select2-options='{
-                              "dropdownParent": "#permissionSelect",
-                              "minimumResultsForSearch": "Infinity",
-                              "dropdownAutoWidth": true,
-                              "dropdownWidth": "11rem"
-                            }'>
-                      <option value="guest" selected>Guest</option>
-                      <option value="can edit">Can edit</option>
-                      <option value="can comment">Can comment</option>
-                      <option value="full access">Full access</option>
-                    </select>
-                  </div>
-                  <!-- End Select -->
-
-                  <a class="btn btn-primary d-none d-sm-block" href="javascript:;">Invite</a>
-                </div>
-              </div>
-
-              <a class="btn btn-block btn-primary d-sm-none" href="javascript:;">Invite</a>
-            </div>
-            <!-- End Form Group -->
-
-            <div class="form-row">
-              <h5 class="col modal-title">Invite users</h5>
-
-              <div class="col-auto">
-                <a class="d-flex align-items-center font-size-sm text-body" href="#">
-                  <img class="avatar avatar-xss mr-2" src="<?= $assets; ?>/assets/svg/brands/gmail.svg" alt="Image Description">
-                  Import contacts
-                </a>
-              </div>
-            </div>
-
-            <hr class="mt-2">
-
-            <ul class="list-unstyled list-unstyled-py-4">
-              <!-- List Group Item -->
-              <li>
-                <div class="media">
-                  <div class="avatar avatar-sm avatar-circle mr-3">
-                    <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img10.jpg" alt="Image Description">
-                  </div>
-
-                  <div class="media-body">
-                    <div class="row align-items-center">
-                      <div class="col-sm">
-                        <h5 class="text-body mb-0">Amanda Harvey <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></h5>
-                        <span class="d-block font-size-sm">amanda@example.com</span>
-                      </div>
-
-                      <div class="col-sm">
-                        <!-- Select -->
-                        <div id="inviteUserSelect1" class="select2-custom select2-custom-sm-right d-sm-flex justify-content-sm-end">
-                          <select class="js-select2-custom custom-select-sm" size="1" style="opacity: 0;"
-                                  data-hs-select2-options='{
-                                    "dropdownParent": "#inviteUserSelect1",
-                                    "minimumResultsForSearch": "Infinity",
-                                    "customClass": "custom-select custom-select-sm custom-select-borderless pl-0",
-                                    "dropdownAutoWidth": true,
-                                    "width": true
-                                  }'>
-                            <option value="guest" selected>Guest</option>
-                            <option value="can edit">Can edit</option>
-                            <option value="can comment">Can comment</option>
-                            <option value="full access">Full access</option>
-                            <option value="remove" data-option-template='<span class="text-danger">Remove</span>'>Remove</option>
-                          </select>
-                        </div>
-                        <!-- End Select -->
-                      </div>
-                    </div>
-                    <!-- End Row -->
-                  </div>
-                </div>
-              </li>
-              <!-- End List Group Item -->
-
-              <!-- List Group Item -->
-              <li>
-                <div class="media">
-                  <div class="avatar avatar-sm avatar-circle mr-3">
-                    <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img3.jpg" alt="Image Description">
-                  </div>
-
-                  <div class="media-body">
-                    <div class="row align-items-center">
-                      <div class="col-sm">
-                        <h5 class="text-body mb-0">David Harrison</h5>
-                        <span class="d-block font-size-sm">david@example.com</span>
-                      </div>
-
-                      <div class="col-sm">
-                        <!-- Select -->
-                        <div id="inviteUserSelect2" class="select2-custom select2-custom-sm-right d-sm-flex justify-content-sm-end">
-                          <select class="js-select2-custom custom-select-sm" size="1" style="opacity: 0;"
-                                  data-hs-select2-options='{
-                                    "dropdownParent": "#inviteUserSelect2",
-                                    "minimumResultsForSearch": "Infinity",
-                                    "customClass": "custom-select custom-select-sm custom-select-borderless pl-0",
-                                    "dropdownAutoWidth": true,
-                                    "width": true
-                                  }'>
-                            <option value="guest" selected>Guest</option>
-                            <option value="can edit">Can edit</option>
-                            <option value="can comment">Can comment</option>
-                            <option value="full access">Full access</option>
-                            <option value="remove" data-option-template='<span class="text-danger">Remove</span>'>Remove</option>
-                          </select>
-                        </div>
-                        <!-- End Select -->
-                      </div>
-                    </div>
-                    <!-- End Row -->
-                  </div>
-                </div>
-              </li>
-              <!-- End List Group Item -->
-
-              <!-- List Group Item -->
-              <li>
-                <div class="media">
-                  <div class="avatar avatar-sm avatar-circle mr-3">
-                    <img class="avatar-img" src="<?= $assets; ?>/assets/img/160x160/img9.jpg" alt="Image Description">
-                  </div>
-
-                  <div class="media-body">
-                    <div class="row align-items-center">
-                      <div class="col-sm">
-                        <h5 class="text-body mb-0">Ella Lauda <i class="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></h5>
-                        <span class="d-block font-size-sm">Markvt@example.com</span>
-                      </div>
-
-                      <div class="col-sm">
-                        <!-- Select -->
-                        <div id="inviteUserSelect4" class="select2-custom select2-custom-sm-right d-sm-flex justify-content-sm-end">
-                          <select class="js-select2-custom custom-select-sm" size="1" style="opacity: 0;"
-                                  data-hs-select2-options='{
-                                    "dropdownParent": "#inviteUserSelect4",
-                                    "minimumResultsForSearch": "Infinity",
-                                    "customClass": "custom-select custom-select-sm custom-select-borderless pl-0",
-                                    "dropdownAutoWidth": true,
-                                    "width": true
-                                  }'>
-                            <option value="guest" selected>Guest</option>
-                            <option value="can edit">Can edit</option>
-                            <option value="can comment">Can comment</option>
-                            <option value="full access">Full access</option>
-                            <option value="remove" data-option-template='<span class="text-danger">Remove</span>'>Remove</option>
-                          </select>
-                        </div>
-                        <!-- End Select -->
-                      </div>
-                    </div>
-                    <!-- End Row -->
-                  </div>
-                </div>
-              </li>
-              <!-- End List Group Item -->
-
-              <!-- List Group Item -->
-              <li>
-                <div class="media">
-                  <div class="avatar avatar-sm avatar-soft-dark avatar-circle mr-3">
-                    <span class="avatar-initials">B</span>
-                  </div>
-
-                  <div class="media-body">
-                    <div class="row align-items-center">
-                      <div class="col-sm">
-                        <h5 class="text-body mb-0">Bob Dean</h5>
-                        <span class="d-block font-size-sm">bob@example.com</span>
-                      </div>
-
-                      <div class="col-sm">
-                        <!-- Select -->
-                        <div id="inviteUserSelect3" class="select2-custom select2-custom-sm-right d-sm-flex justify-content-sm-end">
-                          <select class="js-select2-custom custom-select-sm" size="1" style="opacity: 0;"
-                                  data-hs-select2-options='{
-                                    "dropdownParent": "#inviteUserSelect3",
-                                    "minimumResultsForSearch": "Infinity",
-                                    "customClass": "custom-select custom-select-sm custom-select-borderless pl-0",
-                                    "dropdownAutoWidth": true,
-                                    "width": true
-                                  }'>
-                            <option value="guest" selected>Guest</option>
-                            <option value="can edit">Can edit</option>
-                            <option value="can comment">Can comment</option>
-                            <option value="full access">Full access</option>
-                            <option value="remove" data-option-template='<span class="text-danger">Remove</span>'>Remove</option>
-                          </select>
-                        </div>
-                        <!-- End Select -->
-                      </div>
-                    </div>
-                    <!-- End Row -->
-                  </div>
-                </div>
-              </li>
-              <!-- End List Group Item -->
-            </ul>
-          </div>
-          <!-- End Body -->
-
-          <!-- Footer -->
-          <div class="modal-footer justify-content-start">
-            <div class="row align-items-center flex-grow-1 mx-n2">
-              <div class="col-sm-9 mb-2 mb-sm-0">
-                <input type="hidden" id="inviteUserPublicClipboard" value="https://themes.getbootstrap.com/product/front-multipurpose-responsive-template/">
-
-                <p class="modal-footer-text">The public share <a href="#">link settings</a>
-                  <i class="tio-help-outlined" data-toggle="tooltip" data-placement="top" title="The public share link allows people to view the project without giving access to full collaboration features."></i>
-                </p>
-              </div>
-
-              <div class="col-sm-3 text-sm-right">
-                <a class="js-clipboard btn btn-sm btn-white text-nowrap" href="javascript:;" data-toggle="tooltip" data-placement="top" title="Copy to clipboard!"
-                   data-hs-clipboard-options='{
-                    "type": "tooltip",
-                    "successText": "Copied!",
-                    "contentTarget": "#inviteUserPublicClipboard",
-                    "container": "#inviteUserModal"
-                   }'>
-                <i class="tio-link mr-1"></i> Copy link</a>
-              </div>
-            </div>
-          </div>
-          <!-- End Footer -->
-        </form>
-      </div>
-    </div>
-    <!-- End Create a new user Modal -->
     <!-- ========== END SECONDARY CONTENTS ========== -->
 
     <!-- JS Global Compulsory  -->
@@ -2150,15 +426,24 @@
     <script src="<?= $assets; ?>/assets/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside.min.js"></script>
     <script src="<?= $assets; ?>/assets/vendor/hs-unfold/dist/hs-unfold.min.js"></script>
     <script src="<?= $assets; ?>/assets/vendor/hs-form-search/dist/hs-form-search.min.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/hs-toggle-password/dist/js/hs-toggle-password.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/hs-file-attach/dist/hs-file-attach.min.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/hs-transform-tabs-to-btn/dist/hs-transform-tabs-to-btn.min.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/hs-step-form/dist/hs-step-form.min.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
     <script src="<?= $assets; ?>/assets/vendor/select2/dist/js/select2.full.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/chart.js/dist/Chart.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/chart.js.extensions/chartjs-extensions.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/daterangepicker/moment.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/daterangepicker/daterangepicker.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/hs-counter/dist/hs-counter.min.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/appear/dist/appear.min.js"></script>
     <script src="<?= $assets; ?>/assets/vendor/datatables/media/js/jquery.dataTables.min.js"></script>
     <script src="<?= $assets; ?>/assets/vendor/datatables.net.extensions/select/select.min.js"></script>
-    <script src="<?= $assets; ?>/assets/vendor/clipboard/dist/clipboard.min.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/jszip/dist/jszip.min.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/pdfmake/build/pdfmake.min.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/pdfmake/build/vfs_fonts.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="<?= $assets; ?>/assets/vendor/datatables.net-buttons/js/buttons.colVis.min.js"></script>
     
 
     <!-- JS Front -->
@@ -2209,6 +494,47 @@
         });
 
         
+        // INITIALIZATION OF SHOW PASSWORD
+        // =======================================================
+        $('.js-toggle-password').each(function () {
+          new HSTogglePassword(this).init()
+        });
+
+        
+        // INITIALIZATION OF FILE ATTACH
+        // =======================================================
+        $('.js-file-attach').each(function () {
+          var customFile = new HSFileAttach($(this)).init();
+        });
+
+        
+        // INITIALIZATION OF TABS
+        // =======================================================
+        $('.js-tabs-to-dropdown').each(function () {
+          var transformTabsToBtn = new HSTransformTabsToBtn($(this)).init();
+        });
+
+        
+        // INITIALIZATION OF STEP FORM
+        // =======================================================
+        $('.js-step-form').each(function () {
+          var stepForm = new HSStepForm($(this), {
+            finish: function() {
+              $("#addUserStepFormProgress").hide();
+              $("#addUserStepFormContent").hide();
+              $("#successMessageContent").show();
+            }
+          }).init();
+        });
+
+        
+        // INITIALIZATION OF MASKED INPUT
+        // =======================================================
+        $('.js-masked-input').each(function () {
+          var mask = $.HSCore.components.HSMask.init($(this));
+        });
+
+        
         // INITIALIZATION OF SELECT2
         // =======================================================
         $('.js-select2-custom').each(function () {
@@ -2216,142 +542,39 @@
         });
 
         
-        // INITIALIZATION OF CHARTJS
+        // INITIALIZATION OF COUNTERS
         // =======================================================
-        Chart.plugins.unregister(ChartDataLabels);
-
-        $('.js-chart').each(function () {
-          $.HSCore.components.HSChartJS.init($(this));
+        $('.js-counter').each(function() {
+          var counter = new HSCounter($(this)).init();
         });
-
-        var updatingChart = $.HSCore.components.HSChartJS.init($('#updatingData'));
-
-        // CALL WHEN TAB IS CLICKED
-        // =======================================================
-        $('[data-toggle="chart-bar"]').click(function(e) {
-          let keyDataset = $(e.currentTarget).attr('data-datasets')
-
-         if (keyDataset === 'lastWeek') {
-           updatingChart.data.labels = ["Apr 22", "Apr 23", "Apr 24", "Apr 25", "Apr 26", "Apr 27", "Apr 28", "Apr 29", "Apr 30", "Apr 31"];
-           updatingChart.data.datasets = [
-             {
-               "data": [120, 250, 300, 200, 300, 290, 350, 100, 125, 320],
-               "backgroundColor": "#377dff",
-               "hoverBackgroundColor": "#377dff",
-               "borderColor": "#377dff"
-             },
-             {
-               "data": [250, 130, 322, 144, 129, 300, 260, 120, 260, 245, 110],
-               "backgroundColor": "#e7eaf3",
-               "borderColor": "#e7eaf3"
-             }
-           ];
-           updatingChart.update();
-         } else {
-           updatingChart.data.labels = ["May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7", "May 8", "May 9", "May 10"];
-           updatingChart.data.datasets = [
-             {
-               "data": [200, 300, 290, 350, 150, 350, 300, 100, 125, 220],
-               "backgroundColor": "#377dff",
-               "hoverBackgroundColor": "#377dff",
-               "borderColor": "#377dff"
-             },
-             {
-               "data": [150, 230, 382, 204, 169, 290, 300, 100, 300, 225, 120],
-               "backgroundColor": "#e7eaf3",
-               "borderColor": "#e7eaf3"
-             }
-           ]
-           updatingChart.update();
-         }
-        })
-
-        
-        // INITIALIZATION OF BUBBLE CHARTJS WITH DATALABELS PLUGIN
-        // =======================================================
-        $('.js-chart-datalabels').each(function () {
-          $.HSCore.components.HSChartJS.init($(this), {
-            plugins: [ChartDataLabels],
-            options: {
-              plugins: {
-                datalabels: {
-                  anchor: function(context) {
-                    var value = context.dataset.data[context.dataIndex];
-                    return value.r < 20 ? 'end' : 'center';
-                  },
-                  align: function(context) {
-                    var value = context.dataset.data[context.dataIndex];
-                    return value.r < 20 ? 'end' : 'center';
-                  },
-                  color: function(context) {
-                    var value = context.dataset.data[context.dataIndex];
-                    return value.r < 20 ? context.dataset.backgroundColor : context.dataset.color;
-                  },
-                  font: function(context) {
-                    var value = context.dataset.data[context.dataIndex],
-                      fontSize = 25;
-
-                    if (value.r > 50) {
-                      fontSize = 35;
-                    }
-
-                    if (value.r > 70) {
-                      fontSize = 55;
-                    }
-
-                    return {
-                      weight: 'lighter',
-                      size: fontSize
-                    };
-                  },
-                  offset: 2,
-                  padding: 0
-                }
-              }
-            },
-          });
-        });
-
-        
-        // INITIALIZATION OF DATERANGEPICKER
-        // =======================================================
-        $('.js-daterangepicker').daterangepicker();
-
-        $('.js-daterangepicker-times').daterangepicker({
-          timePicker: true,
-          startDate: moment().startOf('hour'),
-          endDate: moment().startOf('hour').add(32, 'hour'),
-          locale: {
-            format: 'M/DD hh:mm A'
-          }
-        });
-
-        var start = moment();
-        var end = moment();
-
-        function cb(start, end) {
-          $('#js-daterangepicker-predefined .js-daterangepicker-predefined-preview').html(start.format('MMM D') + ' - ' + end.format('MMM D, YYYY'));
-        }
-
-        $('#js-daterangepicker-predefined').daterangepicker({
-          startDate: start,
-          endDate: end,
-          ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-          }
-        }, cb);
-
-        cb(start, end);
 
         
         // INITIALIZATION OF DATATABLES
         // =======================================================
         var datatable = $.HSCore.components.HSDatatables.init($('#datatable'), {
+          dom: 'Bfrtip',
+          buttons: [
+            {
+              extend: 'copy',
+              className: 'd-none'
+            },
+            {
+              extend: 'excel',
+              className: 'd-none'
+            },
+            {
+              extend: 'csv',
+              className: 'd-none'
+            },
+            {
+              extend: 'pdf',
+              className: 'd-none'
+            },
+            {
+              extend: 'print',
+              className: 'd-none'
+            },
+          ],
           select: {
             style: 'multi',
             selector: 'td:first-child input[type="checkbox"]',
@@ -2367,6 +590,26 @@
                 '<p class="mb-0">No data to show</p>' +
                 '</div>'
           }
+        });
+
+        $('#export-copy').click(function() {
+          datatable.button('.buttons-copy').trigger()
+        });
+
+        $('#export-excel').click(function() {
+          datatable.button('.buttons-excel').trigger()
+        });
+
+        $('#export-csv').click(function() {
+          datatable.button('.buttons-csv').trigger()
+        });
+
+        $('#export-pdf').click(function() {
+          datatable.button('.buttons-pdf').trigger()
+        });
+
+        $('#export-print').click(function() {
+          datatable.button('.buttons-print').trigger()
         });
 
         $('.js-datatable-filter').on('change', function() {
@@ -2394,11 +637,24 @@
         });
 
         
-        // INITIALIZATION OF CLIPBOARD
+        // INITIALIZATION OF QUICK VIEW POPOVER
         // =======================================================
-        $('.js-clipboard').each(function() {
-          var clipboard = $.HSCore.components.HSClipboard.init(this);
+        $('#editUserPopover').popover('show');
+
+        $(document).on('click', '#closeEditUserPopover' , function() {
+          $('#editUserPopover').popover('dispose');
         });
+
+        $('#editUserModal').on('show.bs.modal', function() {
+          $('#editUserPopover').popover('dispose');
+        });
+
+
+        // DARK POPOVER
+        // =======================================================
+        $('[data-toggle="popover-dark"]').on('shown.bs.popover', function () {
+          $('.popover').last().addClass('popover-dark')
+        })
       });
     </script>
 

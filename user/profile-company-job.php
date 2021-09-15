@@ -78,57 +78,6 @@ $company_array = mysqli_fetch_array($company_sql);
                         <li class="nav-item">
                             <a class="nav-link active" href="profile-company-job.php?detail=<?= $_GET['detail']; ?>">JobList</a>
                         </li>
-                        <li class="nav-item ml-auto">
-                            <!-- Unfold -->
-                            <div class="hs-unfold hs-nav-scroller-unfold">
-                                <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-white" href="javascript:;" data-hs-unfold-options='{
-                         "target": "#profileDropdown",
-                         "type": "css-animation"
-                       }'>
-                                    <i class="tio-more-vertical"></i>
-                                </a>
-
-                                <div id="profileDropdown" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1">
-                                    <span class="dropdown-header">Settings</span>
-                                    <?php if ($company_array['status'] == 'active') { ?>
-                                        <a class="dropdown-item" href="company-reject.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-share dropdown-item-icon"></i> Reject
-                                        </a>
-                                        <a class="dropdown-item" href="company-blacklist.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-blocked dropdown-item-icon"></i> BlackList
-                                        </a>
-                                        <a class="dropdown-item" href="company-drop.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-info-outined dropdown-item-icon"></i> Drop
-                                        </a>
-                                    <?php } elseif ($company_array['status'] == 'pending') { ?>
-                                        <a class="dropdown-item" href="company-approve.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-share dropdown-item-icon"></i> Approve
-                                        </a>
-                                        <a class="dropdown-item" href="company-blacklist.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-blocked dropdown-item-icon"></i> BlackList
-                                        </a>
-                                        <a class="dropdown-item" href="company-drop.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-info-outined dropdown-item-icon"></i> Drop
-                                        </a>
-                                    <?php } elseif ($company_array['status'] == 'drop') { ?>
-                                        <a class="dropdown-item" href="company-approve.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-share dropdown-item-icon"></i> Approve
-                                        </a>
-                                        <a class="dropdown-item" href="company-reject.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-blocked dropdown-item-icon"></i> Reject
-                                        </a>
-                                        <a class="dropdown-item" href="company-blacklist.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-info-outined dropdown-item-icon"></i> BlackList
-                                        </a>
-                                    <?php } elseif ($company_array['status'] == 'blacklist') { ?>
-                                        <a class="dropdown-item" href="company-whitelist.php?company=<?=$company_array['userid'];?>">
-                                            <i class="tio-share dropdown-item-icon"></i> WhiteList
-                                        </a>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <!-- End Unfold -->
-                        </li>
                     </ul>
                 </div>
                 <!-- End Nav -->
@@ -148,7 +97,7 @@ $company_array = mysqli_fetch_array($company_sql);
             <!-- Tab Content -->
             <div class="tab-content" id="projectsTabContent">
               <div class="tab-pane fade show active" id="grid" role="tabpanel" aria-labelledby="grid-tab">
-                <div class="row row-cols-1 row-cols-md-2">
+                <div class="row row-cols-1 row-cols-md-3">
                 <?php while($job_array = mysqli_fetch_array($job_sql)){ ?>
                   <div class="col mb-3 mb-lg-5">
                     <!-- Card -->
@@ -187,28 +136,6 @@ $company_array = mysqli_fetch_array($company_sql);
                                 <span class="badge badge-soft-secondary p-2">Unknown</span>
                             <?php } ?>
                           </div>
-
-                          <div class="col-auto">
-                            <!-- Unfold -->
-                            <!-- <div class="hs-unfold card-unfold">
-                              <a class="js-hs-unfold-invoker btn btn-icon btn-sm btn-ghost-secondary rounded-circle" href="javascript:;"
-                                 data-hs-unfold-options='{
-                                   "target": "#projectsGridDropdown8",
-                                   "type": "css-animation"
-                                 }'>
-                                <i class="tio-more-vertical"></i>
-                              </a>
-
-                              <div id="projectsGridDropdown8" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                <a class="dropdown-item" href="#">Rename project </a>
-                                <a class="dropdown-item" href="#">Add to favorites</a>
-                                <a class="dropdown-item" href="#">Archive project</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="#">Delete</a>
-                              </div>
-                            </div> -->
-                            <!-- End Unfold -->
-                          </div>
                         </div>
 
                         <div class="d-flex justify-content-center mb-2">
@@ -219,29 +146,9 @@ $company_array = mysqli_fetch_array($company_sql);
                         <div class="mb-4">
                           <h2 class="mb-1"><?= $job_array['title']?$job_array['title']:'No Title'; ?></h2>
                           <small class="card-subtitle"><?= $job_array['subtitle']?$job_array['subtitle']:'No SubTitle'; ?></small>
+                          <h5><?= $job_array['description']?'Description : '.$job_array['description']:'No Description'; ?></h5>
                           <span class="font-size-sm"><?= $job_array['job_date']; ?></span>
                         </div>
-
-                        <!-- <small class="card-subtitle">Members</small> -->
-                        <!-- Avatar Group -->
-                            <!-- <div class="d-flex justify-content-center">
-                                <div class="avatar-group avatar-group-sm avatar-circle z-index-2">
-                                <a class="avatar" href="#" data-toggle="tooltip" data-placement="top" title="Finch Hoot">
-                                    <img class="avatar-img" src="../assets/img/160x160/img5.jpg" alt="Image Description">
-                                </a>
-                                <a class="avatar avatar-soft-dark" href="#" data-toggle="tooltip" data-placement="top" title="Bob Bardly">
-                                    <span class="avatar-initials">B</span>
-                                </a>
-                                <a class="avatar" href="#" data-toggle="tooltip" data-placement="top" title="Clarice Boone">
-                                    <img class="avatar-img" src="../assets/img/160x160/img7.jpg" alt="Image Description">
-                                </a>
-                                <a class="avatar avatar-soft-dark" href="#" data-toggle="tooltip" data-placement="top" title="Adam Keep">
-                                    <span class="avatar-initials">A</span>
-                                </a>
-                                </div>
-                            </div> -->
-                         <!-- End Avatar Group -->
-                        <!-- <a class="stretched-link" href="#"></a> -->
                       </div>
                       <!-- End Body -->
 
@@ -250,17 +157,17 @@ $company_array = mysqli_fetch_array($company_sql);
                         <!-- Stats -->
                         <div class="row">
                           <div class="col">
-                            <span class="h4"><?= $job_array['currency']; ?> <?= $job_array['salary']; ?></span>
+                            <span class="h5"><?= $job_array['currency']; ?> <?= $job_array['salary']; ?></span>
                             <span class="d-block font-size-sm">Salary</span>
                           </div>
 
                           <div class="col column-divider">
-                            <span class="h4"><?= $job_array['type']?$job_array['type']:'Empty'; ?></span>
+                            <span class="h5"><?= $job_array['type']?$job_array['type']:'Empty'; ?></span>
                             <span class="d-block font-size-sm">Type</span>
                           </div>
 
                           <div class="col column-divider">
-                            <span class="h4"><?=($job_array['subject'])?$job_array['subject']:'Empty';?></span>
+                            <span class="h5"><?=($job_array['subject'])?$job_array['subject']:'Empty';?></span>
                             <span class="d-block font-size-sm">Subject</span>
                           </div>
                         </div>
@@ -288,40 +195,6 @@ $company_array = mysqli_fetch_array($company_sql);
         <div class="footer">
           <div class="row justify-content-between align-items-center">
             <div class="col">
-              <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
-            </div>
-            <div class="col-auto">
-              <div class="d-flex justify-content-end">
-                <!-- List Dot -->
-                <ul class="list-inline list-separator">
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">FAQ</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">License</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <!-- Keyboard Shortcuts Toggle -->
-                    <div class="hs-unfold">
-                      <a class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle" href="javascript:;"
-                         data-hs-unfold-options='{
-                              "target": "#keyboardShortcutsSidebar",
-                              "type": "css-animation",
-                              "animationIn": "fadeInRight",
-                              "animationOut": "fadeOutRight",
-                              "hasOverlay": true,
-                              "smartPositionOff": true
-                             }'>
-                        <i class="tio-command-key"></i>
-                      </a>
-                    </div>
-                    <!-- End Keyboard Shortcuts Toggle -->
-                  </li>
-                </ul>
-                <!-- End List Dot -->
-              </div>
             </div>
           </div>
         </div>

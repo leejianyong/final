@@ -1,9 +1,25 @@
 <?php
 include('navbar.php');
 ?>
+<link rel="stylesheet" href="../assets/js/sweetalert2.all.min.js">
+<script src="../assets/js/sweetalert2.all.min.js"></script>
 <main id="content" role="main" class="main">
     <?php
-    $company_qry = "SELECT user.*,user.status as user_status,compony_job_request.*,compony_job_request.status as job_status,compony_job_request.id as job_id FROM user LEFT JOIN compony_job_request ON user.id = compony_job_request.company_id WHERE user.permission = 'company' AND user.status !='blacklist' AND compony_job_request.status !='blacklist'";
+        if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
+            echo "<script>Swal.fire('$_SESSION[error]','$_SESSION[error]','error');</script>";
+            unset($_SESSION['error']);
+        }
+        if(isset($_SESSION['success']) && !empty($_SESSION['success'])){
+            echo "<script>Swal.fire('$_SESSION[success]','$_SESSION[success]','success');</script>";
+            unset($_SESSION['success']);
+        }
+    ?>
+    <?php
+    if(isset($_GET['course']) || !empty($_GET['course'])){
+        $company_qry = "SELECT user.*,user.status as user_status,compony_job_request.*,compony_job_request.status as job_status,compony_job_request.id as job_id FROM user LEFT JOIN compony_job_request ON user.id = compony_job_request.company_id WHERE user.permission = 'company' AND user.status !='blacklist' AND compony_job_request.status !='active' AND compony_job_request.subject = '$_GET[course]'";
+    }else{
+        $company_qry = "SELECT user.*,user.status as user_status,compony_job_request.*,compony_job_request.status as job_status,compony_job_request.id as job_id FROM user LEFT JOIN compony_job_request ON user.id = compony_job_request.company_id WHERE user.permission = 'company' AND user.status !='blacklist' AND compony_job_request.status !='active'";
+    }
     $company_sql = mysqli_query($conn, $company_qry);
     $company_row = mysqli_num_rows($company_sql);
     ?>
@@ -15,23 +31,42 @@ include('navbar.php');
                 <!-- Filter -->
                 <div class="row align-items-center mb-5">
                     <div class="col">
-                        <h3 class="mb-0"><?= $company_row; ?> Job Detail</h3>
+                        <h3 class="mb-0"><?= $company_row; ?> Of Job Detail</h3>
                     </div>
-
-                    <div class="col-auto">
+                    <div class="col-sm-auto">
                         <!-- Nav -->
-                        <!-- <ul class="nav nav-segment" id="connectionsTab" role="tablist">
+                        <ul class="nav nav-segment" id="leaderboardTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="grid-tab" data-toggle="tab" href="#grid" role="tab" aria-controls="grid" aria-selected="true" title="Column view">
-                                    <i class="tio-column-view-outlined"></i>
-                                </a>
+                            <a class="nav-link <?= (!isset($_GET['course']) || empty($_GET['course'])) ? "active" : ""; ?>" id="all-course-tab" href="job-list.php" role="tab">
+                                All Course
+                            </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="false" title="List view">
-                                    <i class="tio-agenda-view-outlined"></i>
-                                </a>
+                            <a class="nav-link <?= (!empty($_GET['course']) && $_GET['course']=='Programming') ? "active" : ""; ?>" id="programming-tab" href="./job-list.php?course=Programming" role="tab">
+                                Programming
+                            </a>
                             </li>
-                        </ul> -->
+                            <li class="nav-item">
+                            <a class="nav-link <?= (!empty($_GET['course']) && $_GET['course']=='Networking') ? "active" : ""; ?>" id="networking-tab" href="job-list.php?course=Networking" role="tab">
+                                Networking
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link <?= (!empty($_GET['course']) && $_GET['course']=='Accounting') ? "active" : ""; ?>" id="accounting-tab" href="job-list.php?course=Accounting" role="tab">
+                                Accounting
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link <?= (!empty($_GET['course']) && $_GET['course']=='Multimedia') ? "active" : ""; ?>" id="multimedia-tab" href="job-list.php?course=Multimedia" role="tab">
+                                Multimedia
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link <?= (!empty($_GET['course']) && $_GET['course']=='Electronic') ? "active" : ""; ?>" id="electronic-tab" href="job-list.php?course=Electronic" role="tab">
+                                Electronic
+                            </a>
+                            </li>
+                        </ul>
                         <!-- End Nav -->
                     </div>
                 </div>
@@ -67,29 +102,14 @@ include('navbar.php');
                                             <div class="mb-1 text-left">
                                                 <b>Salary :</b><span> <?= $array['currency']; ?> <?= $array['salary']; ?></span>
                                             </div>
+                                           
+                                            <div class="mb-1 text-left">
+                                                <b>Subject :</b><span> <?= $array['subject']; ?></span>
+                                            </div>
 
                                             <div class="mb-1 text-left">
                                                 <b>Description :</b><span> <?= $array['description']; ?></span>
                                             </div>
-
-
-                                            <?php if ($array['subject'] == "Multimedia") { ?>
-                                                <div class="mb-1 text-left">
-                                                    <b>Subject :</b><span> <?= $array['subject']; ?></span>
-                                                </div>
-                                            <?php } elseif ($array['subject'] == "Hardware_Engineer") { ?>
-                                                <div class="mb-1 text-left">
-                                                    <b>Subject :</b><span> <?= $array['subject']; ?></span>
-                                                </div>
-                                            <?php } elseif ($array['subject'] == "Software_Developer") { ?>
-                                                <div class="mb-1 text-left">
-                                                    <b>Subject :</b><span> <?= $array['subject']; ?></span>
-                                                </div>
-                                            <?php } elseif ($array['subject'] == "Account") { ?>
-                                                <div class="mb-1 text-left">
-                                                    <b>Subject :</b><span> <?= $array['subject']; ?></span>
-                                                </div>
-                                            <?php } ?>
                                         </div>
                                         <!-- End Body -->
 
@@ -109,7 +129,6 @@ include('navbar.php');
                                                     <?php }else{ ?>
                                                         <a class="btn btn-outline-primary" href="#"><i class="tio-done mr-1"></i>Apply</a>
                                                     <?php } ?>
-                                                    
                                                     <!-- End Checkbox -->
                                                 </div>
 
@@ -681,7 +700,6 @@ include('navbar.php');
     <div class="footer">
         <div class="row justify-content-between align-items-center">
             <div class="col">
-                <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
             </div>
         </div>
     </div>

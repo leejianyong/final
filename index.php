@@ -1,27 +1,4 @@
-<?php
-include_once('auth/db.php');
-if (isset($_SESSION['userid'])) {
-  $qry = "SELECT * FROM user WHERE id='$_SESSION[userid]'";
-  $sql = mysqli_query($conn, $qry);
-  $row = mysqli_num_rows($sql);
-  if ($row == 1) {
-    $array = mysqli_fetch_array($sql);
-    if ($array['permission'] == 'company') {
-      $join_qry = "SELECT * FROM company_detail WHERE company_id='$_SESSION[userid]'";
-      $result = mysqli_fetch_array(mysqli_query($conn, $join_qry));
-    } elseif ($array['permission'] == 'user') {
-      $join_qry = "SELECT * FROM company_detail WHERE company_id='$_SESSION[userid]'";
-      $result = mysqli_fetch_array(mysqli_query($conn, $join_qry));
-    } elseif ($array['permission'] == 'admin') {
-      $join_qry = "SELECT * FROM company_detail WHERE company_id='$_SESSION[userid]'";
-      $result = mysqli_fetch_array(mysqli_query($conn, $join_qry));
-    }
-  } else {
-    session_destroy();
-    // echo "<script>window.location.href = 'index.php';</script>";
-  };
-}
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,13 +22,44 @@ if (isset($_SESSION['userid'])) {
 
   <!-- CSS Front Template -->
   <link rel="stylesheet" href="assets/css/theme.min.css">
+  <link rel="stylesheet" href="assets/js/sweetalert2.all.min.js">
+  <script src="assets/js/sweetalert2.all.min.js"></script>
 </head>
 
 <body class="bg-light">
+<?php
+include_once('auth/db.php');
+if(isset($_SESSION['destroy']) && !empty($_SESSION['destroy'])){
+  echo "<script>Swal.fire('$_SESSION[destroy]','$_SESSION[destroy]','success');</script>";
+  unset($_SESSION['destroy']);
+} 
+
+if (isset($_SESSION['userid'])) {
+  $qry = "SELECT * FROM user WHERE id='$_SESSION[userid]'";
+  $sql = mysqli_query($conn, $qry);
+  $row = mysqli_num_rows($sql);
+  if ($row == 1) {
+    $array = mysqli_fetch_array($sql);
+    if ($array['permission'] == 'company') {
+      $join_qry = "SELECT * FROM company_detail WHERE company_id='$_SESSION[userid]'";
+      $result = mysqli_fetch_array(mysqli_query($conn, $join_qry));
+    } elseif ($array['permission'] == 'user') {
+      $join_qry = "SELECT * FROM company_detail WHERE company_id='$_SESSION[userid]'";
+      $result = mysqli_fetch_array(mysqli_query($conn, $join_qry));
+    } elseif ($array['permission'] == 'admin') {
+      $join_qry = "SELECT * FROM company_detail WHERE company_id='$_SESSION[userid]'";
+      $result = mysqli_fetch_array(mysqli_query($conn, $join_qry));
+    }
+  } else {
+    session_destroy();
+    // echo "<script>window.location.href = 'index.php';</script>";
+  };
+}
+?>
   <!-- ========== MAIN CONTENT ========== -->
   <main id="content" role="main" class="main">
     <!-- Content -->
-    <div class="bg-dark">
+    <div class="" style="background-color: lightseagreen;">
       <div class="content container" style="height: 25rem;">
         <!-- Page Header -->
         <div class="page-header page-header-light page-header-reset navbar-expand-lg">
@@ -144,7 +152,7 @@ if (isset($_SESSION['userid'])) {
                         <div class="media-body">
                           <?php if (isset($array['email'])) { ?>
                             <span class="card-title h5"><?php if (!isset($result['firstname']) || !isset($result['lastname'])) {
-                                                          echo $array['email'];
+                                                          echo $array['username'];
                                                         } else {
                                                           echo $result['firstname'];
                                                           echo $result['lastname'];
@@ -181,14 +189,14 @@ if (isset($_SESSION['userid'])) {
                         <span class="text-truncate pr-2" title="Sign out">Sign out</span>
                       </a>
                     <?php } else { ?>
-                      <a class="dropdown-item" href="user-signin.php">
-                        <span class="text-truncate pr-2" title="Sign In">Sign In</span>
+                      <a class="dropdown-item text-center" href="user-signin.php">
+                        <span class="text-truncate pr-2" title="Sign In">Login <b>Account</b></span>
                       </a>
-                      <a class="dropdown-item" href="user-signup.php">
-                        <span class="text-truncate pr-2" title="Sign Up User">Sign Up User</span>
+                      <a class="dropdown-item text-center" href="user-signup.php">
+                        <span class="text-truncate pr-2" title="Sign Up User">Sign Up <b>User</b></span>
                       </a>
-                      <a class="dropdown-item" href="company-signup.php">
-                        <span class="text-truncate pr-2" title="Sign Up Company">Sign Up Company</span>
+                      <a class="dropdown-item text-center" href="company-signup.php">
+                        <span class="text-truncate pr-2" title="Sign Up Company">Sign Up <b>Company</b></span>
                       </a>
                     <?php } ?>
                   </div>

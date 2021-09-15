@@ -26,11 +26,10 @@ include_once('auth/db.php');
 
   <!-- CSS Front Template -->
   <link rel="stylesheet" href="./assets/css/theme.min.css">
+  <script src="./assets/js/sweetalert2.all.min.js"></script>
 </head>
 
 <body class="d-flex align-items-center min-h-100">
-  <script src="./assets/js/sweetalert2.all.min.js"></script>
-
   <!-- ========== HEADER ========== -->
   <header class="position-absolute top-0 left-0 right-0 mt-3 mx-3">
     <div class="d-flex d-lg-none justify-content-between">
@@ -43,6 +42,16 @@ include_once('auth/db.php');
 
   <!-- ========== MAIN CONTENT ========== -->
   <main id="content" role="main" class="main pt-0">
+    <?php
+      if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
+        echo "<script>Swal.fire('$_SESSION[error]','$_SESSION[error]','error');</script>";
+        unset($_SESSION['error']);
+      }
+      if(isset($_SESSION['success']) && !empty($_SESSION['success'])){
+        echo "<script>Swal.fire('$_SESSION[success]','$_SESSION[success]','success');</script>";
+        unset($_SESSION['success']);
+      }
+    ?>
     <?php
     if (isset($_POST['submit'])) {
       $Date = date("Y-m-d H:i:s");
@@ -59,7 +68,8 @@ include_once('auth/db.php');
           $qry_detail = "INSERT INTO `jobseeker_detail`(`user_id`, `firstname`, `lastname`, `email`, `created_at`) VALUES 
           ('$conn->insert_id','$_POST[fullName]','$_POST[lastName]','$_POST[email]','$Date')";
           $conn->query($qry_detail);
-          echo "<script>Swal.fire('Create Account Success!','Your account created...','success');</script>";
+          $_SESSION['success'] = 'Create Account Success!';
+          echo "<script>window.location.href='user-signin.php';</script>";
         }
       }
     } ?>

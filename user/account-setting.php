@@ -57,6 +57,8 @@ include('navbar.php');
         } else {
           $update_qry = "UPDATE user SET email='$_POST[email]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
           if (mysqli_query($conn, $update_qry)) {
+            $up_qry = "UPDATE jobseeker_detail SET email='$_POST[email]',updated_at='$Date' WHERE user_id='$_SESSION[userid]'";
+            mysqli_query($conn, $up_qry);
             echo "<script>Swal.fire('Update Email Success!','Your information already update...','success');window.location.href = '#emailSection';</script>";
           } else {
             echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');window.location.href = '#emailSection';</script>";
@@ -205,12 +207,7 @@ include('navbar.php');
     $qry = "SELECT user.*,jobseeker_detail.* FROM user LEFT JOIN jobseeker_detail ON user.id = jobseeker_detail.user_id WHERE user.id = '$_SESSION[userid]'";
     $sql = mysqli_query($conn, $qry);
     $result = mysqli_fetch_assoc($sql);
-
     ?>
-
-
-
-
     <!-- Content -->
     <div class="content container-fluid">
       <!-- Page Header -->
@@ -288,11 +285,6 @@ include('navbar.php');
                     <i class="tio-lock-outlined nav-icon"></i> Password
                   </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#deleteAccountSection">
-                    <i class="tio-delete-outlined nav-icon"></i> Delete account
-                  </a>
-                </li>
               </ul>
               <!-- End Navbar Nav -->
             </div>
@@ -312,7 +304,6 @@ include('navbar.php');
                                                                             } else {
                                                                               echo "../assets/img/1920x400/img2.jpg";
                                                                             } ?>" alt="Image Description">
-
                   <!-- Custom File Cover -->
                   <div class="profile-cover-content profile-cover-btn">
                     <div class="custom-file-btn">
@@ -384,8 +375,8 @@ include('navbar.php');
                 <label for="phoneLabel" class="col-sm-3 col-form-label input-label">Phone <span class="input-label-secondary">(Optional)</span></label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="+xxx-xxxx-xxx" aria-label="+xxx-xxxx-xxx" value="<?= $result['contact']; ?>" data-hs-mask-options='{
-                               "template": "+000-0000-000"
+                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="+x(xxx)-xxxx-xxxx" aria-label="+x(xxx)-xxxx-xxxx" value="<?= $result['contact']; ?>" data-hs-mask-options='{
+                               "template": "+0(000)-0000-0000"
                              }'>
                 </div>
               </div>
@@ -393,17 +384,28 @@ include('navbar.php');
 
               <!-- Form Group -->
               <div class="row form-group">
-                <label for="course_type" class="col-sm-3 col-form-label input-label">Course Type</label>
-
+                <label for="collectionsLabel" class="col-sm-3 col-form-label input-label">Course Type</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" name="course_type" id="course_type" placeholder="Your Course Type" aria-label="Your course_type" value="<?= $result['course_type']; ?>">
+                  <!-- Select -->
+                  <select name="course_type" class="js-select2-custom custom-select" size="1" style="opacity: 0;" id="collectionsLabel" data-hs-select2-options='{
+                              "minimumResultsForSearch": "Infinity",
+                              "placeholder": "Select Request Course"
+                            }' required>
+                    <option label="empty"></option>
+                    <option value="Accounting" <?php if($result['course_type']=="Accounting"){echo"selected";} ?>>Accounting</option>
+                    <option value="Multimedia" <?php if($result['course_type']=="Multimedia"){echo"selected";} ?>>Multimedia</option>
+                    <option value="Programming"<?php if($result['course_type']=="Programming"){echo"selected";} ?>>Programming</option>
+                    <option value="Eletronic"  <?php if($result['course_type']=="Eletronic"){echo"selected";} ?>>Eletronic</option>
+                    <option value="Networking" <?php if($result['course_type']=="Networking"){echo"selected";} ?>>Networking</option>
+                  </select>
+                  <!-- End Select -->
                 </div>
               </div>
               <!-- End Form Group -->
 
               <!-- Form Group -->
               <div class="row form-group">
-                <label for="locationLabel" class="col-sm-3 col-form-label input-label">Location</label>
+                <label for="locationLabel" class="col-sm-3 col-form-label input-label">Country</label>
 
                 <div class="col-sm-9">
                   <!-- Select -->
@@ -578,6 +580,10 @@ include('navbar.php');
                     <input type="email" name="email" class="form-control" name="newEmail" id="newEmailLabel" placeholder="Enter new email address" aria-label="Enter new email address" required data-msg="Please enter a valid email address.">
                   </div>
                 </div>
+                <br>
+                <br>
+                <br>
+                <br>
                 <!-- End Form Group -->
 
                 <div class="d-flex justify-content-end">
@@ -640,19 +646,12 @@ include('navbar.php');
                     <div class="mb-3">
                       <input type="password" class="form-control" name="confirmNewPassword" id="confirmNewPasswordLabel" placeholder="Confirm your new password" aria-label="Confirm your new password">
                     </div>
-
-                    <h5>Password requirements:</h5>
-
-                    <p class="font-size-sm mb-2">Ensure that these requirements are met:</p>
-
-                    <ul class="font-size-sm">
-                      <li>Minimum 8 characters long - the more, the better</li>
-                      <li>At least one lowercase character</li>
-                      <li>At least one uppercase character</li>
-                      <li>At least one number, symbol, or whitespace character</li>
-                    </ul>
                   </div>
                 </div>
+                <br>
+                <br>
+                <br>
+                <br>
                 <!-- End Form Group -->
 
                 <div class="d-flex justify-content-end">
@@ -660,35 +659,6 @@ include('navbar.php');
                 </div>
               </form>
               <!-- End Form -->
-            </div>
-            <!-- End Body -->
-          </div>
-          <!-- End Card -->
-
-          <!-- Card -->
-          <div id="deleteAccountSection" class="card mb-3 mb-lg-5">
-            <div class="card-header">
-              <h4 class="card-title">Delete your account</h4>
-            </div>
-
-            <!-- Body -->
-            <div class="card-body">
-              <p class="card-text">When you delete your account, you lose access to Front account services, and we permanently delete your personal data. You can cancel the deletion for 14 days.</p>
-
-              <div class="form-group">
-                <!-- Custom Checkbox -->
-                <div class="custom-control custom-checkbox">
-                  <input type="checkbox" class="custom-control-input" id="deleteAccountCheckbox" required data-msg="Please accept delete Check when Delete.">
-                  <label class="custom-control-label" for="deleteAccountCheckbox">Confirm that I want to delete my account.</label>
-                </div>
-                <!-- End Custom Checkbox -->
-              </div>
-
-              <div class="d-flex justify-content-end">
-                <a class="btn btn-white mr-2" href="#">Learn more <i class="tio-open-in-new ml-1"></i></a>
-
-                <button type="submit" class="btn btn-danger">Delete</button>
-              </div>
             </div>
             <!-- End Body -->
           </div>
@@ -707,7 +677,6 @@ include('navbar.php');
     <div class="footer">
       <div class="row justify-content-between align-items-center">
         <div class="col">
-          <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
         </div>
       </div>
     </div>
@@ -717,59 +686,6 @@ include('navbar.php');
   <!-- ========== END MAIN CONTENT ========== -->
 
   <!-- ========== SECONDARY CONTENTS ========== -->
-
-  <!-- Welcome Message Modal -->
-  <div class="modal fade" id="welcomeMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <!-- Header -->
-        <div class="modal-close">
-          <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary" data-dismiss="modal" aria-label="Close">
-            <i class="tio-clear tio-lg"></i>
-          </button>
-        </div>
-        <!-- End Header -->
-
-        <!-- Body -->
-        <div class="modal-body p-sm-5">
-          <div class="text-center">
-            <div class="w-75 w-sm-50 mx-auto mb-4">
-              <img class="img-fluid" src="../assets/svg/illustrations/graphs.svg" alt="Image Description">
-            </div>
-
-            <h4 class="h1">Welcome to Front</h4>
-
-            <p>We're happy to see you in our community.</p>
-          </div>
-        </div>
-        <!-- End Body -->
-
-        <!-- Footer -->
-        <div class="modal-footer d-block text-center py-sm-5">
-          <small class="text-cap mb-4">Trusted by the world's best teams</small>
-
-          <div class="w-85 mx-auto">
-            <div class="row justify-content-between">
-              <div class="col">
-                <img class="img-fluid ie-welcome-brands" src="../assets/svg/brands/gitlab-gray.svg" alt="Image Description">
-              </div>
-              <div class="col">
-                <img class="img-fluid ie-welcome-brands" src="../assets/svg/brands/fitbit-gray.svg" alt="Image Description">
-              </div>
-              <div class="col">
-                <img class="img-fluid ie-welcome-brands" src="../assets/svg/brands/flow-xo-gray.svg" alt="Image Description">
-              </div>
-              <div class="col">
-                <img class="img-fluid ie-welcome-brands" src="../assets/svg/brands/layar-gray.svg" alt="Image Description">
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End Footer -->
-      </div>
-    </div>
-  </div>
-  <!-- End Welcome Message Modal -->
 
   <!-- Upload files Modal -->
   <div class="modal fade" id="uploadFilesModal" tabindex="-1" role="dialog" aria-labelledby="uploadFilesModalTitle" aria-hidden="true">

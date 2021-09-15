@@ -37,17 +37,11 @@ if($request['status']=="active"){
   <link rel="stylesheet" href="../assets/css/theme.min.css">
   <!-- <script src="../assets/js/theme.sweetalert2.all.min.js"></script> -->
   <link rel="stylesheet" href="../assets/js/sweetalert2.all.min.js">
-
-
 </head>
-<?php
-
-?>
 
 <body class="footer-offset" data-offset="80" data-hs-scrollspy-options='{
           "target": "#navbarSettings"
         }'>
-
   <script src="../assets/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside-mini-cache.js"></script>
   <script src="../assets/js/sweetalert2.all.min.js"></script>
   <?php
@@ -58,14 +52,14 @@ if($request['status']=="active"){
       $qry = "SELECT * FROM user WHERE email ='$_POST[email]'";
       $row = mysqli_num_rows(mysqli_query($conn, $qry));
       if ($row >= 1) {
-        echo "<script>Swal.fire('Email already Exist!','Choose another email...','error');window.location.href = '#emailSection';</script>";
+        echo "<script>Swal.fire('Email already Exist!','Choose another email...','error');</script>";
       } else {
         $update_qry = "UPDATE user SET email='$_POST[email]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
         if (mysqli_query($conn, $update_qry)) {
-          echo "<script>Swal.fire('Update Email Success!','Your information already update...','success');window.location.href = '#emailSection';</script>";
-        } else {  echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');window.location.href = '#emailSection';</script>"; }
+          echo "<script>Swal.fire('Update Email Success!','Your information already update...','success');</script>";
+        } else {  echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');</script>"; }
       }
-    } else { echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');window.location.href = '#emailSection';</script>"; }
+    } else { echo "<script>Swal.fire('Update Email Error!','Your information update failed...','error');</script>"; }
   }
 
   if (isset($_POST['password-submit'])) {
@@ -76,10 +70,10 @@ if($request['status']=="active"){
         if ($_POST['confirmNewPassword'] == $_POST['newPassword']) {
           $update_qry = "UPDATE user SET password='$_POST[newPassword]',updated_at='$Date' WHERE id='$_SESSION[userid]'";
           if (mysqli_query($conn, $update_qry)) {
-            echo "<script>Swal.fire('Update Password Success!','Your information already update...','success');window.location.href = '#passwordSection';</script>";
-          } else { echo "<script>Swal.fire('Update Password Error!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
-        } else { echo "<script>Swal.fire('Dual New Password Unmatch!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
-      } else { echo "<script>Swal.fire('Wrong Current Password!','Your information update failed...','error');window.location.href = '#passwordSection';</script>"; }
+            echo "<script>Swal.fire('Update Password Success!','Your information already update...','success');</script>";
+          } else { echo "<script>Swal.fire('Update Password Error!','Your information update failed...','error');</script>"; }
+        } else { echo "<script>Swal.fire('Dual New Password Unmatch!','Your information update failed...','error');</script>"; }
+      } else { echo "<script>Swal.fire('Wrong Current Password!','Your information update failed...','error');</script>"; }
     }
   }
 
@@ -96,16 +90,16 @@ if($request['status']=="active"){
 
     if(!empty($_FILES["profile_image"]["name"])){
         // Allow certain file formats
-        $allowTypes = array('jpg','png','jpeg','gif','pdf');
+        $allowTypes = array('jpg','png','jpeg','gif');
         if(in_array($fileType, $allowTypes)){
             // Upload file to server
             if(move_uploaded_file($_FILES["profile_image"]["tmp_name"], $targetFilePath)){
               $profile_image = $NewFileName;
             }else{
-              echo "<script>Swal.fire('Error Upload Profile Image!','Your profile image update failed...','error');window.location.href = '#passwordSection';</script>";
+              echo "<script>Swal.fire('Error Upload Profile Image!','Your profile image update failed...','error');</script>";
             }
         }else{
-          echo "<script>Swal.fire('Error Upload Profile Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');window.location.href = '#passwordSection';</script>";
+          echo "<script>Swal.fire('Error Upload Profile Image!','Sorry, only JPG, JPEG & PNG files are allowed to upload.','error');</script>";
         }
     }
 
@@ -119,32 +113,34 @@ if($request['status']=="active"){
 
     if(!empty($_FILES["background_image"]["name"])){
         // Allow certain file formats
-        $allowTypes = array('jpg','png','jpeg','gif','pdf');
+        $allowTypes = array('jpg','png','jpeg','gif');
         if(in_array($fileType, $allowTypes)){
             // Upload file to server
             if(move_uploaded_file($_FILES["background_image"]["tmp_name"], $targetFilePath)){
               $background_image = $NewFileName;
             }else{
-              echo "<script>Swal.fire('Error Upload Background Image!','Your background image update failed...','error');window.location.href = '#passwordSection';</script>";
+              echo "<script>Swal.fire('Error Upload Background Image!','Your background image update failed...','error');</script>";
             }
         }else{
-          echo "<script>Swal.fire('Error Upload Background Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');window.location.href = '#passwordSection';</script>";
+          echo "<script>Swal.fire('Error Upload Background Image!','Sorry, only JPG, JPEG & PNG files are allowed to upload.','error');</script>";
         }
     }
 
-    if(!isset($_POST['account'])){ $account = 0; }else{ $account = 1; }
-    if(!isset($_POST['it_enginner'])){ $it_enginner = 0; }else{ $it_enginner = 1; }
-    if(!isset($_POST['multimedia'])){ $multimedia = 0; }else{ $multimedia = 1; }
-    if(!isset($_POST['electronic_enginner'])){ $electronic_enginner = 0; }else{ $electronic_enginner = 1; }
+    if(!isset($_POST['acc'])){ $acc = 0; }else{ $acc = 1; }
+    if(!isset($_POST['pro'])){ $pro = 0; }else{ $pro = 1; }
+    if(!isset($_POST['multi'])){ $multi = 0; }else{ $multi = 1; }
+    if(!isset($_POST['elec'])){ $elec = 0; }else{ $elec = 1; }
+    if(!isset($_POST['net'])){ $net = 0; }else{ $net = 1; }
 
     $update_qry = "UPDATE company_detail SET 
     company_name='$_POST[company_name]',
     contact='$_POST[contact]',
     organization='$_POST[organization]',
-    account_business='$account',
-    it_engineer='$it_enginner',
-    multimedia='$multimedia',
-    eletronic='$electronic_enginner',
+    acc='$acc',
+    pro='$pro',
+    multi='$multi',
+    elec='$elec',
+    net='$net',
     country='$_POST[country]',
     city='$_POST[city]',
     state='$_POST[state]',
@@ -159,10 +155,12 @@ if($request['status']=="active"){
     $update_qry .= "updated_at='$Date' 
     WHERE company_id='$_SESSION[userid]'";
     if (mysqli_query($conn, $update_qry)) {
-      echo "<script>Swal.fire('Update Basic Information Success!','Your information already update...','success');window.location.href = '#content';</script>";
-    } else { echo "<script>Swal.fire('Update Basic Information Error!','Your information update failed...','error');window.location.href = '#content';</script>"; }
+      $up_detail = "UPDATE user SET username='$_POST[company_name]',updated_at='$datetime' WHERE id='$_SESSION[userid]'";
+      mysqli_query($conn, $up_detail);
+      echo "<script>Swal.fire('Update Basic Information Success!','Your information already update...','success');</script>";
+    } else { echo "<script>Swal.fire('Update Basic Information Error!','Your information update failed...','error');</script>"; }
   }
-
+  
   $qry = "SELECT user.*,company_detail.* FROM user LEFT JOIN company_detail ON user.id = company_detail.company_id WHERE user.id = '$_SESSION[userid]'";
   $sql = mysqli_query($conn,$qry);
   $result = mysqli_fetch_assoc($sql);
@@ -180,20 +178,12 @@ if($request['status']=="active"){
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb breadcrumb-no-gutter">
                 <li class="breadcrumb-item"><a class="breadcrumb-link" href="../index.php">Pages</a></li>
-                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Account</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Approve</li>
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Company</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Account</li>
               </ol>
             </nav>
-
-            <h1 class="page-header-title">Waiting For The Approved ...</h1>
-            <h5 class="page-header-title text-muted">Fill in your company information ...</h1>
+            <h1 class="page-header-title">Company Information</h1>
           </div>
-
-          <!-- <div class="col-sm-auto">
-              <a class="btn btn-primary" href="user-profile-my-profile.html">
-                <i class="tio-user mr-1"></i> My profile
-              </a>
-            </div> -->
         </div>
         <!-- End Row -->
       </div>
@@ -241,11 +231,6 @@ if($request['status']=="active"){
                 <li class="nav-item">
                   <a class="nav-link" href="#passwordSection">
                     <i class="tio-lock-outlined nav-icon"></i> Password
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#deleteAccountSection">
-                    <i class="tio-delete-outlined nav-icon"></i> Delete account
                   </a>
                 </li>
               </ul>
@@ -315,13 +300,13 @@ if($request['status']=="active"){
 
               <!-- Form Group -->
               <div class="row form-group">
-                  <label for="newEmailLabel" class="col-sm-3 col-form-label input-label">Company Name</label>
+                <label for="newEmailLabel" class="col-sm-3 col-form-label input-label">Company Name</label>
 
-                  <div class="col-sm-9">
-                    <input type="text" name="company_name" value="<?= $result['company_name']; ?>" class="form-control" name="newEmail" id="newEmailLabel" placeholder="Enter Company Name" aria-label="Enter Company Name" required data-msg="Please enter a valid Company Name.">
-                  </div>
+                <div class="col-sm-9">
+                  <input type="text" name="company_name" value="<?= $result['company_name']; ?>" class="form-control" name="newEmail" id="newEmailLabel" placeholder="Enter Company Name" aria-label="Enter Company Name" required data-msg="Please enter a valid Company Name.">
                 </div>
-                <!-- End Form Group -->
+              </div>
+              <!-- End Form Group -->
 
               <!-- Form Group -->
               <!-- <div class="row form-group">
@@ -338,8 +323,8 @@ if($request['status']=="active"){
                 <label for="phoneLabel" class="col-sm-3 col-form-label input-label">Phone <span class="input-label-secondary">(Optional)</span></label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="+(xx)xx-xxxx-xxz" aria-label="+(xx)xx-xxxx-xxx" value="<?= $result['contact']; ?>" data-hs-mask-options='{
-                               "template": "+(00)00-0000-000"
+                  <input type="text" class="js-masked-input form-control" name="contact" id="phoneLabel" placeholder="+x(xxx)xxzx-xxxx" aria-label="+x(xxx)xxxx-xxxx" value="<?= $result['contact']; ?>" data-hs-mask-options='{
+                               "template": "+0(000)0000-0000"
                              }'>
                 </div>
               </div>
@@ -356,16 +341,6 @@ if($request['status']=="active"){
               <!-- End Form Group -->
 
               <!-- Form Group -->
-              <!-- <div class="row form-group">
-                    <label for="departmentLabel" class="col-sm-3 col-form-label input-label">Department</label>
-
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control" name="department" id="departmentLabel" placeholder="Your department" aria-label="Your department">
-                    </div>
-                  </div> -->
-              <!-- End Form Group -->
-
-              <!-- Form Group -->
               <div id="accountType" class="row form-group">
                 <label class="col-sm-3 col-form-label input-label">Company type</label>
 
@@ -374,10 +349,10 @@ if($request['status']=="active"){
                     <!-- Custom Radio -->
                     <div class="form-control">
                       <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="account" id="customInlineCheck1" class="custom-control-input indeterminate-checkbox" <?php if ($result['account_business'] == 1) {
+                        <input type="checkbox" name="acc" id="customInlineCheck1" class="custom-control-input indeterminate-checkbox" <?php if ($result['acc'] == 1) {
                                                                                                                                             echo "checked";
                                                                                                                                           }; ?>>
-                        <label class="custom-control-label" for="customInlineCheck1">Account Business</label>
+                        <label class="custom-control-label" for="customInlineCheck1">Accounting</label>
                       </div>
                     </div>
                     <!-- End Custom Radio -->
@@ -385,10 +360,10 @@ if($request['status']=="active"){
                     <!-- Custom Radio -->
                     <div class="form-control">
                       <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="it_enginner" id="customInlineCheck2" class="custom-control-input indeterminate-checkbox" <?php if ($result['it_engineer'] == 1) {
+                        <input type="checkbox" name="pro" id="customInlineCheck2" class="custom-control-input indeterminate-checkbox" <?php if ($result['pro'] == 1) {
                                                                                                                                                 echo "checked";
                                                                                                                                               }; ?>>
-                        <label class="custom-control-label" for="customInlineCheck2">Software Programmer</label>
+                        <label class="custom-control-label" for="customInlineCheck2">Programming</label>
                       </div>
                     </div>
                     <!-- End Custom Radio -->
@@ -396,10 +371,10 @@ if($request['status']=="active"){
                     <!-- Custom Radio -->
                     <div class="form-control">
                       <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="multimedia" id="customInlineCheck3" class="custom-control-input indeterminate-checkbox" <?php if ($result['multimedia'] == 1) {
+                        <input type="checkbox" name="multi" id="customInlineCheck3" class="custom-control-input indeterminate-checkbox" <?php if ($result['multi'] == 1) {
                                                                                                                                                 echo "checked";
                                                                                                                                               }; ?>>
-                        <label class="custom-control-label" for="customInlineCheck3">Multimedia Design</label>
+                        <label class="custom-control-label" for="customInlineCheck3">Multimedia</label>
                       </div>
                     </div>
                     <!-- End Custom Radio -->
@@ -407,13 +382,25 @@ if($request['status']=="active"){
                     <!-- Custom Radio -->
                     <div class="form-control">
                       <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="electronic_enginner" id="customInlineCheck4" class="custom-control-input indeterminate-checkbox" <?php if ($result['eletronic'] == 1) {
+                        <input type="checkbox" name="elec" id="customInlineCheck4" class="custom-control-input indeterminate-checkbox" <?php if ($result['elec'] == 1) {
                                                                                                                                                           echo "checked";
                                                                                                                                                         }; ?>>
-                        <label class="custom-control-label" for="customInlineCheck4">Hardware Electronic</label>
+                        <label class="custom-control-label" for="customInlineCheck4">Electronic</label>
                       </div>
                     </div>
                     <!-- End Custom Radio -->
+
+                    <!-- Custom Radio -->
+                    <div class="form-control">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="net" id="customInlineCheck5" class="custom-control-input indeterminate-checkbox" <?php if ($result['net'] == 1) {
+                                                                                                                                                          echo "checked";
+                                                                                                                                                        }; ?>>
+                        <label class="custom-control-label" for="customInlineCheck5">Networking</label>
+                      </div>
+                    </div>
+                    <!-- End Custom Radio -->
+                    
                   </div>
                 </div>
               </div>
@@ -421,23 +408,32 @@ if($request['status']=="active"){
 
               <!-- Form Group -->
               <div class="row form-group">
-                <label for="locationLabel" class="col-sm-3 col-form-label input-label">Location</label>
-
+                <label for="locationLabel" class="col-sm-3 col-form-label input-label">Country</label>
                 <div class="col-sm-9">
                   <!-- Select -->
-                  <div class="mb-3">
                     <select name="country" id="locationLabel" data-hs-select2-options='{
                                   "searchInputPlaceholder": "Search a country"
                                 }'>
                       <option value="<?= $result['country']; ?>"></option>
                     </select>
-                  </div>
                   <!-- End Select -->
+                </div>
+              </div>
+              <!-- End Form Group -->
 
-                  <div class="mb-3">
-                    <input type="text" class="form-control" name="city" id="cityLabel" placeholder="City" aria-label="City" value="<?= $result['city']; ?>">
-                  </div>
+              <!-- Form Group -->
+              <div class="row form-group">
+                <label for="cityLabel" class="col-sm-3 col-form-label input-label">City</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name="city" id="cityLabel" placeholder="City" aria-label="City" value="<?= $result['city']; ?>">
+                </div>
+              </div>
+              <!-- End Form Group -->
 
+              <!-- Form Group -->
+              <div class="row form-group">
+                <label for="stateLabel" class="col-sm-3 col-form-label input-label">State</label>
+                <div class="col-sm-9">
                   <input type="text" class="form-control" name="state" id="stateLabel" placeholder="State" aria-label="State" value="<?= $result['state']; ?>">
                 </div>
               </div>
@@ -494,7 +490,10 @@ if($request['status']=="active"){
                   </div>
                 </div>
                 <!-- End Form Group -->
-
+                <br>
+                <br>
+                <br>
+                <br>
                 <div class="d-flex justify-content-end">
                   <button type="submit" name="email_submit" class="btn btn-primary">Save changes</button>
                 </div>
@@ -555,17 +554,10 @@ if($request['status']=="active"){
                     <div class="mb-3">
                       <input type="password" class="form-control" name="confirmNewPassword" id="confirmNewPasswordLabel" placeholder="Confirm your new password" aria-label="Confirm your new password">
                     </div>
-
-                    <h5>Password requirements:</h5>
-
-                    <p class="font-size-sm mb-2">Ensure that these requirements are met:</p>
-
-                    <ul class="font-size-sm">
-                      <li>Minimum 8 characters long - the more, the better</li>
-                      <li>At least one lowercase character</li>
-                      <li>At least one uppercase character</li>
-                      <li>At least one number, symbol, or whitespace character</li>
-                    </ul>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
                   </div>
                 </div>
                 <!-- End Form Group -->
@@ -578,35 +570,6 @@ if($request['status']=="active"){
             </div>
             <!-- End Body -->
           </div>
-          <!-- End Card -->
-
-          <!-- Card -->
-            <div id="deleteAccountSection" class="card mb-3 mb-lg-5">
-              <div class="card-header">
-                <h4 class="card-title">Delete your account</h4>
-              </div>
-
-              <!-- Body -->
-              <div class="card-body">
-                <p class="card-text">When you delete your account, you lose access to Front account services, and we permanently delete your personal data. You can cancel the deletion for 14 days.</p>
-
-                <div class="form-group">
-                  <!-- Custom Checkbox -->
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="deleteAccountCheckbox" required data-msg="Please accept delete Check when Delete.">
-                    <label class="custom-control-label" for="deleteAccountCheckbox">Confirm that I want to delete my account.</label>
-                  </div>
-                  <!-- End Custom Checkbox -->
-                </div>
-
-                <div class="d-flex justify-content-end">
-                  <a class="btn btn-white mr-2" href="#">Learn more <i class="tio-open-in-new ml-1"></i></a>
-
-                  <button type="submit" class="btn btn-danger">Delete</button>
-                </div>
-              </div>
-              <!-- End Body -->
-            </div>
           <!-- End Card -->
 
           <!-- Sticky Block End Point -->
@@ -622,7 +585,6 @@ if($request['status']=="active"){
     <div class="footer">
       <div class="row justify-content-between align-items-center">
         <div class="col">
-          <p class="font-size-sm mb-0">&copy; Company Job Request. <span class="d-none d-sm-inline-block">2021.</span></p>
         </div>
       </div>
     </div>
@@ -630,63 +592,6 @@ if($request['status']=="active"){
   </main>
 
   <!-- ========== END MAIN CONTENT ========== -->
-
-  <!-- ========== SECONDARY CONTENTS ========== -->
-
-  <!-- Welcome Message Modal -->
-  <div class="modal fade" id="welcomeMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <!-- Header -->
-        <div class="modal-close">
-          <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary" data-dismiss="modal" aria-label="Close">
-            <i class="tio-clear tio-lg"></i>
-          </button>
-        </div>
-        <!-- End Header -->
-
-        <!-- Body -->
-        <div class="modal-body p-sm-5">
-          <div class="text-center">
-            <div class="w-75 w-sm-50 mx-auto mb-4">
-              <img class="img-fluid" src="../assets/svg/illustrations/graphs.svg" alt="Image Description">
-            </div>
-
-            <h4 class="h1">Welcome to Front</h4>
-
-            <p>We're happy to see you in our community.</p>
-          </div>
-        </div>
-        <!-- End Body -->
-
-        <!-- Footer -->
-        <div class="modal-footer d-block text-center py-sm-5">
-          <small class="text-cap mb-4">Trusted by the world's best teams</small>
-
-          <div class="w-85 mx-auto">
-            <div class="row justify-content-between">
-              <div class="col">
-                <img class="img-fluid ie-welcome-brands" src="../assets/svg/brands/gitlab-gray.svg" alt="Image Description">
-              </div>
-              <div class="col">
-                <img class="img-fluid ie-welcome-brands" src="../assets/svg/brands/fitbit-gray.svg" alt="Image Description">
-              </div>
-              <div class="col">
-                <img class="img-fluid ie-welcome-brands" src="../assets/svg/brands/flow-xo-gray.svg" alt="Image Description">
-              </div>
-              <div class="col">
-                <img class="img-fluid ie-welcome-brands" src="../assets/svg/brands/layar-gray.svg" alt="Image Description">
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End Footer -->
-      </div>
-    </div>
-  </div>
-  <!-- End Welcome Message Modal -->
-
-  <!-- ========== END SECONDARY CONTENTS ========== -->
 
   <!-- JS Global Compulsory  -->
   <script src="../assets/vendor/jquery/dist/jquery.min.js"></script>

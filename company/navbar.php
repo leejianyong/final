@@ -34,6 +34,26 @@
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="<?= $assets; ?>/assets/css/theme.min.css">
   </head>
+  <style>
+  .nav-subtitle{
+    color: white !important;
+  }
+  .active.nav-link {
+    border-left-color: white !important;
+  }
+  .navbar .nav-link:hover {
+    color: white !important;
+  }
+  .js-nav-tooltip-link.nav-link.active{
+    color:white !important;
+  }
+  .navbar{
+    background-color: darksalmon !important;
+  }
+  .close{
+    color:white !important;
+  }
+  </style>
 
   <body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl   footer-offset">
     
@@ -111,23 +131,15 @@
                           <img class="avatar-img" src="<?php if(!empty($result['profile_image'])){ echo "../image/".$result['profile_image'];}else{ echo "../assets/img/160x160/img2.jpg"; } ?>" alt="Image Description">
                         </div>
                         <div class="media-body">
-                          <span class="card-title h5"><?= $result['firstname']." ".$result['lastname']; ?></span>
+                          <span class="card-title h5"><?= $result['company_name'] ?></span>
                           <span class="card-text"><?= $result['email']; ?></span>
                         </div>
                       </div>
                     </div>
-
                     <div class="dropdown-divider"></div>
-
                     <a class="dropdown-item" href="account-setting.php">
                       <span class="text-truncate pr-2" title="Profile &amp; account">Profile &amp; account</span>
                     </a>
-
-                    <!-- <a class="dropdown-item" href="#">
-                      <span class="text-truncate pr-2" title="Settings">Settings</span>
-                    </a> -->
-
-                    <div class="dropdown-divider"></div>
 
                     <a class="dropdown-item" href="sign-out.php">
                       <span class="text-truncate pr-2" title="Sign out">Sign out</span>
@@ -211,18 +223,11 @@
                 </li>
 
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/user-applied.php") ? "active" : ""; ?>" href="./user-applied.php" title="User applied page" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/user-applied.php") ? "active" : ""; ?><?= (@$request_url == $php_self."/user-email.php") ? "active" : ""; ?>" href="./user-applied.php" title="User applied page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User Appiled Page</span>
                   </a>
                 </li>
-
-                <!-- <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
-                  <i class="tio-pages-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User Rating Page</span>
-                  </a>
-                </li> -->
                 <!-- End user -->
 
                 <li class="nav-item">

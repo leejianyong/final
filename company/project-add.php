@@ -2,9 +2,19 @@
 include("navbar.php");
 
 ?>
-
 <main id="content" role="main" class="main">
-<script src="../assets/js/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="../assets/js/sweetalert2.all.min.js">
+  <script src="../assets/js/sweetalert2.all.min.js"></script>
+<?php
+  if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
+    echo "<script>Swal.fire('$_SESSION[error]','$_SESSION[error]','error');</script>";
+    unset($_SESSION['error']);
+  }
+  if(isset($_SESSION['success']) && !empty($_SESSION['success'])){
+    echo "<script>Swal.fire('$_SESSION[success]','$_SESSION[success]','success');</script>";
+    unset($_SESSION['success']);
+  }
+?>
 <?php
 if(isset($_POST['job_submit'])){
   $Date = date("Y-m-d H:i:s");
@@ -22,13 +32,15 @@ if(isset($_POST['job_submit'])){
 
   if(!empty($_FILES["job_image"]["name"])){
       // Allow certain file formats
-      $allowTypes = array('jpg','png','jpeg','gif','pdf');
+      $allowTypes = array('jpg','png','jpeg','gif');
       if(in_array($fileType, $allowTypes)){
           // Upload file to server
           if(move_uploaded_file($_FILES["job_image"]["tmp_name"], $targetFilePath)){
             $job_image = $NewFileName;
-          }else{ echo "<script>Swal.fire('Error Upload Profile Image!','Your profile image update failed...','error');</script>"; }
-      }else{ echo "<script>Swal.fire('Error Upload Profile Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');</script>"; }
+          }else{ $_SESSION['error'] = 'Error Upload Profile Image!'; 
+            echo "<script>window.location.href = 'project-add.php';</script>";}
+      }else{ $_SESSION['error'] = 'Only JPG, JPEG & PNG files are Allowed to Upload!'; 
+        echo "<script>window.location.href = 'project-add.php';</script>";}
   }
 
   $job_background_image = NULL;
@@ -47,8 +59,10 @@ if(isset($_POST['job_submit'])){
           // Upload file to server
           if(move_uploaded_file($_FILES["job_background_image"]["tmp_name"], $targetFilePath)){
             $job_background_image = $NewFileName;
-          }else{ echo "<script>Swal.fire('Error Upload Background Image!','Your profile image update failed...','error');</script>"; }
-      }else{ echo "<script>Swal.fire('Error Upload Background Image!','Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.','error');</script>"; }
+          }else{ $_SESSION['error'] = 'Error Upload Background Image!'; 
+            echo "<script>window.location.href = 'project-add.php';</script>";}
+      }else{ $_SESSION['error'] = 'Only JPG, JPEG & PNG files are Allowed to Upload!'; 
+        echo "<script>window.location.href = 'project-add.php';</script>";}
   }
 
   $create_qry = "INSERT INTO `compony_job_request`(`company_id`, `title`, `subtitle`, `description`, `salary`, `currency`, `gender`, `type`, `subject`, `job_image`, `job_background_image`, `status`, `created_at`) VALUES 
@@ -58,8 +72,10 @@ if(isset($_POST['job_submit'])){
   'pending',
   '$Date')";
   if (mysqli_query($conn, $create_qry)) {
-    echo "<script>Swal.fire('Create Job Request Success!','Your information already create...','success');</script>";
-  } else { echo "<script>Swal.fire('Create Job Request Error!','Your information create failed...','error');</script>"; }
+    $_SESSION['success'] = 'Create Job Request Success!';
+    echo "<script>window.location.href = 'project-list.php';</script>";
+  } else { $_SESSION['error'] = 'Create Job Request Error!'; 
+    echo "<script>window.location.href = 'project-add.php';</script>";}
 }
 ?>
   <!-- Content -->
@@ -71,10 +87,10 @@ if(isset($_POST['job_submit'])){
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-no-gutter">
               <li class="breadcrumb-item"><a class="breadcrumb-link" href="./ecommerce-products.html">Jobs</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Add Request Jobs</li>
+              <li class="breadcrumb-item active" aria-current="page">Add Job Request</li>
             </ol>
           </nav>
-          <h1 class="page-header-title">Add New Job Request</h1>
+          <h1 class="page-header-title">Add Job Request</h1>
         </div>
       </div>
     </div>
@@ -112,14 +128,12 @@ if(isset($_POST['job_submit'])){
             <!-- Avatar -->
             <label class="avatar avatar-xxl avatar-circle avatar-border-lg avatar-uploader profile-cover-avatar" for="avatarUploader">
               <img id="avatarImg" class="avatar-img" src="../assets/img/160x160/img2.jpg" alt="Image Description">
-
               <input type="file" name="job_image" class="js-file-attach avatar-uploader-input" id="avatarUploader" data-hs-file-attach-options='{
                           "textTarget": "#avatarImg",
                           "mode": "image",
                           "targetAttr": "src",
                           "allowTypes": [".png", ".jpeg", ".jpg"]
                        }'>
-
               <span class="avatar-uploader-trigger">
                 <i class="tio-edit avatar-uploader-icon shadow-soft"></i>
               </span>
@@ -137,7 +151,6 @@ if(isset($_POST['job_submit'])){
               <!-- Form Group -->
               <div class="form-group">
                 <label for="Title" class="input-label">Title <i class="tio-help-outlined text-body ml-1" data-toggle="tooltip" data-placement="top" title="This is your main title."></i></label>
-
                 <input type="text" class="form-control" name="title" id="title" placeholder="Title" aria-label="Title" value="" required>
               </div>
               <!-- End Form Group -->
@@ -145,13 +158,10 @@ if(isset($_POST['job_submit'])){
               <!-- Form Group -->
               <div class="form-group">
                 <label for="subTitle" class="input-label">Sub Title <i class="tio-help-outlined text-body ml-1" data-toggle="tooltip" data-placement="top" title="This is your sub title."></i></label>
-
                 <input type="text" class="form-control" name="subtitle" id="subtitle" placeholder="Sub Title" aria-label="Sub Title" value="" required>
               </div>
               <!-- End Form Group -->
-
               <label class="input-label">Description <span class="input-label-secondary">(Optional)</span></label>
-
               <!-- Quill -->
               <textarea id="description" name="description" class="form-control" placeholder="Description field" rows="4" required></textarea>
               <!-- End Quill -->
@@ -166,7 +176,7 @@ if(isset($_POST['job_submit'])){
           <div class="card">
             <!-- Header -->
             <div class="card-header">
-              <h4 class="card-header-title">Filter Informtaion</h4>
+              <h4 class="card-header-title">More Informtaion</h4>
             </div>
             <!-- End Header -->
 
@@ -177,7 +187,6 @@ if(isset($_POST['job_submit'])){
 
                 <div class="input-group">
                   <input type="text" class="form-control" name="salary" id="salary" placeholder="0.00" aria-label="0.00" value="" required>
-
                   <div class="input-group-append">
                     <!-- Select -->
                     <div id="priceCurrencySelect" class="select2-custom select2-custom-right">
@@ -186,8 +195,8 @@ if(isset($_POST['job_submit'])){
                                   "dropdownAutoWidth": true,
                                   "width": true
                                 }'>
-                        <option value="USD" selected>USD</option>
-                        <option value="MYR">MYR</option>
+                        <option value="USD">USD</option>
+                        <option value="MYR" selected>MYR</option>
                         <option value="SGD">SGD</option>
                       </select>
                     </div>
@@ -195,7 +204,6 @@ if(isset($_POST['job_submit'])){
                   </div>
                 </div>
               </div>
-
               <!-- Form Group -->
               <div class="form-group">
                 <label for="categoryLabel" class="input-label">Gender</label>
@@ -216,16 +224,16 @@ if(isset($_POST['job_submit'])){
 
               <!-- Form Group -->
               <div class="form-group">
-                <label for="typeLabel" class="input-label">Type</label>
+                <label for="typeLabel" class="input-label">Work Type</label>
 
                 <!-- Select -->
                 <select name="type" class="js-select2-custom custom-select" size="1" style="opacity: 0;" id="typeLabel" data-hs-select2-options='{
                             "minimumResultsForSearch": "Infinity",
-                            "placeholder": "Select type"
+                            "placeholder": "Select Work Type"
                           }' required>
                   <option label="empty"></option>
-                  <option value="Intern">Intern</option>
-                  <option value="FullTime" selected>FullTime</option>
+                  <option value="InternShip" selected>InternShip</option>
+                  <option value="FullTime">FullTime</option>
                   <option value="PathTime">PathTime</option>
                 </select>
                 <!-- End Select -->
@@ -234,25 +242,22 @@ if(isset($_POST['job_submit'])){
 
               <!-- Form Group -->
               <div class="form-group">
-                <label for="collectionsLabel" class="input-label">Main Subject</label>
-
+                <label for="collectionsLabel" class="input-label">Request Course</label>
                 <!-- Select -->
                 <select name="subject" class="js-select2-custom custom-select" size="1" style="opacity: 0;" id="collectionsLabel" data-hs-select2-options='{
                             "minimumResultsForSearch": "Infinity",
-                            "placeholder": "Select main subject"
+                            "placeholder": "Select Request Course"
                           }' required>
                   <option label="empty" selected></option>
-                  <option value="Software_Developer">Software Developer</option>
+                  <option value="Accounting">Accounting</option>
                   <option value="Multimedia">Multimedia</option>
-                  <option value="Account">Account</option>
-                  <option value="Hardware_Engineer">Hardware Engineer</option>
+                  <option value="Programming">Programming</option>
+                  <option value="Eletronic">Eletronic</option>
+                  <option value="Networking">Networking</option>
                 </select>
                 <!-- End Select -->
-
-                <!-- <span class="form-text">Add this product to a collection so it’s easy to find in your store.</span> -->
               </div>
               <!-- Form Group -->
-
             </div>
             <!-- Body -->
           </div>
@@ -268,11 +273,11 @@ if(isset($_POST['job_submit'])){
             <div class="row justify-content-center justify-content-sm-between">
               <div class="col">
                 <!-- <button type="button" class="btn btn-ghost-danger">Delete</button> -->
-                <a href="project-list.php" class="btn btn-ghost-light mr-2">Discard</a>
+                <a href="project-list.php" class="btn btn-ghost-light mr-2">Cancel</a>
               </div>
               <div class="col-auto">
                 <!-- <button type="button" class="btn btn-ghost-light mr-2">Discard</button> -->
-                <button type="submit" name="job_submit" class="btn btn-primary">Add Job Request</button>
+                <button type="submit" name="job_submit" class="btn btn-primary">Add Request</button>
               </div>
             </div>
             <!-- End Row -->
@@ -280,55 +285,17 @@ if(isset($_POST['job_submit'])){
         </div>
         <!-- End Card -->
       </div>
-
     </form>
   </div>
   <!-- End Content -->
 
   <!-- Footer -->
-
   <div class="footer">
     <div class="row justify-content-between align-items-center">
       <div class="col">
-        <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
-      </div>
-      <div class="col-auto">
-        <div class="d-flex justify-content-end">
-          <!-- List Dot -->
-          <ul class="list-inline list-separator">
-            <li class="list-inline-item">
-              <a class="list-separator-link" href="#">FAQ</a>
-            </li>
-
-            <li class="list-inline-item">
-              <a class="list-separator-link" href="#">License</a>
-            </li>
-
-            <li class="list-inline-item">
-              <!-- Keyboard Shortcuts Toggle -->
-              <div class="hs-unfold">
-                <a class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle" href="javascript:;" data-hs-unfold-options='{
-                              "target": "#keyboardShortcutsSidebar",
-                              "type": "css-animation",
-                              "animationIn": "fadeInRight",
-                              "animationOut": "fadeOutRight",
-                              "hasOverlay": true,
-                              "smartPositionOff": true
-                             }'>
-                  <i class="tio-command-key"></i>
-                </a>
-              </div>
-              <!-- End Keyboard Shortcuts Toggle -->
-            </li>
-          </ul>
-          <!-- End List Dot -->
-        </div>
       </div>
     </div>
   </div>
-
-
-
   <!-- End Footer -->
 </main>
 <!-- ========== END MAIN CONTENT ========== -->

@@ -2,7 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if(session_destroy()){
-    echo "<script>window.location.href='../index.php';</script>";
-}
+session_destroy();
+session_start();
+$_SESSION['destroy'] = 'Log Out Success!';
+echo "<script>window.location.href='../index.php';</script>";
 ?>

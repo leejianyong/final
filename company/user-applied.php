@@ -1,313 +1,289 @@
 <?php
 require('./navbar.php');
-
 ?>
-<main id="content" role="main" class="main">
-      <!-- Content -->
-      <div class="content container-fluid">
-        <!-- Page Header -->
-        <div class="page-header">
-          <div class="row align-items-end">
-            <div class="col-sm mb-2 mb-sm-0">
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb breadcrumb-no-gutter">
-                  <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Pages</a></li>
-                  <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Company</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">User Applied</li>
-                </ol>
-              </nav>
+  <link rel="stylesheet" href="../assets/js/sweetalert2.all.min.js">
+  <script src="../assets/js/sweetalert2.all.min.js"></script>
+<?php
+if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
+  echo "<script>Swal.fire('$_SESSION[error]','$_SESSION[error]','error');</script>";
+  unset($_SESSION['error']);
+}
+if(isset($_SESSION['success']) && !empty($_SESSION['success'])){
+  echo "<script>Swal.fire('$_SESSION[success]','$_SESSION[success]','success');</script>";
+  unset($_SESSION['success']);
+}
+?>
+  <main id="content" role="main" class="main">
+    <!-- Content -->
+    <div class="content container-fluid">
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="row align-items-end">
+          <div class="col-sm mb-2 mb-sm-0">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb breadcrumb-no-gutter">
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Pages</a></li>
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:;">Company</a></li>
+                <li class="breadcrumb-item active" aria-current="page">User Applied</li>
+              </ol>
+            </nav>
+            <h1 class="page-header-title">User Applied Page</h1>
+          </div>
+        </div>
+        <!-- End Row -->
+      </div>
+      <!-- End Page Header -->
 
-              <h1 class="page-header-title">User Applied Page</h1>
+      <!-- Card -->
+      <div class="card border border-warning">
+        <?php 
+        $company_qry = "SELECT applied_job.*,compony_job_request.*,compony_job_request.id as job_id,user.*,applied_job.user_id as userid,applied_job.created_at as request_date,compony_job_request.created_at as job_date,jobseeker_detail.*,jobseeker_detail.resume as user_resume FROM applied_job LEFT JOIN compony_job_request ON applied_job.job_id = compony_job_request.id LEFT JOIN user ON applied_job.user_id = user.id LEFT JOIN jobseeker_detail ON applied_job.user_id = jobseeker_detail.user_id WHERE compony_job_request.company_id = '$_SESSION[userid]'";
+        $company_sql = mysqli_query($conn,$company_qry);
+        ?>
+        <!-- Header -->
+        <div class="card-header">
+          <div class="row justify-content-between align-items-center flex-grow-1">
+            <div class="col-sm-6 col-md-4 mb-3 mb-sm-0">
+              <form>
+                <!-- Search -->
+                <div class="input-group input-group-merge input-group-flush">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="tio-search"></i>
+                    </div>
+                  </div>
+                  <input id="datatableSearch" type="search" class="form-control" placeholder="Search users" aria-label="Search users">
+                </div>
+                <!-- End Search -->
+              </form>
             </div>
 
-            <!-- <div class="col-sm-auto">
-              <a class="btn btn-primary" href="users-add-user.html">
-                <i class="tio-user-add mr-1"></i> Add user
-              </a>
-            </div> -->
-          </div>
-          <!-- End Row -->
-        </div>
-        <!-- End Page Header -->
+            <div class="col-sm-6">
+              <div class="d-sm-flex justify-content-sm-end align-items-sm-center">
+                <!-- Unfold -->
+                <div class="hs-unfold">
+                  <a class="js-hs-unfold-invoker btn btn-sm btn-white" href="javascript:;"
+                      data-hs-unfold-options='{
+                        "target": "#usersFilterDropdown",
+                        "type": "css-animation",
+                        "smartPositionOff": true
+                      }'>
+                    <i class="tio-filter-list mr-1"></i> Filter
+                  </a>
 
-        <!-- Card -->
-        <div class="card">
-          <?php 
-          $company_qry = "SELECT applied_job.*,compony_job_request.*,user.*,applied_job.user_id as userid,applied_job.created_at as request_date,compony_job_request.created_at as job_date,jobseeker_detail.*,jobseeker_detail.resume as user_resume FROM applied_job LEFT JOIN compony_job_request ON applied_job.job_id = compony_job_request.id LEFT JOIN user ON applied_job.user_id = user.id LEFT JOIN jobseeker_detail ON applied_job.user_id = jobseeker_detail.user_id WHERE compony_job_request.company_id = '$_SESSION[userid]'";
-          $company_sql = mysqli_query($conn,$company_qry);
-          ?>
-          <!-- Header -->
-          <div class="card-header">
-            <div class="row justify-content-between align-items-center flex-grow-1">
-              <div class="col-sm-6 col-md-4 mb-3 mb-sm-0">
-                <form>
-                  <!-- Search -->
-                  <div class="input-group input-group-merge input-group-flush">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <i class="tio-search"></i>
+                  <div id="usersFilterDropdown" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-sm-right dropdown-card card-dropdown-filter-centered" style="min-width: 22rem;">
+                    <!-- Card -->
+                    <div class="card">
+                      <div class="card-header">
+                        <h5 class="card-header-title">Filter Job</h5>
+
+                        <!-- Toggle Button -->
+                        <a class="js-hs-unfold-invoker btn btn-icon btn-xs btn-ghost-secondary ml-2" href="javascript:;"
+                            data-hs-unfold-options='{
+                            "target": "#usersFilterDropdown",
+                            "type": "css-animation",
+                            "smartPositionOff": true
+                            }'>
+                          <i class="tio-clear tio-lg"></i>
+                        </a>
+                        <!-- End Toggle Button -->
                       </div>
-                    </div>
-                    <input id="datatableSearch" type="search" class="form-control" placeholder="Search users" aria-label="Search users">
-                  </div>
-                  <!-- End Search -->
-                </form>
-              </div>
 
-              <div class="col-sm-6">
-                <div class="d-sm-flex justify-content-sm-end align-items-sm-center">
-                  <!-- Datatable Info -->
-                  <div id="datatableCounterInfo" class="mr-2 mb-2 mb-sm-0" style="display: none;">
-                    <div class="d-flex align-items-center">
-                      <span class="font-size-sm mr-3">
-                        <span id="datatableCounter">0</span>
-                        Selected
-                      </span>
-                      <a class="btn btn-sm btn-outline-danger" href="javascript:;">
-                        <i class="tio-delete-outlined"></i> Delete
-                      </a>
-                    </div>
-                  </div>
-                  <!-- End Datatable Info -->
+                      <div class="card-body">
+                        <form>
+                          <div class="form-row">
+                            <div class="col-sm form-group">
+                              <small class="text-cap mb-2">Status</small>
 
-                  <!-- Unfold -->
-                  <div class="hs-unfold">
-                    <a class="js-hs-unfold-invoker btn btn-sm btn-white" href="javascript:;"
-                       data-hs-unfold-options='{
-                         "target": "#usersFilterDropdown",
-                         "type": "css-animation",
-                         "smartPositionOff": true
-                       }'>
-                      <i class="tio-filter-list mr-1"></i> Filter <span class="badge badge-soft-dark rounded-circle ml-1">2</span>
-                    </a>
+                              <!-- Select -->
+                              <select class="js-select2-custom js-datatable-filter custom-select" size="1" style="opacity: 0;"
+                                      data-target-column-index="4"
+                                      data-hs-select2-options='{
+                                        "minimumResultsForSearch": "Infinity"
+                                      }'>
+                                <option value="">Any status</option>
+                                <option value="Active" data-option-template='<span class="legend-indicator bg-success"></span>Active'>Active</option>
+                                <option value="Pending" data-option-template='<span class="legend-indicator bg-warning"></span>Pending'>Pending</option>
+                                <option value="Suspended" data-option-template='<span class="legend-indicator bg-danger"></span>Suspended'>Suspended</option>
+                              </select>
+                              <!-- End Select -->
+                            </div>
+                          </div>
+                          <!-- End Row -->
 
-                    <div id="usersFilterDropdown" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-sm-right dropdown-card card-dropdown-filter-centered" style="min-width: 22rem;">
-                      <!-- Card -->
-                      <div class="card">
-                        <div class="card-header">
-                          <h5 class="card-header-title">Filter users</h5>
-
-                          <!-- Toggle Button -->
-                          <a class="js-hs-unfold-invoker btn btn-icon btn-xs btn-ghost-secondary ml-2" href="javascript:;"
-                             data-hs-unfold-options='{
+                          <a class="js-hs-unfold-invoker btn btn-block btn-primary" href="javascript:;"
+                              data-hs-unfold-options='{
                               "target": "#usersFilterDropdown",
                               "type": "css-animation",
                               "smartPositionOff": true
-                             }'>
-                            <i class="tio-clear tio-lg"></i>
-                          </a>
-                          <!-- End Toggle Button -->
-                        </div>
-
-                        <div class="card-body">
-                          <form>
-                            <div class="form-row">
-                              <div class="col-sm form-group">
-                                <small class="text-cap mb-2">Status</small>
-
-                                <!-- Select -->
-                                <select class="js-select2-custom js-datatable-filter custom-select" size="1" style="opacity: 0;"
-                                        data-target-column-index="4"
-                                        data-hs-select2-options='{
-                                          "minimumResultsForSearch": "Infinity"
-                                        }'>
-                                  <option value="">Any status</option>
-                                  <option value="Active" data-option-template='<span class="legend-indicator bg-success"></span>Active'>Active</option>
-                                  <option value="Pending" data-option-template='<span class="legend-indicator bg-warning"></span>Pending'>Pending</option>
-                                  <option value="Suspended" data-option-template='<span class="legend-indicator bg-danger"></span>Suspended'>Suspended</option>
-                                </select>
-                                <!-- End Select -->
-                              </div>
-                            </div>
-                            <!-- End Row -->
-
-                            <a class="js-hs-unfold-invoker btn btn-block btn-primary" href="javascript:;"
-                               data-hs-unfold-options='{
-                                "target": "#usersFilterDropdown",
-                                "type": "css-animation",
-                                "smartPositionOff": true
-                               }'>Apply</a>
-                          </form>
-                        </div>
+                              }'>Apply</a>
+                        </form>
                       </div>
-                      <!-- End Card -->
                     </div>
+                    <!-- End Card -->
                   </div>
-                  <!-- End Unfold -->
                 </div>
+                <!-- End Unfold -->
               </div>
             </div>
-            <!-- End Row -->
           </div>
-          <!-- End Header -->
-
-          <!-- Table -->
-          <div class="table-responsive datatable-custom">
-            <table id="datatable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
-                   data-hs-datatables-options='{
-                     "columnDefs": [{
-                        "targets": [0, 7],
-                        "orderable": false
-                      }],
-                     "order": [],
-                     "info": {
-                       "totalQty": "#datatableWithPaginationInfoTotalQty"
-                     },
-                     "search": "#datatableSearch",
-                     "entries": "#datatableEntries",
-                     "pageLength": 15,
-                     "isResponsive": false,
-                     "isShowPaging": false,
-                     "pagination": "datatablePagination"
-                   }'>
-              <thead class="thead-light">
-                <tr>
-                  <th class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input id="datatableCheckAll" type="checkbox" class="custom-control-input">
-                      <label class="custom-control-label" for="datatableCheckAll"></label>
-                    </div>
-                  </th>
-                  <th class="table-column-pl-0">Job</th>
-                  <th>User</th>
-                  <th>Salary</th>
-                  <th>Resume</th>
-                  <th>Request Job Date</th>
-                  <th>Create Job Date</th>
-                  <th></th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <?php while($company_array = mysqli_fetch_array($company_sql)){ ?>
-                <tr>
-                  <td class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="usersDataCheck1">
-                      <label class="custom-control-label" for="usersDataCheck1"></label>
-                    </div>
-                  </td>
-                  <td class="table-column-pl-0">
-                    <a class="d-flex align-items-center" href="./user-profile.html">
-                      <div class="avatar avatar-circle">
-                        <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['job_image'])?'/image/'.$company_array['job_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
-                      </div>
-                      <div class="ml-3">
-                        <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['title']; ?></span>
-                        <span class="d-block font-size-sm text-body"><?= $company_array['subtitle']; ?></span>
-                      </div>
-                    </a>
-                  </td>
-                  <td class="table-column-pl-0">
-                  <a class="d-flex align-items-center" href="./user-profile.html">
-                      <div class="ml-3">
-                        <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['username']; ?></span>
-                        <span class="d-block font-size-sm text-body"><?= $company_array['email']; ?></span>
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <?php if(!empty($company_array['user_resume'])){ ?>
-                    <!-- List Item -->
-                    <li class="list-group-item">
-                      <div class="row align-items-center gx-2">
-                        <div class="col-auto">
-                          <img class="avatar avatar-xs avatar-4by3" src="../assets/svg/brands/pdf.svg" alt="Image Description">
-                        </div>
-                        <div class="col">
-                          <h5 class="mb-0">
-                            <a class="text-dark" href="download-file.php?detail=<?= $company_array['user_resume']; ?>"><?= $company_array['user_resume']; ?></a>
-                          </h5>
-                        </div>
-                      </div>
-                      <!-- End Row -->
-                    </li>
-                    <!-- End List Item -->
-                    <?php } ?>
-                  <td>
-                    <?php if($company_array['status']=="active"){ ?>
-                      <span class="legend-indicator bg-success"></span>Active
-                    <?php }elseif($company_array['status']=="pending"){ ?>
-                      <span class="legend-indicator bg-warning"></span>Pending
-                    <?php }elseif($company_array['status']=="drop"){ ?>
-                      <span class="legend-indicator bg-danger"></span>Suspended
-                    <?php }else{ ?>
-                      <span class="legend-indicator bg-second"></span>BlackList
-                    <?php } ?>
-                  </td>
-                  <td><?= $company_array['request_date']; ?></td>
-                  <td><?= $company_array['job_date']; ?></td>
-                  <td>
-                      <div class="btn-group" role="group">
-                        <a class="btn btn-sm btn-white" href="./user-detail.php?user=<?= $company_array['userid']; ?>">
-                          <i class="tio-user"></i> View Detail
-                        </a>
-                      </div>
-                    </td>
-                  </td>
-                </tr>
-                <?php } ?>
-              </tbody>
-            </table>
-          </div>
-          <!-- End Table -->
-
-          <!-- Footer -->
-          <div class="card-footer">
-            <!-- Pagination -->
-            <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
-              <div class="col-sm mb-2 mb-sm-0">
-                <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
-                  <span class="mr-2">Showing:</span>
-
-                  <!-- Select -->
-                  <select id="datatableEntries" class="js-select2-custom"
-                          data-hs-select2-options='{
-                            "minimumResultsForSearch": "Infinity",
-                            "customClass": "custom-select custom-select-sm custom-select-borderless",
-                            "dropdownAutoWidth": true,
-                            "width": true
-                          }'>
-                    <option value="10">10</option>
-                    <option value="15" selected>15</option>
-                    <option value="20">20</option>
-                  </select>
-                  <!-- End Select -->
-
-                  <span class="text-secondary mr-2">of</span>
-
-                  <!-- Pagination Quantity -->
-                  <span id="datatableWithPaginationInfoTotalQty"></span>
-                </div>
-              </div>
-
-              <div class="col-sm-auto">
-                <div class="d-flex justify-content-center justify-content-sm-end">
-                  <!-- Pagination -->
-                  <nav id="datatablePagination" aria-label="Activity pagination"></nav>
-                </div>
-              </div>
-            </div>
-            <!-- End Pagination -->
-          </div>
-          <!-- End Footer -->
+          <!-- End Row -->
         </div>
-        <!-- End Card -->
+        <!-- End Header -->
+
+        <!-- Table -->
+        <div class="table-responsive datatable-custom">
+          <table id="datatable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
+                  data-hs-datatables-options='{
+                    "columnDefs": [{
+                      "targets": [0, 7],
+                      "orderable": false
+                    }],
+                    "order": [],
+                    "info": {
+                      "totalQty": "#datatableWithPaginationInfoTotalQty"
+                    },
+                    "search": "#datatableSearch",
+                    "entries": "#datatableEntries",
+                    "pageLength": 15,
+                    "isResponsive": false,
+                    "isShowPaging": false,
+                    "pagination": "datatablePagination"
+                  }'>
+            <thead class="thead-light">
+              <tr>
+                <th></th>
+                <th>Job</th>
+                <th>User</th>
+                <th>Resume</th>
+                <th>Status</th>
+                <th>User Request Date</th>
+                <th>Job Create Date</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php while($company_array = mysqli_fetch_array($company_sql)){ ?>
+              <tr>
+                <td></td>
+                <td>
+                  <a class="d-flex align-items-center" href="./project-detail.php?detail=<?= $company_array['job_id']; ?>">
+                      <img class="avatar avatar-lg mr-3" src="<?= $assets; ?><?= ($company_array['job_image'])?'/image/'.$company_array['job_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
+                    <div class="media-body">
+                    <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['title']; ?></span>
+                      <span class="d-block font-size-sm text-body"><?= $company_array['subtitle']; ?></span>
+                    </div>
+                  </a>
+                </td>
+                <td class="table-column-pl-0">
+                <a class="d-flex align-items-center" href="#">
+                    <div class="ml-3">
+                      <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['username']; ?></span>
+                      <span class="d-block font-size-sm text-body"><?= $company_array['email']; ?></span>
+                    </div>
+                  </a>
+                </td>
+                <td>
+                  <?php if(!empty($company_array['user_resume'])){ ?>
+                  <!-- List Item -->
+                  <li class="list-group-item">
+                    <div class="row align-items-center gx-2">
+                      <div class="col-auto">
+                        <img class="avatar avatar-xs avatar-4by3" src="../assets/svg/brands/pdf.svg" alt="Image Description">
+                      </div>
+                      <div class="col">
+                        <h5 class="mb-0">
+                          <a class="text-dark" href="download-file.php?detail=<?= $company_array['user_resume']; ?>"><?= $company_array['user_resume']; ?></a>
+                        </h5>
+                      </div>
+                    </div>
+                    <!-- End Row -->
+                  </li>
+                  <!-- End List Item -->
+                  <?php } ?>
+                <td>
+                  <?php if($company_array['status']=="active"){ ?>
+                    <span class="legend-indicator bg-success"></span>Active
+                  <?php }elseif($company_array['status']=="pending"){ ?>
+                    <span class="legend-indicator bg-warning"></span>Pending
+                  <?php }elseif($company_array['status']=="drop"){ ?>
+                    <span class="legend-indicator bg-danger"></span>Suspended
+                  <?php }else{ ?>
+                    <span class="legend-indicator bg-second"></span>BlackList
+                  <?php } ?>
+                </td>
+                <td><?= $company_array['request_date']; ?></td>
+                <td><?= $company_array['job_date']; ?></td>
+                <td>
+                    <div class="btn-group" role="group">
+                      <a class="btn btn-sm btn-white" href="./user-email.php?user=<?= $company_array['userid']; ?>">
+                        <i class="tio-email"></i> Email
+                      </a>
+                    </div>
+                  </td>
+                </td>
+              </tr>
+              <?php } ?>
+            </tbody>
+          </table>
+        </div>
+        <!-- End Table -->
+
+        <!-- Footer -->
+        <div class="card-footer">
+          <!-- Pagination -->
+          <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
+            <div class="col-sm mb-2 mb-sm-0">
+              <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
+                <span class="mr-2">Showing:</span>
+
+                <!-- Select -->
+                <select id="datatableEntries" class="js-select2-custom"
+                        data-hs-select2-options='{
+                          "minimumResultsForSearch": "Infinity",
+                          "customClass": "custom-select custom-select-sm custom-select-borderless",
+                          "dropdownAutoWidth": true,
+                          "width": true
+                        }'>
+                  <option value="10">10</option>
+                  <option value="15" selected>15</option>
+                  <option value="20">20</option>
+                </select>
+                <!-- End Select -->
+
+                <span class="text-secondary mr-2">of</span>
+
+                <!-- Pagination Quantity -->
+                <span id="datatableWithPaginationInfoTotalQty"></span>
+              </div>
+            </div>
+
+            <div class="col-sm-auto">
+              <div class="d-flex justify-content-center justify-content-sm-end">
+                <!-- Pagination -->
+                <nav id="datatablePagination" aria-label="Activity pagination"></nav>
+              </div>
+            </div>
+          </div>
+          <!-- End Pagination -->
+        </div>
+        <!-- End Footer -->
       </div>
-      <!-- End Content -->
+      <!-- End Card -->
+    </div>
+    <!-- End Content -->
 
-      <!-- Footer -->
-      
-        <div class="footer">
-          <div class="row justify-content-between align-items-center">
-            <div class="col">
-              <p class="font-size-sm mb-0">&copy; Company Job Request. <span class="d-none d-sm-inline-block">2021 Htmlstream.</span></p>
-            </div>
+    <!-- Footer -->
+    
+      <div class="footer">
+        <div class="row justify-content-between align-items-center">
+          <div class="col">
           </div>
         </div>
+      </div>
 
-      <!-- End Footer -->
-    </main>
+    <!-- End Footer -->
+  </main>
     <!-- ========== END MAIN CONTENT ========== -->
 
     <!-- ========== SECONDARY CONTENTS ========== -->

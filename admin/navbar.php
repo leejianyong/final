@@ -29,6 +29,27 @@
     <link rel="stylesheet" href="<?= $assets; ?>/assets/css/theme.min.css">
   </head>
 
+  <style>
+  .nav-subtitle{
+    color: white !important;
+  }
+  .active.nav-link {
+    border-left-color: white !important;
+  }
+  .navbar .nav-link:hover {
+    color: white !important;
+  }
+  .js-nav-tooltip-link.nav-link.active{
+    color:white !important;
+  }
+  .navbar{
+    background-color: lightcoral !important;
+  }
+  .close{
+    color:white !important;
+  }
+  </style>
+
   <body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl   footer-offset">
     
       <script src="<?= $assets; ?>/assets/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside-mini-cache.js"></script>
@@ -166,7 +187,7 @@
 
     <!-- Navbar Vertical -->
     
-      <aside class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered  ">
+      <aside class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered navbar-text">
         <div class="navbar-vertical-container">
           <div class="navbar-vertical-footer-offset">
             <div class="navbar-brand-wrapper justify-content-between">
@@ -189,15 +210,6 @@
             <!-- Content -->
             <div class="navbar-vertical-content">
               <ul class="navbar-nav navbar-nav-lg nav-tabs">
-                <!-- Dashboards -->
-                <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./index.php" title="Welcome page" data-placement="left">
-                  <i class="tio-home-vs-1-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Dashboard</span>
-                  </a>
-                </li>
-                
-                <!-- End Dashboards -->
 
                 <li class="nav-item">
                   <div class="nav-divider"></div>
@@ -210,7 +222,7 @@
                 </li>
 
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/company_list.php") ? "active" : ""; ?>" href="./company_list.php" title="Welcome page" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?><?= (@$request_url == $php_self."/profile-company.php") ? "active" : ""; ?><?= (@$request_url == $php_self."/profile-company-job.php") ? "active" : ""; ?>" href="./index.php" title="Welcome page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Company Page</span>
                   </a>
@@ -251,41 +263,16 @@
                 <li class="nav-item ">
                   <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/user_list.php") ? "active" : ""; ?>" href="./user_list.php" title="Welcome page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User Page</span>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Jobseeker Page</span>
                   </a>
                 </li>
 
                 <li class="nav-item ">
                   <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/user_applied_job_list.php") ? "active" : ""; ?>" href="./user_applied_job_list.php" title="Welcome page" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User Approve JobList</span>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Jobseeker Approve JobList</span>
                   </a>
                 </li>
-
-                <!-- End user -->
-
-                <!-- <li class="nav-item">
-                  <div class="nav-divider"></div>
-                </li>
-
-                <li class="nav-item">
-                  <small class="nav-subtitle" title="Pages">Group</small>
-                  <small class="tio-more-horizontal nav-subtitle-replacer"></small>
-                </li>
-
-                <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
-                  <i class="tio-pages-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Category</span>
-                  </a>
-                </li>
-
-                <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./welcome-page.html" title="Welcome page" data-placement="left">
-                  <i class="tio-pages-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Hr</span>
-                  </a>
-                </li> -->
 
                 <li class="nav-item">
                   <div class="nav-divider"></div>

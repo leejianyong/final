@@ -42,6 +42,16 @@
     <!-- ========== MAIN CONTENT ========== -->
     <main id="content" role="main" class="main pt-0">
     <?php
+      if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
+        echo "<script>Swal.fire('$_SESSION[error]','$_SESSION[error]','error');</script>";
+        unset($_SESSION['error']);
+      }
+      if(isset($_SESSION['success']) && !empty($_SESSION['success'])){
+        echo "<script>Swal.fire('$_SESSION[success]','$_SESSION[success]','success');</script>";
+        unset($_SESSION['success']);
+      }
+    ?>
+    <?php
     if (isset($_POST['submit'])) {
       $Date = date("Y-m-d H:i:s");
       $row = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM user WHERE email = '$_POST[email]'"));
@@ -57,7 +67,8 @@
           $qry_detail = "INSERT INTO `company_detail`(`company_id`, `company_name`, `created_at`) VALUES 
           ('$conn->insert_id','$_POST[company_name]','$Date')";
           $conn->query($qry_detail);
-          echo "<script>Swal.fire('Create Account Success!','Your account created...','success');</script>";
+          $_SESSION['success'] = 'Create Company Success!';
+          echo "<script>window.location.href='user-signin.php';</script>";
         }
       }
     } ?>
@@ -124,9 +135,8 @@
               <form class="js-validate" method="post" action="">
                 <div class="text-center mb-5">
                   <h1 class="display-4">Create your Company</h1>
-                  <p>Already have an account? <a href="authentication-signin-cover.html">Sign in here</a></p>
+                  <p>Already have an account? <a href="user-signin.php">Sign in here</a></p>
                 </div>
-
 
                 <div class="text-center mb-4">
                   <span class="divider text-muted">Register</span>
@@ -134,9 +144,9 @@
 
                 <!-- Form Group -->
                 <div class="js-form-message form-group">
-                  <label class="input-label" for="signupSrEmail">Company Name</label>
+                  <label class="input-label" for="company_name">Company Name</label>
 
-                  <input type="text" class="form-control form-control-lg" name="company_name" id="signupSrEmail" placeholder="Company Name" aria-label="Company Name" required data-msg="Please enter a valid company name.">
+                  <input type="text" class="form-control form-control-lg" name="company_name" id="company_name" placeholder="Company Name" aria-label="Company Name" required data-msg="Please enter a valid company name.">
                 </div>
                 <!-- End Form Group -->
 

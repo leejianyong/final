@@ -11,7 +11,7 @@ $job_row = mysqli_num_rows($job_sql);
         <div class="page-header">
           <div class="row align-items-center mb-3">
             <div class="col-sm mb-2 mb-sm-0">
-              <h1 class="page-header-title">Black Job List <span class="badge badge-soft-dark ml-2"><?= $job_row; ?></span></h1>
+              <h1 class="page-header-title">Job Black List<span class="badge badge-soft-dark ml-2"><?= $job_row; ?></span></h1>
 
               <!-- <div class="mt-2">
                 <a class="text-body mr-3" href="javascript:;" data-toggle="modal" data-target="#exportProductsModal">
@@ -58,7 +58,7 @@ $job_row = mysqli_num_rows($job_sql);
         <!-- End Row -->
   
         <!-- Card -->
-        <div class="card">
+        <div class="card border border-warning">
           <!-- Header -->
           <div class="card-header">
             <div class="row justify-content-between align-items-center flex-grow-1">
@@ -227,13 +227,8 @@ $job_row = mysqli_num_rows($job_sql);
                    }'>
               <thead class="thead-light">
                 <tr>
-                  <th scope="col" class="table-column-pr-0">
-                    <div class="custom-control custom-checkbox">
-                      <input id="datatableCheckAll" type="checkbox" class="custom-control-input">
-                      <label class="custom-control-label" for="datatableCheckAll"></label>
-                    </div>
-                  </th>
-                  <th class="table-column-pl-0">Job</th>
+                  <th></th>
+                  <th>Job</th>
                   <th>Type</th>
                   <th>Sub Title</th>
                   <th>Gender</th>
@@ -248,13 +243,8 @@ $job_row = mysqli_num_rows($job_sql);
               <tbody>
                 <?php while($job_result = mysqli_fetch_array($job_sql)){ ?>
                   <tr>
-                    <td class="table-column-pr-0">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="productsCheck1" name="check[<?= $job_result['id']; ?>]">
-                        <label class="custom-control-label" for="productsCheck1"></label>
-                      </div>
-                    </td>
-                    <td class="table-column-pl-0">
+                    <td></td>
+                    <td>
                       <a class="media align-items-center" href="./project-detail.php?detail=<?= $job_result['id']; ?>">
                         <img class="avatar avatar-lg mr-3" src="<?php if(!empty($job_result['job_image'])){ echo "../image/".$job_result['job_image'];}else{ echo "../assets/img/400x400/img2.jpg"; } ?>" alt="Image Description">
                         <div class="media-body">
@@ -300,9 +290,9 @@ $job_row = mysqli_num_rows($job_sql);
                               <i class="tio-delete-outlined dropdown-item-icon"></i> Delete
                             </a>
                             <?php if($job_result['status'] != 'drop'){ ?>
-                            <a class="dropdown-item" href="job-drop.php?id=<?= $job_result['id']; ?>">
+                            <!-- <a class="dropdown-item" href="job-drop.php?id=<?= $job_result['id']; ?>">
                               <i class="tio-archive dropdown-item-icon"></i> Drop
-                            </a>
+                            </a> -->
                             <?php } ?>
                           </div>
                         </div>
@@ -362,50 +352,12 @@ $job_row = mysqli_num_rows($job_sql);
       <!-- End Content -->
 
       <!-- Footer -->
-      
         <div class="footer">
           <div class="row justify-content-between align-items-center">
             <div class="col">
-              <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
-            </div>
-            <div class="col-auto">
-              <div class="d-flex justify-content-end">
-                <!-- List Dot -->
-                <ul class="list-inline list-separator">
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">FAQ</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <a class="list-separator-link" href="#">License</a>
-                  </li>
-
-                  <li class="list-inline-item">
-                    <!-- Keyboard Shortcuts Toggle -->
-                    <div class="hs-unfold">
-                      <a class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle" href="javascript:;"
-                         data-hs-unfold-options='{
-                              "target": "#keyboardShortcutsSidebar",
-                              "type": "css-animation",
-                              "animationIn": "fadeInRight",
-                              "animationOut": "fadeOutRight",
-                              "hasOverlay": true,
-                              "smartPositionOff": true
-                             }'>
-                        <i class="tio-command-key"></i>
-                      </a>
-                    </div>
-                    <!-- End Keyboard Shortcuts Toggle -->
-                  </li>
-                </ul>
-                <!-- End List Dot -->
-              </div>
             </div>
           </div>
         </div>
-      
-
-      
       <!-- End Footer -->
     </main>
     <!-- ========== END MAIN CONTENT ========== -->

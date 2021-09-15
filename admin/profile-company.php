@@ -47,7 +47,6 @@ $company_array = mysqli_fetch_array($company_sql);
                             <span><?= $company_array['username']; ?></span>
                         </li>
 
-
                         <li class="list-inline-item">
                             <i class="tio-date-range mr-1"></i>
                             <span><?= $company_array['created_at']; ?></span>
@@ -97,9 +96,9 @@ $company_array = mysqli_fetch_array($company_sql);
                                         <a class="dropdown-item" href="company-blacklist.php?company=<?=$company_array['userid'];?>">
                                             <i class="tio-blocked dropdown-item-icon"></i> BlackList
                                         </a>
-                                        <a class="dropdown-item" href="company-drop.php?company=<?=$company_array['userid'];?>">
+                                        <!-- <a class="dropdown-item" href="company-drop.php?company=<?=$company_array['userid'];?>">
                                             <i class="tio-info-outined dropdown-item-icon"></i> Drop
-                                        </a>
+                                        </a> -->
                                     <?php } elseif ($company_array['status'] == 'pending') { ?>
                                         <a class="dropdown-item" href="company-approve.php?company=<?=$company_array['userid'];?>">
                                             <i class="tio-share dropdown-item-icon"></i> Approve
@@ -107,9 +106,9 @@ $company_array = mysqli_fetch_array($company_sql);
                                         <a class="dropdown-item" href="company-blacklist.php?company=<?=$company_array['userid'];?>">
                                             <i class="tio-blocked dropdown-item-icon"></i> BlackList
                                         </a>
-                                        <a class="dropdown-item" href="company-drop.php?company=<?=$company_array['userid'];?>">
+                                        <!-- <a class="dropdown-item" href="company-drop.php?company=<?=$company_array['userid'];?>">
                                             <i class="tio-info-outined dropdown-item-icon"></i> Drop
-                                        </a>
+                                        </a> -->
                                     <?php } elseif ($company_array['status'] == 'drop') { ?>
                                         <a class="dropdown-item" href="company-approve.php?company=<?=$company_array['userid'];?>">
                                             <i class="tio-share dropdown-item-icon"></i> Approve
@@ -161,15 +160,15 @@ $company_array = mysqli_fetch_array($company_sql);
                                     </li>
                                     <li>
                                         <i class="tio-user-outlined nav-icon"></i>
-                                        <?= $company_array['firstname']; ?> <?= $company_array['lastname']; ?>
-                                    </li>
-                                    <li>
-                                        <i class="tio-briefcase-outlined nav-icon"></i>
-                                        <?= $company_array['country']; ?>
+                                        <?= $company_array['username']; ?>
                                     </li>
                                     <li>
                                         <i class="tio-city nav-icon"></i>
-                                        <?= $company_array['username']; ?>
+                                        <?= $company_array['country']; ?>
+                                    </li>
+                                    <li>
+                                        <i class="tio-briefcase-outlined nav-icon"></i>
+                                        <?= $company_array['organization']; ?>
                                     </li>
 
                                     <li class="pt-2 pb-0">
@@ -306,7 +305,6 @@ $company_array = mysqli_fetch_array($company_sql);
     <div class="footer">
         <div class="row justify-content-between align-items-center">
             <div class="col">
-                <p class="font-size-sm mb-0">&copy; Front. <span class="d-none d-sm-inline-block">2020 Htmlstream.</span></p>
             </div>
         </div>
     </div>

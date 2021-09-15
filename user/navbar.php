@@ -35,7 +35,26 @@
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="<?= $assets; ?>/assets/css/theme.min.css">
   </head>
-
+  <style>
+  .nav-subtitle{
+    color: white !important;
+  }
+  .active.nav-link {
+    border-left-color: white !important;
+  }
+  .navbar .nav-link:hover {
+    color: white !important;
+  }
+  .js-nav-tooltip-link.nav-link.active{
+    color:white !important;
+  }
+  .navbar{
+    background-color: lightskyblue !important;
+  }
+  .close{
+    color:white !important;
+  }
+  </style>
   <body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl footer-offset">
     
     <script src="<?= $assets; ?>/assets/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside-mini-cache.js"></script>
@@ -116,12 +135,6 @@
                       <span class="text-truncate pr-2" title="Profile &amp; account">Profile &amp; account</span>
                     </a>
 
-                    <!-- <a class="dropdown-item" href="#">
-                      <span class="text-truncate pr-2" title="Settings">Settings</span>
-                    </a> -->
-
-                    <div class="dropdown-divider"></div>
-
                     <a class="dropdown-item" href="sign-out.php">
                       <span class="text-truncate pr-2" title="Sign out">Sign out</span>
                     </a>
@@ -166,7 +179,7 @@
               <ul class="navbar-nav navbar-nav-lg nav-tabs">
                 <!-- Company -->
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?>" href="./index.php" title="Company page" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/index.php") ? "active" : ""; ?><?= (@$request_url == $php_self."/profile-company-job.php") ? "active" : ""; ?><?= (@$request_url == $php_self."/profile-company.php") ? "active" : ""; ?>" href="./index.php" title="Company page" data-placement="left">
                   <i class="tio-home-vs-1-outlined nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Company List</span>
                   </a>
@@ -176,7 +189,7 @@
                 <!-- Job List -->
                 <li class="nav-item ">
                   <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/job-list.php") ? "active" : ""; ?>" href="./job-list.php" title="Job page" data-placement="left">
-                  <i class="tio-home-vs-1-outlined nav-icon"></i>
+                  <i class="tio-pages-outlined nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Job List</span>
                   </a>
                 </li>
@@ -193,32 +206,40 @@
                 </li>
 
                 <li class="nav-item ">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/account-setting.php") ? "active" : ""; ?>" href="./account-setting.php" title="Account Setting" data-placement="left">
+                  <i class="tio-user-outlined nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Account Setting Page</span>
+                  </a>
+                </li>
+
+                <li class="nav-item ">
                   <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/account-job-apply.php") ? "active" : ""; ?>" href="./account-job-apply.php" title="Account Job Apply" data-placement="left">
                   <i class="tio-pages-outlined nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Job Apply Page</span>
                   </a>
                 </li>
 
-                <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/account-setting.php") ? "active" : ""; ?>" href="./account-setting.php" title="Account Setting" data-placement="left">
-                  <i class="tio-pages-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Account Setting Page</span>
-                  </a>
+                <li class="nav-item">
+                  <div class="nav-divider"></div>
                 </li>
 
-                <!-- <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."/account-review.php") ? "active" : ""; ?>" href="./account-review.php" title="Account Review" data-placement="left">
-                  <i class="tio-lock-outlined nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Rating Review Page</span>
-                  </a>
-                </li> -->
-                <!-- End user -->
+                <!-- Start Group -->
+                <li class="nav-item">
+                  <small class="nav-subtitle" title="Pages">About</small>
+                  <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                </li>
 
+                <li class="nav-item ">
+                  <a class="js-nav-tooltip-link nav-link <?= (@$request_url == $php_self."../index.php") ? "active" : ""; ?>" href="../index.php" title="Welcome page" data-placement="left">
+                  <i class="tio-pages-outlined nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">About Me</span>
+                  </a>
+                </li>
+                <!-- End Group -->
               </ul>
             </div>
             <!-- End Content -->
           </div>
         </div>
       </aside>
-    
     <!-- End Navbar Vertical -->

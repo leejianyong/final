@@ -25,12 +25,20 @@
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="./assets/css/theme.min.css">
     <link rel="stylesheet" href="./assets/js/sweetalert2.all.min.js">
-
+    <script src="./assets/js/sweetalert2.all.min.js"></script>
   </head>
 
     <body>
-      <script src="./assets/js/sweetalert2.all.min.js"></script>
-
+      <?php
+        if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
+          echo "<script>Swal.fire('$_SESSION[error]','$_SESSION[error]','error');</script>";
+          unset($_SESSION['error']);
+        }
+        if(isset($_SESSION['success']) && !empty($_SESSION['success'])){
+          echo "<script>Swal.fire('$_SESSION[success]','$_SESSION[success]','success');</script>";
+          unset($_SESSION['success']);
+        }
+      ?>
       <?php
         if(isset($_SESSION['userid'])){
           $qry = "SELECT * FROM user WHERE id = '$_SESSION[userid]'";
@@ -53,7 +61,7 @@
                 echo "<script>window.location.href='./user/index.php'</script>";
                 break;
               default:
-                echo "<script>$('#welcomeMessageModal').modal('show');</script>";
+              echo "<script>window.location.href='index.php'</script>";
             }
           }
         }
@@ -68,14 +76,17 @@
               switch ($request['permission']) {
                 case "admin":
                   $_SESSION['userid']=$request['id'];
+                  $_SESSION['success'] = 'Login Success!';
                   echo "<script>window.location.href='./admin/index.php'</script>";
                   break;
                 case "company":   
                   $_SESSION['userid']=$request['id'];
+                  $_SESSION['success'] = 'Login Success!';
                   echo "<script>window.location.href='./company/index.php'</script>";
                   break;
                 case "user":
                   $_SESSION['userid']=$request['id'];
+                  $_SESSION['success'] = 'Login Success!';
                   echo "<script>window.location.href='./user/index.php'</script>";
                   break;
                 default:
@@ -130,7 +141,7 @@
                       <label class="input-label" for="signupSrPassword" tabindex="0">
                         <span class="d-flex justify-content-between align-items-center">
                           Password
-                          <a class="input-label-secondary" href="authentication-reset-password-basic.html">Forgot Password?</a>
+                          <!-- <a class="input-label-secondary" href="authentication-reset-password-basic.html">Forgot Password?</a> -->
                         </span>
                       </label>
 
@@ -153,12 +164,12 @@
                     <!-- End Form Group -->
 
                     <!-- Checkbox -->
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="termsCheckbox" name="termsCheckbox">
                         <label class="custom-control-label text-muted" for="termsCheckbox"> Remember me</label>
                       </div>
-                    </div>
+                    </div> -->
                     <!-- End Checkbox -->
 
                     <button type="submit" name="submit"   class="btn btn-lg btn-block btn-primary">Sign in</button>
@@ -170,7 +181,7 @@
 
               <!-- Footer -->
               <div class="text-center">
-                <small class="text-cap mb-4">Trusted by the world's best teams</small>
+                <small class="text-cap mb-4">Trusted by Lee jian yong teams</small>
 
                 <div class="w-85 mx-auto">
                   <div class="row justify-content-between">
