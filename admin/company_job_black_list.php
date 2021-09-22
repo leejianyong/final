@@ -215,7 +215,7 @@ require('./navbar.php');
                     </div> -->
                   </td>
                   <td class="table-column-pl-0">
-                    <a class="d-flex align-items-center" href="./user-profile.html">
+                    <a class="d-flex align-items-center" href="#">
                       <div class="avatar avatar-square">
                         <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['job_image'])?'/image/'.$company_array['job_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
                       </div>

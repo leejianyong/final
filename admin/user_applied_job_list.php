@@ -198,7 +198,7 @@ require('./navbar.php');
                   <td class="table-column-pr-0">
                   </td>
                   <td class="table-column-pl-0">
-                    <a class="d-flex align-items-center" href="./user-profile.html">
+                    <a class="d-flex align-items-center" href="#">
                       <div class="avatar avatar-circle">
                         <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['job_image'])?'/image/'.$company_array['job_image']:'/assets/img/160x160/img2.jpg'; ?>" alt="Image Description">
                       </div>
@@ -209,7 +209,7 @@ require('./navbar.php');
                     </a>
                   </td>
                   <td>
-                    <a class="d-flex align-items-center" href="./user-profile.html">
+                    <a class="d-flex align-items-center" href="#">
                       <div>
                         <span class="d-block h5 text-hover-primary mb-0"><?= $company_array['username']; ?></span>
                         <span class="d-block font-size-sm text-body"><?= $company_array['email']; ?></span>

@@ -181,7 +181,7 @@ require('./navbar.php');
                   <td class="table-column-pr-0">
                   </td>
                   <td class="table-column-pl-0">
-                    <a class="d-flex align-items-center" href="./user-profile.html">
+                    <a class="d-flex align-items-center" href="#">
                       <div class="avatar avatar-circle">
                         <img class="avatar-img" src="<?= $assets; ?><?= ($company_array['profile_image'])?'/image/'.$company_array['profile_image']:'/assets/img/160x160/img1.jpg'; ?>" alt="Image Description">
                       </div>
@@ -194,7 +194,24 @@ require('./navbar.php');
                   <td>
                     <span class="d-block h5 mb-0"><?= $company_array['contact']; ?></span>
                   </td>
-                  <td><?= $company_array['resume']; ?></td>
+                  <td>
+                    <?php if(!empty($company_array['resume'])){ ?>
+                      <!-- List Item -->
+                      <li class="list-group-item">
+                        <div class="row align-items-center gx-2">
+                          <div class="col-auto">
+                            <img class="avatar avatar-xs avatar-4by3" src="../assets/svg/brands/pdf.svg" alt="Image Description">
+                          </div>
+                          <div class="col">
+                            <h5 class="mb-0">
+                              <a class="text-dark" href="download-file.php?detail=<?= $company_array['resume']; ?>"><?= $company_array['resume']; ?></a>
+                            </h5>
+                          </div>
+                        </div>
+                        <!-- End Row -->
+                      </li>
+                      <!-- End List Item -->
+                    <?php } ?></td>
                   <td>
                     <?php if($company_array['status']=="active"){ ?>
                       <span class="legend-indicator bg-success"></span>Active
